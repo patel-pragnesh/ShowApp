@@ -2,6 +2,7 @@
 /Resources
 /platform
 /i18n
+/build
 build.log
 build
 npm-debug.log

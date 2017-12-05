@@ -2,7 +2,7 @@
 <ti:app xmlns:ti="http://ti.appcelerator.org">
     <id>com.torodigital.showAppv2</id>
     <name>ShowApp</name>
-    <version>1.0</version>
+    <version>1.0.0</version>
     <publisher>dalinet</publisher>
     <url>http://www.showappviewer.com</url>
     <description/>
@@ -12,12 +12,27 @@
     <navbar-hidden>false</navbar-hidden>
     <analytics>true</analytics>
     <guid>d62cd210-dec1-45f9-9ddd-36bdb529db1b</guid>
-    <property name="ti.ui.defaultunit" type="string">dp</property>
+    <property name="ti.ui.defaultunit" type="string">system</property>
     <property name="run-on-main-thread" type="bool">true</property>
     <ios>
         <enable-launch-screen-storyboard>true</enable-launch-screen-storyboard>
         <use-app-thinning>true</use-app-thinning>
         <plist>
+          <!--  -->
+          <dict>
+              <key>CFBundleURLTypes</key>
+              <array>
+                  <dict>
+                      <key>CFBundleURLName</key>
+                      <string>com.toro.showAppv2</string>
+                      <key>CFBundleURLSchemes</key>
+                      <array>
+                          <string>showapp</string>
+                      </array>
+                  </dict>
+              </array>
+          </dict>
+          <!--  -->
             <dict>
                 <key>UISupportedInterfaceOrientations~iphone</key>
                 <array>
@@ -25,8 +40,6 @@
                 </array>
                 <key>UISupportedInterfaceOrientations~ipad</key>
                 <array>
-                    <string>UIInterfaceOrientationPortrait</string>
-                    <string>UIInterfaceOrientationPortraitUpsideDown</string>
                     <string>UIInterfaceOrientationLandscapeLeft</string>
                     <string>UIInterfaceOrientationLandscapeRight</string>
                 </array>
@@ -38,10 +51,55 @@
                 <false/>
                 <key>UIStatusBarStyle</key>
                 <string>UIStatusBarStyleDefault</string>
+                <!--  -->
+                <key>NSPhotoLibraryUsageDescription</key>
+                <string>Necesitamos acceder a tus fotos poder tener mejor funcionalidad</string>
+                <!-- <key>NSCameraUsageDescription</key>
+                <string>Necesitamos acceder a tu camara para publicar en las pantallas de Clear Channel</string> -->
+                <!-- <key>NSMicrophoneUsageDescription</key>
+                <string>Necesitamos acceder a tu microfono para publicar en las pantallas de Clear Channel</string> -->
+                <!--  -->
             </dict>
         </plist>
     </ios>
-    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
+    <android xmlns:android="http://schemas.android.com/apk/res/android">
+        <manifest android:versionCode="4" android:versionName="1.0.0">
+            <application android:hardwareAccelerated="true">
+                <meta-data
+                    android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyCuigRDozw1v5qoieJ7ouaqClvhNpGyhFU"/>
+                <activity
+                    android:configChanges="keyboardHidden|orientation"
+                    android:name="org.appcelerator.titanium.TiActivity" android:screenOrientation="landscape">
+                    <intent-filter>
+                        <action android:name="android.intent.action.MAIN"/>
+                    </intent-filter>
+                    <intent-filter>
+                        <data android:host="showappviewer.com.mx" android:scheme="http"/>
+                        <category android:name="android.intent.category.DEFAULT"/>
+                        <category android:name="android.intent.category.BROWSABLE"/>
+                        <action android:name="android.intent.action.VIEW"/>
+                    </intent-filter>
+                </activity>
+            </application>
+            <uses-sdk android:minSdkVersion="24" android:targetSdkVersion="26"/>
+            <uses-permission android:name="android.permission.WAKE_LOCK"/>
+            <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+            <uses-permission android:name="android.permission.VIBRATE"/>
+            <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+            <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+            <supports-screens android:anyDensity="true"
+                android:compatibleWidthLimitDp="600"
+                android:largeScreens="true"
+                android:largestWidthLimitDp="600"
+                android:normalScreens="true"
+                android:requiresSmallestWidthDp="600"
+                android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true"/>
+        </manifest>
+    </android>
     <mobileweb>
         <precache/>
         <splash>
