@@ -1,15 +1,13 @@
-".container": {
-	backgroundColor:"white"
+/*Root window Android*/
+".root[platform=ios]": {
+	backgroundColor:"#FFF",
+	fullscreen: false,
+	navBarHidden: true
 }
 
-"Label": {
-	width: Ti.UI.SIZE,
-	height: Ti.UI.SIZE,
-	color: "#000"
-}
-
-"#label": {
-	font: {
-		fontSize: 12
-	}
+/*Window ROOT Android*/
+".root[platform=android]": {
+	fullscreen: true,
+	backgroundColor: "#FFF",
+	theme: "Theme.AppCompat.NoTitleBar",
 }

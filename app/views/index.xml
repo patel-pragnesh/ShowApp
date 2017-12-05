@@ -1,5 +1,10 @@
 <Alloy>
-	<Window class="container">
-		<Label id="label" onClick="doClick">Hello, World</Label>
-	</Window>
+		<!-- iOS Window -->
+	<NavigationWindow id="windowNav" class="windowNav" platform="ios">
+			<Window id="root" class="root" platform="ios"></Window>
+	</NavigationWindow>
+
+		<!-- Anddroid Window -->
+	<Window id="root" class="root" platform="android"></Window>
+
 </Alloy>
