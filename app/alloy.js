@@ -11,6 +11,10 @@
 // Alloy.Globals.someGlobalFunction = function(){};
 Alloy.Globals.weburl = "http://www.showappviewer.com/";
 Alloy.Globals.databaseName = "showAppdb";
+Alloy.Globals.osUnits = function (unit){
+  OS_IOS ?  unit=unit :  unit = unit*2;
+  return  unit;
+};
 
 
 // added during app creation. this will automatically login to

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="welcome">Welcome to %s!</string>
+
+	<string name="user">User</string>
+	<string name="pass">Password</string>
+
+	<string name="userName">User Name</string>
+	<string name="send">Send</string>
+
+
+</resources>

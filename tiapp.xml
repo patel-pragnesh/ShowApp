@@ -59,6 +59,9 @@
                 <!-- <key>NSMicrophoneUsageDescription</key>
                 <string>Necesitamos acceder a tu microfono para publicar en las pantallas de Clear Channel</string> -->
                 <!--  -->
+
+              
+
             </dict>
         </plist>
     </ios>
@@ -109,8 +112,8 @@
         <theme>default</theme>
     </mobileweb>
     <modules>
-        <module platform="android">hyperloop</module>
-        <module platform="iphone">hyperloop</module>
+        <!-- <module platform="android">hyperloop</module>
+        <module platform="iphone">hyperloop</module> -->
         <module platform="commonjs">ti.cloud</module>
     </modules>
     <deployment-targets>
@@ -122,7 +125,7 @@
     <sdk-version>6.3.0.GA</sdk-version>
     <plugins>
         <plugin version="1.0">ti.alloy</plugin>
-        <plugin>hyperloop</plugin>
+        <!-- <plugin>hyperloop</plugin> -->
     </plugins>
     <property name="appc-app-id" type="string">5a26e1cd19e2e9041063fa60</property>
     <property name="acs-authbase-url-development" type="string">https://secure-identity.cloud.appcelerator.com</property>

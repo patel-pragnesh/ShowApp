@@ -1,0 +1,30 @@
+<Alloy>
+  <View class="canvasLogin" id="canvasLogin">
+
+    <View class="formLoginContent" id="formLoginContent">
+
+      <ScrollView class="squareForm" id="squareForm">
+        <Label class="defaultTitleBold" bottom="20">Login</Label>
+
+        <View class="contentTextForm" id="contentUser">
+          <View class="contentLabelForm">
+            <Label class="defaultTextFormLabel">L("user")</Label>
+          </View>
+          <TextField class="defaultTextForm" id="userName" hintText="L('userName')"></TextField>
+        </View>
+
+        <View class="contentTextForm" id="contentPass">
+          <View class="contentLabelForm">
+            <Label class="defaultTextFormLabel">L("pass")</Label>
+          </View>
+          <TextField class="defaultTextForm" id="userPass" passwordMask="true" hintText="L('pass')"></TextField>
+        </View>
+
+        <Button class="defaultBotonBlue" id="loginButton"></Button>
+
+      </ScrollView>
+
+    </View>
+
+  </View>
+</Alloy>

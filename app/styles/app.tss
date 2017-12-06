@@ -24,3 +24,89 @@ overrode the settings with other TSS, XML, or JS settings:
 }
 
 */
+".defaultTitleBold[platform=ios]":{
+  color:"#3354be",
+  font: {
+    fontFamily: "ProximaNova-Black",
+    fontSize: 40
+  }
+}
+".defaultTitleBold[platform=android]":{
+  color:"#3354be",
+  font: {
+    fontFamily: "ProximaNova-Black",
+    fontSize: 80
+  }
+}
+".defaultTextFormLabel[platform=ios]":{
+  color: "#2e4eb2",
+  font: {
+    fontFamily: "AvenirNext-Regular",
+    fontSize: 16
+  }
+}
+".defaultTextFormLabel[platform=android]":{
+  color: "#2e4eb2",
+  font: {
+    fontFamily: "AvenirNext-Regular",
+    fontSize: 32
+  }
+}
+".defaultTextForm[platform=ios]":{
+  borderWidth: 0.5,
+  borderColor: "#c1c7d5",
+  width: Ti.UI.FILL,
+  height: Ti.UI.FILL,
+  left :10,
+  color: "#848fab",
+  font: {
+    fontFamily: "AvenirNext-Regular",
+    fontSize: 16,
+  },
+  padding: {
+    left:10
+  }
+}
+".defaultTextForm[platform=android]":{
+  borderWidth: 0.5,
+  borderColor: "#c1c7d5",
+  width: Ti.UI.FILL,
+  height: Ti.UI.FILL,
+  left :20,
+  color: "#848fab",
+  font: {
+    fontFamily: "AvenirNext-Regular",
+    fontSize: 32,
+  },
+  padding: {
+    left:20
+  }
+}
+".defaultBotonBlue[platform=ios]":{
+  top:20,
+  width: 170,
+  height: 40,
+  title: L('send'),
+  color: "#FFF",
+  font: {
+    fontFamily: "AvenirNextLTPro-Demi",
+    fontSize: 16
+  },
+  borderRadius: 10,
+  backgroundColor: "#4e76f5",
+
+}
+".defaultBotonBlue[platform=android]":{
+  top:40,
+  width: 340,
+  height: 80,
+  title: L('send'),
+  color: "#FFF",
+  font: {
+    fontFamily: "AvenirNextLTPro-Demi",
+    fontSize: 32
+  },
+  borderRadius: 20,
+  backgroundColor: "#4e76f5",
+
+}
