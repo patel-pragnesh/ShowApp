@@ -10,14 +10,14 @@
           <View class="contentLabelForm">
             <Label class="defaultTextFormLabel">L("user")</Label>
           </View>
-          <TextField class="defaultTextForm" id="userName" hintText="L('userName')"></TextField>
+          <TextField class="defaultTextForm" id="userName" hintText="L('userName')" autocapitalization="UITextAutocapitalizationTypeNone" keyboardType="Ti.UI.KEYBOARD_TYPE_EMAIL" returnKeyType="Ti.UI.RETURNKEY_CONTINUE"></TextField>
         </View>
 
         <View class="contentTextForm" id="contentPass">
           <View class="contentLabelForm">
             <Label class="defaultTextFormLabel">L("pass")</Label>
           </View>
-          <TextField class="defaultTextForm" id="userPass" passwordMask="true" hintText="L('pass')"></TextField>
+          <TextField class="defaultTextForm" id="userPass" passwordMask="true" hintText="L('pass')" returnKeyType="Ti.UI.RETURNKEY_DONE"></TextField>
         </View>
 
         <Button class="defaultBotonBlue" id="loginButton"></Button>

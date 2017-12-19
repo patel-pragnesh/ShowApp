@@ -9,8 +9,10 @@
 // object. For example:
 //
 // Alloy.Globals.someGlobalFunction = function(){};
-Alloy.Globals.weburl = "http://www.showappviewer.com/";
+Alloy.Globals.weburl = "http://developer.showappviewer.com/";
 Alloy.Globals.databaseName = "showAppdb";
+Alloy.Globals.timeOutWebServices = 10000;
+
 Alloy.Globals.osUnits = function (unit){
   OS_IOS ?  unit=unit :  unit = unit*2;
   return  unit;

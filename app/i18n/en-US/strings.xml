@@ -8,5 +8,7 @@
 	<string name="userName">User Name</string>
 	<string name="send">Send</string>
 
+	<string name="loginError">Error! send user and password</string>
+
 
 </resources>

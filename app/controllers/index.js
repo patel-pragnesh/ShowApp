@@ -14,5 +14,15 @@ if(isLogin==0){
 	/*Agregamos el View de Login*/
 	$.root.add(Alloy.createController("LoginView",{}).getView());
 }else{
-	/*En este caso si esta logeado el usauros*/
+	/*En este caso si esta logeado el usuario*/
+	$.root.add(Alloy.createController("HomeView",{}).getView());
+}
+
+/*Eventos para el Login*/
+Ti.App.addEventListener("onLoadLogin",onLogin);
+function onLogin(e){
+	/*Eliminamos todos los Views en la pantalla de login y mantenemos la ventana de root*/
+	$.root.removeAllChildren();
+	/*Agregamos el View de Home*/
+	$.root.add(Alloy.createController("HomeView",{}).getView());
 }
