@@ -16,7 +16,6 @@ function Checklogin(){
 		  var userId = sqlusuarios.fieldByName('usuario_id');
 		  var userIdOnline = sqlusuarios.fieldByName('id_online');
 		  var userNombre = sqlusuarios.fieldByName('name');
-      var companyName = sqlusuarios.fieldByName('company_name');
 
 
 		  arruser.push({ usuario_id: userId , online_id:userIdOnline , nombre: userNombre});
