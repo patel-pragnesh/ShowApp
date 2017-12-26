@@ -5,7 +5,7 @@
     <version>1.0.0</version>
     <publisher>dalinet</publisher>
     <url>http://www.showappviewer.com</url>
-    <description/>
+    <description>undefined</description>
     <copyright>2017 by dalinet</copyright>
     <icon>appicon.png</icon>
     <fullscreen>false</fullscreen>
@@ -18,21 +18,21 @@
         <enable-launch-screen-storyboard>true</enable-launch-screen-storyboard>
         <use-app-thinning>true</use-app-thinning>
         <plist>
-          <!--  -->
-          <dict>
-              <key>CFBundleURLTypes</key>
-              <array>
-                  <dict>
-                      <key>CFBundleURLName</key>
-                      <string>com.toro.showAppv2</string>
-                      <key>CFBundleURLSchemes</key>
-                      <array>
-                          <string>showapp</string>
-                      </array>
-                  </dict>
-              </array>
-          </dict>
-          <!--  -->
+            <!--  -->
+            <dict>
+                <key>CFBundleURLTypes</key>
+                <array>
+                    <dict>
+                        <key>CFBundleURLName</key>
+                        <string>com.toro.showAppv2</string>
+                        <key>CFBundleURLSchemes</key>
+                        <array>
+                            <string>showapp</string>
+                        </array>
+                    </dict>
+                </array>
+            </dict>
+            <!--  -->
             <dict>
                 <key>UISupportedInterfaceOrientations~iphone</key>
                 <array>
@@ -59,9 +59,6 @@
                 <!-- <key>NSMicrophoneUsageDescription</key>
                 <string>Necesitamos acceder a tu microfono para publicar en las pantallas de Clear Channel</string> -->
                 <!--  -->
-
-              
-
             </dict>
         </plist>
     </ios>

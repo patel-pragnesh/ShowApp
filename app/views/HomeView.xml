@@ -1,5 +1,5 @@
 <Alloy>
-  <View>
-    <Label>HOME</Label>
+  <View class="root" id="root">
+
   </View>
 </Alloy>

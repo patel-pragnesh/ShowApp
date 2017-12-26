@@ -9,6 +9,8 @@
 	<string name="send">Send</string>
 
 	<string name="loginError">Error! send user and password</string>
+	<string name="perfilBtn">My perfil</string>
+	<string name="closeSession">Logout</string>
 
 
 </resources>

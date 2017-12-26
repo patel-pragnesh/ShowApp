@@ -20,9 +20,14 @@ if(isLogin==0){
 
 /*Eventos para el Login*/
 Ti.App.addEventListener("onLoadLogin",onLogin);
+Ti.App.addEventListener('onLoadLoginError',onErrorLogin);
 function onLogin(e){
+
 	/*Eliminamos todos los Views en la pantalla de login y mantenemos la ventana de root*/
 	$.root.removeAllChildren();
 	/*Agregamos el View de Home*/
 	$.root.add(Alloy.createController("HomeView",{}).getView());
+}
+function onErrorLogin(e){
+	alert("Error al ingresar con este usuario");
 }

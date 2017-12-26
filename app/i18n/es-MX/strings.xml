@@ -8,7 +8,8 @@
 	<string name="send">Enviar</string>
 
 	<string name="loginError">Error! debe de escribir su usuario y contraseña</string>
-
+	<string name="perfilBtn">Mi perfil</string>
+	<string name="closeSession">Cerrar Sesión</string>
 
 
 

@@ -1,0 +1,10 @@
+<Alloy>
+  <View class="leftBar" id="leftBar">
+
+    <ScrollView class="menuContent" id="menuContent"></ScrollView>
+
+    <Button class="closeSession" id="closeSession"></Button>
+    <ImageView class="imageLogoCompany" id="imageLogoCompany"></ImageView>
+  </View>
+
+</Alloy>
