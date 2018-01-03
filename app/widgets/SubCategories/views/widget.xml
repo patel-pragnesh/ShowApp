@@ -1,0 +1,10 @@
+<Alloy>
+	<View class="rootCategories" id="rootCategories">
+		<View class="headerCategories" id="headerCategories">
+			<Label class="title" id="title">L('categorytitle')</Label>
+		</View>
+		<View class="canvasCategories" id="canvasCategories"></View>
+
+
+	</View>
+</Alloy>

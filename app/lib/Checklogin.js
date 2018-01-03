@@ -17,6 +17,9 @@ function Checklogin(){
 		  var userIdOnline = sqlusuarios.fieldByName('id_online');
 		  var userNombre = sqlusuarios.fieldByName('name');
 
+      Alloy.Globals.id_user_type = sqlusuarios.fieldByName('id_user_type');
+      Alloy.Globals.id_company = sqlusuarios.fieldByName('id_company');
+
 
 		  arruser.push({ usuario_id: userId , online_id:userIdOnline , nombre: userNombre});
 		  sqlusuarios.next();

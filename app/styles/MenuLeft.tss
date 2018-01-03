@@ -13,7 +13,7 @@
 }
 ".imageBack":{
   left: 0,
-  top: 0,
+  top: 0
 }
 ".imageLogoCompany[platform=ios]":{
   top: 40,

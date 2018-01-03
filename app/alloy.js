@@ -12,6 +12,13 @@
 Alloy.Globals.weburl = "http://developer.showappviewer.com/";
 Alloy.Globals.databaseName = "showAppdb";
 Alloy.Globals.timeOutWebServices = 10000;
+Alloy.Globals.currentWindow;
+Alloy.Globals.countWindow = 0;
+
+
+// Estas variables globales se setean en el archivo GetLogin y en el archivo Checklogin
+Alloy.Globals.id_user_type = 0;
+Alloy.Globals.id_company = 0;
 
 Alloy.Globals.osUnits = function (unit){
   OS_IOS ?  unit=unit :  unit = unit*2;
@@ -37,6 +44,8 @@ Alloy.Globals.colorLuminosity=function(hex, lum) {
 	Ti.API.info('COLOR '+rgb);
 	return rgb;
 };
+
+
 
 
 // added during app creation. this will automatically login to

@@ -1,0 +1,35 @@
+".rootCategories":{
+	width:Ti.UI.FILL,
+	height:Ti.UI.FILL,
+	backgroundColor: "transparent",
+	layout:"vertical"
+}
+".headerCategories[platform=ios]":{
+	width:Ti.UI.FILL,
+	height: 95,
+	backgroundColor: "transparent",
+}
+".headerCategories[platform=android]":{
+	width:Ti.UI.FILL,
+	height: 190,
+	backgroundColor: "transparent",
+}
+".title[platform=ios]":{
+	left:15,
+	font: {
+		fontFamily: "ProximaNova-Black",
+		fontSize: 40
+	}
+}
+".title[platform=android]":{
+
+	left:30,
+	font: {
+		fontFamily: "ProximaNova-Black",
+		fontSize: 80
+	}
+}
+".canvasCategories":{
+	width:Ti.UI.FILL,
+	height:Ti.UI.FILL,
+}

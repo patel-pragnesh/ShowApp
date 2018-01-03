@@ -1,0 +1,13 @@
+/*Root window Android*/
+".root[platform=ios]": {
+	backgroundColor:"#FFF",
+	fullscreen: false,
+	navBarHidden: true
+}
+
+/*Window ROOT Android*/
+".root[platform=android]": {
+	fullscreen: true,
+	backgroundColor: "#FFF",
+	theme: "Theme.AppCompat.NoTitleBar",
+}

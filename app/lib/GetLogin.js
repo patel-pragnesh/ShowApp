@@ -35,6 +35,9 @@ function GetLogin(oDataLogin){
       }
       var oObjectToSaveUser = {
         id_online:aData.id,
+        id_user_type:aData.id_user_type,
+        id_company:aData.id_company,
+        user_type:aData.type_user.type,
         name:aData.name,
         second_name:aData.second_name,
         email:aData.email
@@ -42,6 +45,9 @@ function GetLogin(oDataLogin){
       /*El evento onLoadLogin se ejecuta en en controlador index.js*/
       new CreateDataBase().setCompanyConf(oObjectSaveCompany);
       new CreateDataBase().setUser(oObjectToSaveUser) ? Ti.App.fireEvent("onLoadLogin",{aDataUser:aData}) : alert("Error al grabar el usaurio+++");
+
+      Alloy.Globals.id_user_type = aData.id_user_type;
+      Alloy.Globals.id_company = aData.id_company;
     }else{
       Ti.App.fireEvent("onLoadLoginError",{aDataUser:false});
     }

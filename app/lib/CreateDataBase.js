@@ -2,7 +2,7 @@ function CreateDataBase(){
 	try{
 		var db = Ti.Database.open(Alloy.Globals.databaseName);
 		//var sqlCreateTable = "CREATE TABLE IF NOT EXISTS usuarios (usuario_id INTEGER PRIMARY KEY AUTOINCREMENT, id_online INTEGER , name VARCHAR, email VARCHAR, image_company VARCHAR, company_name VARCHAR, url VARCHAR ,estatus INTEGER);";
-		var sqlCreateTable = "CREATE TABLE IF NOT EXISTS usuarios (usuario_id INTEGER PRIMARY KEY AUTOINCREMENT, id_online INTEGER , name VARCHAR, second_name VARCHAR,email VARCHAR, estatus INTEGER);";
+		var sqlCreateTable = "CREATE TABLE IF NOT EXISTS usuarios (usuario_id INTEGER PRIMARY KEY AUTOINCREMENT, id_online INTEGER, id_company INTEGER, id_user_type INTEGER,name INTEGER, user_type VARCHAR,second_name VARCHAR,email VARCHAR, estatus INTEGER);";
 		db.execute(sqlCreateTable);
 
 		var sqlToConfiguration = "CREATE TABLE IF NOT EXISTS configuration (id_configuration INTEGER PRIMARY KEY AUTOINCREMENT, company_name VARCHAR, background_color VARCHAR, background_color_left_bar VARCHAR,text_title_color VARCHAR, text_title_bold_color VARCHAR, text_user_color VARCHAR, text_form_color VARCHAR, text_category_color VARCHAR, text_principal_color VARCHAR, boton_back_color VARCHAR, boton_principla_color VARCHAR, boton_share_back_color VARCHAR, boton_delete_color VARCHAR, boton_save_color VARCHAR, image_url VARCHAR);";
@@ -20,8 +20,8 @@ function CreateDataBase(){
 CreateDataBase.prototype.setUser = function(oDataUser){
 	try {
 		var db = Ti.Database.open(Alloy.Globals.databaseName);
-		var sqlToSave = "INSERT INTO usuarios (id_online,name,second_name,email,estatus) VALUES(?,?,?,?,?);";
-		db.execute(sqlToSave,oDataUser.id_online,oDataUser.name, oDataUser.second_name,oDataUser.email,1);
+		var sqlToSave = "INSERT INTO usuarios (id_online,id_company,id_user_type,user_type,name,second_name,email,estatus) VALUES(?,?,?,?,?,?,?,?);";
+		db.execute(sqlToSave,oDataUser.id_online,oDataUser.id_company,oDataUser.id_user_type,oDataUser.user_type,oDataUser.name, oDataUser.second_name,oDataUser.email,1);
 	} catch (e) {
 		alert("Error al grabar usuario en Dispositivo: "+e);
 	} finally {
@@ -47,8 +47,8 @@ CreateDataBase.prototype.getProperty = function(propiedad){
 	try {
 		var value = '';
 		var db = Ti.Database.open(Alloy.Globals.databaseName);
-		var sqlToProperti = "SELECT "+propiedad+" FROM configuration WHERE id_configuration = 1;";
-		var rows = db.execute(sqlToProperti);
+		var sqlToProperty = "SELECT "+propiedad+" FROM configuration WHERE id_configuration = 1;";
+		var rows = db.execute(sqlToProperty);
 		while (rows.isValidRow()) {
 			value = rows.fieldByName(propiedad);
 			rows.next();
@@ -56,6 +56,23 @@ CreateDataBase.prototype.getProperty = function(propiedad){
 
 	} catch (e) {
 		alert("Error al traer propiedad de color o texto: "+e);
+	} finally {
+		db.close();
+		return value;
+	}
+}
+CreateDataBase.prototype.getUserProperty = function(propiedad){
+	try {
+		var value = '';
+		var db = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlToProperty = "SELECT "+propiedad+" FROM usuarios WHERE usuario_id = 1;";
+		var rows = db.execute(sqlToProperty);
+		while (rows.isValidRow()) {
+			value = rows.fieldByName(propiedad);
+			rows.next();
+		}
+	} catch (e) {
+		alert("Error al obtener propiedad de usuario");
 	} finally {
 		db.close();
 		return value;

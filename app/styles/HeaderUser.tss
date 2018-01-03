@@ -1,0 +1,10 @@
+".headerRoot[platform=ios]":{
+  width:Ti.UI.FILL,
+  height: 60,
+  backgroundColor: "#FFF"
+}
+".headerRoot[platform=android]":{
+  width:Ti.UI.FILL,
+  height: 120,
+  backgroundColor: "#FFF"
+}

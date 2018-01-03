@@ -1,12 +1,15 @@
 {
-	"global": {},
-	"env:development": {},
-	"env:test": {},
-	"env:production": {},
-	"os:android": {},
-	"os:blackberry": {},
-	"os:ios": {},
-	"os:mobileweb": {},
-	"os:windows": {},
-	"dependencies": {}
+  "global": {},
+  "env:development": {},
+  "env:test": {},
+  "env:production": {},
+  "os:android": {},
+  "os:blackberry": {},
+  "os:ios": {},
+  "os:mobileweb": {},
+  "os:windows": {},
+  "dependencies": {
+      "Categories": "1.0",
+      "SubCategories": "1.0"
+  }
 }
