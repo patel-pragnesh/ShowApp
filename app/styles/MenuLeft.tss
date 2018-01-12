@@ -5,7 +5,7 @@
   layout:"vertical"
 }
 ".leftBar[platform=android]":{
-  width: 400,
+  width: 200,
   height:Ti.UI.FILL,
   backgroundImage: "/images/showAppIlustration.png",
   layout:"vertical"
@@ -20,7 +20,7 @@
   width: "80%"
 }
 ".imageLogoCompany[platform=android]":{
-  top: 80,
+  top: 40,
   width: "80%"
 }
 
@@ -33,9 +33,9 @@
 
 }
 ".menuContent[platform=android]":{
-  top: 100,
+  top: 50,
   width:Ti.UI.FILL,
-  height: 900,
+  height: 500,
   backgroundColor:"transparent",
   layout:"vertical"
 
@@ -53,13 +53,13 @@
   }
 }
 ".closeSession[platform=android]":{
-  top:20,
+  top:10,
   width: "80%",
-  height: 100,
-  borderRadius: 20,
+  height: 50,
+  borderRadius: 10,
     color: "#FFF",
   font: {
     fontFamily: "AvenirNextLTPro-Demi",
-    fontSize: 20
+    fontSize: 10
   }
 }

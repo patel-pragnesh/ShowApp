@@ -12,6 +12,9 @@
 	<string name="perfilBtn">My perfil</string>
 	<string name="closeSession">Logout</string>
 	<string name="categorytitle">CATEGORIES</string>
-
+	<string name="subTitleLoader">Plase wait, Download presentation...</string>
+	<string name="processing">Wait a little more, processing...</string>
+	<string name="loaderPressError">Load error, come back later</string>
+	<string name="unzipError">Instalation error, please call to tech support</string>
 
 </resources>

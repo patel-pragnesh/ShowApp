@@ -11,7 +11,7 @@
 }
 ".headerCategories[platform=android]":{
 	width:Ti.UI.FILL,
-	height: 190,
+	height: 95,
 	backgroundColor: "transparent",
 }
 ".title[platform=ios]":{
@@ -22,13 +22,33 @@
 	}
 }
 ".title[platform=android]":{
-	left:30,
+	left:15,
 	font: {
 		fontFamily: "ProximaNova-Black",
-		fontSize: 80
+		fontSize: 40
 	}
 }
-".canvasCategories":{
+".canvasCategories[platform=ios]":{
 	width:Ti.UI.FILL,
-	height:Ti.UI.FILL
+	backgroundColor:"transparent",
+	layout:"vertical"
+}
+".canvasCategories[platform=android]":{
+	width:Ti.UI.FILL,
+
+	backgroundColor:"transparent",
+	layout:"vertical"
+}
+".canvasPresentations[platform=ios]":{
+	width:Ti.UI.FILL,
+	height:Ti.UI.FILL,
+	backgroundColor:"transparent",
+	showPagingControl:true,
+
+}
+".canvasPresentations[platform=android]":{
+	width:Ti.UI.FILL,
+	height:Ti.UI.FILL,
+	backgroundColor:"transparent",
+	showPagingControl:true
 }

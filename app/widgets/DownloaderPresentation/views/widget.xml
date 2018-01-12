@@ -1,0 +1,17 @@
+<Alloy>
+	<View class="root" id="root">
+		<View class="backTrans" id="backTrans"></View>
+		<View class="loaderContent" id="loaderContent">
+			<Label class="titulo" id="titulo"></Label>
+			<Label class="subTitulo" id="subTitulo"></Label>
+
+			<View class="contentLoader" id="contentLoader">
+					<View class="baseDownload" id="baseDownload">
+							<View class="loaderBar" id="loaderBar"></View>
+					</View>
+					<Label class="percentNumber" id="percentNumber"></Label>
+			</View>
+
+		</View>
+	</View>
+</Alloy>

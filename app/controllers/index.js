@@ -5,24 +5,31 @@ var Checklogin = require("Checklogin");
 if(new CreateDataBase){
 	OS_IOS ? $.windowNav.open() : $.root.open();
 	OS_IOS ? Alloy.Globals.currentWindow = $.windowNav : Alloy.Globals.currentWindow = $.root;
-	Alloy.Globals.openWindow = function(sWidgetToLoad,paramsToWidget){
-		Alloy.Globals.countWindow++;
-		Alloy.Globals.currentWindow = Alloy.createController("baseWindow",{widget:sWidgetToLoad,paramsToWidget:paramsToWidget}).getView();
-		if(OS_IOS){
-			$.windowNav.openWindow(Alloy.Globals.currentWindow);
-		}else{
-			Alloy.Globals.currentWindow.open();
-		}
 
+	Alloy.Globals.openNewWindow = function(sWidgetToLoad,paramsToWidget){
+		Alloy.Globals.countWindow++;
+		// var sWidgetToLoad = sWidgetToLoad;
+		// var paramsToWidget = paramsToWidget;
+		if(OS_IOS){
+			var newWindow = Alloy.createController("baseWindow",{widget:sWidgetToLoad,paramsToWidget:paramsToWidget}).getView();
+			$.windowNav.openWindow(newWindow);
+		}else{
+			Alloy.createController("baseWindow",{widget:sWidgetToLoad,paramsToWidget:paramsToWidget}).getView().open();
+		}
+		newWindow = null;
 	}
 
-	Alloy.Globals.closeWindow=function(){
+	Alloy.Globals.closeWindow=function(ToClose){
 		Alloy.Globals.countWindow--;
+
+
 		if(OS_IOS){
-			$.windowNav.closeWindow(Alloy.Globals.currentWindow );
+			$.windowNav.closeWindow(ToClose);
+			//$.windowNav.popToRootWindow();
 		}else{
-			Alloy.Globals.currentWindow.close();
+			ToClose.close();
 		}
+		ToClose = null;
 	}
 
 
@@ -36,6 +43,8 @@ if(new CreateDataBase){
 
 		$.root.add(Alloy.createController("LoginView",{}).getView());
 	}else{
+		/*Traemos todas las variables de configuracion*/
+		Alloy.Globals.conf = new CreateDataBase().getAllProperties();
 		/*En este caso si esta logeado el usuario*/
 		$.root.add(Alloy.createController("HomeView",{widgetToLoad:"Categories",paramsToWidget:{}}).getView());
 
@@ -46,10 +55,11 @@ if(new CreateDataBase){
 Ti.App.addEventListener("onLoadLogin",onLogin);
 Ti.App.addEventListener('onLoadLoginError',onErrorLogin);
 function onLogin(e){
-
 	/*Eliminamos todos los Views en la pantalla de login y mantenemos la ventana de root*/
 	$.root.removeAllChildren();
 	/*Agregamos el View de Home*/
+	//Ti.API.info('Llego aqui');
+	Alloy.Globals.conf = new CreateDataBase().getAllProperties();
 	$.root.add(Alloy.createController("HomeView",{widgetToLoad:"Categories",paramsToWidget:{}}).getView());
 }
 function onErrorLogin(e){

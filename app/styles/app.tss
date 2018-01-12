@@ -35,7 +35,7 @@ overrode the settings with other TSS, XML, or JS settings:
   color:"#3354be",
   font: {
     fontFamily: "ProximaNova-Black",
-    fontSize: 80
+    fontSize: 40
   }
 }
 ".defaultTextFormLabel[platform=ios]":{
@@ -49,7 +49,7 @@ overrode the settings with other TSS, XML, or JS settings:
   color: "#2e4eb2",
   font: {
     fontFamily: "AvenirNext-Regular",
-    fontSize: 32
+    fontSize: 16
   }
 }
 ".defaultTextForm[platform=ios]":{
@@ -72,14 +72,14 @@ overrode the settings with other TSS, XML, or JS settings:
   borderColor: "#c1c7d5",
   width: Ti.UI.FILL,
   height: Ti.UI.FILL,
-  left :20,
+  left :10,
   color: "#848fab",
   font: {
     fontFamily: "AvenirNext-Regular",
-    fontSize: 32,
+    fontSize: 16,
   },
   padding: {
-    left:20
+    left:10
   }
 }
 ".defaultBotonBlue[platform=ios]":{
@@ -97,16 +97,20 @@ overrode the settings with other TSS, XML, or JS settings:
 
 }
 ".defaultBotonBlue[platform=android]":{
-  top:40,
-  width: 340,
-  height: 80,
+  top:20,
+  width: 170,
+  height: 40,
   title: L('send'),
   color: "#FFF",
   font: {
     fontFamily: "AvenirNextLTPro-Demi",
-    fontSize: 32
+    fontSize: 16
   },
-  borderRadius: 20,
+  borderRadius: 10,
   backgroundColor: "#4e76f5",
 
+}
+
+"scrollView[platform=android]":{
+  scrollType:"vertical"
 }

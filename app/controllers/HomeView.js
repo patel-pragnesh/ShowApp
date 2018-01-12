@@ -9,7 +9,12 @@ var canvasHome = Ti.UI.createView({
   layout:"vertical"
 });
 var paramsToWidget = args.paramsToWidget;
+// Ti.API.info('Argumentos de HomeView');
+// Ti.API.info(JSON.stringify(args));
+
+/*Cargamos el Header*/
 canvasHome.add(Alloy.createController("HeaderUser",{}).getView());
+
 /*Agregamos el Widget de Categorias al canvas*/
 canvasHome.add(Alloy.createWidget(args.widgetToLoad,paramsToWidget).getView());
 

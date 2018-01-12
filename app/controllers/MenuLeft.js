@@ -1,9 +1,9 @@
 var CreateDataBase = require("CreateDataBase");
-var backgroundColorBase =  "#"+new CreateDataBase().getProperty('background_color_left_bar');
-var text_title_color = "#"+new CreateDataBase().getProperty('text_title_color');
-var closeSessionColor = "#"+new CreateDataBase().getProperty('boton_back_color');
+var backgroundColorBase =  "#"+Alloy.Globals.conf.background_color_left_bar;
+var text_title_color = "#"+Alloy.Globals.conf.text_title_color;
+var closeSessionColor = "#"+Alloy.Globals.conf.boton_back_color;
 
-var imageLogo = new CreateDataBase().getProperty('image_url');
+var imageLogo = Alloy.Globals.conf.image_url;
 Ti.API.info('Image Logo'+imageLogo);
 
 $.leftBar.backgroundColor = backgroundColorBase;

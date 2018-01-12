@@ -5,6 +5,6 @@
 }
 ".headerRoot[platform=android]":{
   width:Ti.UI.FILL,
-  height: 120,
+  height: 60,
   backgroundColor: "#FFF"
 }

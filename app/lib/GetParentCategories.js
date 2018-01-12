@@ -1,4 +1,5 @@
 function GetParentCategories(){
+  var viewForEvent = Ti.UI.createView();
   var url = Alloy.Globals.weburl+'api/v1/getParentCategories';
   var connection = Ti.Network.createHTTPClient({timeout:Alloy.Globals.timeOutWebServices});
   connection.setRequestHeader("enctype", "multipart/form-data");
@@ -8,6 +9,8 @@ function GetParentCategories(){
     id_company: Alloy.Globals.id_company ,
     id_user_type: Alloy.Globals.id_user_type
   }
+  Ti.API.info('DatoToParentCategories');
+  Ti.API.info(varsToSend);
   connection.send(varsToSend);
 
   connection.onload = function(){
@@ -16,11 +19,11 @@ function GetParentCategories(){
     //Ti.API.info('Data de Categorias Padre');
     if(aData.length>0){
       /*Este evento se llama en el Widget de Categories en el archivo widget.js*/
-      Ti.App.fireEvent("onLoadDataParentCategories",{aData:aData});
+      viewForEvent.fireEvent("onLoadDataParentCategories",{aData:aData});
     }else{
-      Ti.App.fireEvent("onLoadDataParentCategoriesError",{aData:false});
+      viewForEvent.fireEvent("onLoadDataParentCategoriesError",{aData:false});
     }
   }
-
+  return viewForEvent;
 }
 module.exports = GetParentCategories;

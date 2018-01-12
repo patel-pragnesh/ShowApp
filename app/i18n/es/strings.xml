@@ -11,6 +11,10 @@
 	<string name="perfilBtn">Mi perfil</string>
 	<string name="closeSession">Cerrar Sesión</string>
 	<string name="categorytitle">CATEGORÍAS</string>
+	<string name="subTitleLoader">Descargando Presentación, por favor espere...</string>
+	<string name="processing">Procesando la presentación, espere un poco mas...</string>
+	<string name="loaderPressError">Error al descargar su presentación, intentelo más tarde</string>
+	<string name="unzipError">Error al instalar la presentación favor de avisar a su soporte técnico</string>
 
 
 
