@@ -27,7 +27,7 @@ oLoader.show();
 oViewConnection.addEventListener('onLoadDataParentCategories',onLoadCategories);
 function onLoadCategories(e){
   Ti.API.info('Datos de categorias');
-  Ti.API.info(e.Data);
+  Ti.API.info(e.aData);
   var aData = e.aData;
   var iTotalRows = aData.length;
   var aRows = [];
@@ -63,15 +63,17 @@ function onLoadCategories(e){
       borderColor:colorBorder,
       borderWidth:0.5,
       backgroundColor:"#FFF",
-      idCategory:aData[i].id_category
+      idCategory:aData[i].id_category,
+      aDataCategory:aData[i].get_category
     });
     //aViewForRows[i].fireEvent('click',{idCategory:aData[i].id_category});
     aViewForRows[i].addEventListener('click',function (e){
       //Ti.API.info(JSON.stringify(e));
       //Ti.API.info(e.source.idCategory);
       var idCategory = e.source.idCategory;
-      onClickBtnCategory(idCategory);
-      Alloy.Globals.categoryBreadCrum.push(idCategory);
+      var aDataCategory = e.source.aDataCategory
+      onClickBtnCategory(aDataCategory);
+      Alloy.Globals.categoryBreadCrum.push(aDataCategory);
     });
 
     aLabelForRows[i] = Ti.UI.createLabel({
@@ -105,9 +107,9 @@ function onLoadCategories(e){
   oViewConnection.removeEventListener('onLoadDataParentCategories',onLoadCategories);
   oViewConnection = null;
 }
-function onClickBtnCategory(idCategory){
+function onClickBtnCategory(aDataCategory){
   //Ti.API.info('IdCategory: '+idCategory);
-  Alloy.Globals.openNewWindow("SubCategories",{idCategory:idCategory});
+  Alloy.Globals.openNewWindow("SubCategories",{aDataCategory:aDataCategory});
 
 
 }

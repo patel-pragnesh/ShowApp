@@ -5,8 +5,9 @@ var colorBtn = "#"+Alloy.Globals.conf.boton_principla_color;
 var colorTitle = "#"+Alloy.Globals.conf.boton_back_color;
 var backColor = "#"+Alloy.Globals.conf.background_color;
 var aBotonsForPresentation = [];
+var widgetLoaderPresentation;
 
-Ti.API.info(aData);
+//Ti.API.info(aData);
 
 /*LEFT*/
 var leftSlide = Ti.UI.createView({
@@ -99,7 +100,20 @@ rightSide.add(oLabelDescription);
 function onClickDownloadPresentation(e){
     //Ti.API.info(Alloy.Globals.categoryBreadCrum);
     /*Obtenemos la URL del Package para que se descargue, se descomprima y se guarde*/
-    $.root.add(Alloy.createWidget("DownloaderPresentation",{aData:aData}).getView());
+    widgetLoaderPresentation = Alloy.createWidget("DownloaderPresentation",{aData:aData}).getView("root");
+    $.root.add(widgetLoaderPresentation);
+    widgetLoaderPresentation.addEventListener("presentationSaved",onLoaderAppIsOk);
+}
+
+function onLoaderAppIsOk(e){
+    /*Eliminamos el widget de carga de la presentacion*/
+    $.root.remove(widgetLoaderPresentation);
+    widgetLoaderPresentation = null;
+
+    /*Cargamos la window de show presentacion y crerramos esta ventana*/
+    $.root.close();
+    Alloy.createWidget("ShowApp",{dataPresentation:aData}).getView().open({modal:true});
+
 }
 
 

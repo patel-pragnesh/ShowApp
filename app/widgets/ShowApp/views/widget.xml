@@ -1,0 +1,14 @@
+<Alloy>
+	<Window class="root" id="root">
+		<View class="canvas" id="canvas">
+
+
+			<View class="webCanvas" id="webCanvas"></View>
+			<View class="headerControls" id="headerControls">
+				<View class="backHeader" id="backHeader"></View>
+			</View>
+
+
+		</View>
+	</Window>
+</Alloy>

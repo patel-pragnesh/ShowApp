@@ -4,6 +4,7 @@ var titlesColor = "#"+Alloy.Globals.conf.boton_back_color;
 var idCategory = args.aData.pivot.id_category_parent;
 var idPresentation = args.aData.id_presentation;
 var zip = require('ti.compression');
+var CreateDataBase = require("CreateDataBase");
 var saveImages = 0;
 var numImagesToSave = 2;
 
@@ -46,10 +47,10 @@ oConnection.onload = function(){
   /*Creaamos temporalmente un archivo que es el zip para que pueda ser descomprimido*/
   var tempZipFile = Ti.Filesystem.getFile(dirForPresentation.resolve(),'tmp_file.zip');
   tempZipFile.write(blobFile);
-  Ti.API.info(tempZipFile);
+  //Ti.API.info(tempZipFile);
 
   unzipFile();
-  /**/
+
 };
 oConnection.onerror = function(){
   $.root.parent.remove($.root);
@@ -64,26 +65,26 @@ oConnection.ondatastream = function(e){
 };
 
 function unzipFile(){
-    if(OS_IOS){
 
-        var tempZipFile = Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator + 'presentations' + Ti.Filesystem.separator + idPresentation + Ti.Filesystem.separator + 'tmp_file.zip';
-          var result = zip.unzip(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator + 'presentations' + Ti.Filesystem.separator + idPresentation, tempZipFile, true);
-          if(result){
-            /*Borramos el archivo temporal*/
-            var fFileToDelete = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator + 'presentations' + Ti.Filesystem.separator + idPresentation , 'tmp_file.zip');
-            fFileToDelete.deleteFile();
+  var tempZipFile = Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator + 'presentations' + Ti.Filesystem.separator + idPresentation + Ti.Filesystem.separator + 'tmp_file.zip';
+    var result = zip.unzip(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator + 'presentations' + Ti.Filesystem.separator + idPresentation, tempZipFile, true);
+    if(result){
 
-            /*Se guardan las dos imagenes de la presentacion*/
-            downloadAndSaveImagesPresentation(args.aData.url_image_big,'big');
-            downloadAndSaveImagesPresentation(args.aData.url_image_thum,'thum');
+      //Borramos el archivo temporal
 
-            Ti.API.info('BreadCrum'+ Alloy.Globals.categoryBreadCrum);
+      var fFileToDelete = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator + 'presentations' + Ti.Filesystem.separator + idPresentation , 'tmp_file.zip');
+      fFileToDelete.deleteFile();
 
-          }else{
-            alert(L('unzipError'));
-          }
+      /*Se guardan las dos imagenes de la presentacion*/
+      downloadAndSaveImagesPresentation(args.aData.url_image_big,'big');
+      downloadAndSaveImagesPresentation(args.aData.url_image_thum,'thum');
 
+      //Ti.API.info('BreadCrum'+ Alloy.Globals.categoryBreadCrum);
+
+    }else{
+      alert(L('unzipError'));
     }
+
 }
 
 function downloadAndSaveImagesPresentation(imageURL,size){
@@ -112,11 +113,46 @@ function downloadAndSaveImagesPresentation(imageURL,size){
 
 $.root.addEventListener('imageSaved',onSaveImage);
 function onSaveImage(e){
-  Ti.API.info('imagenes salvadas');
-  Ti.API.info(e.imageNum);
+  // Ti.API.info('imagenes salvadas');
+  // Ti.API.info(e.imageNum);
   var imagesSaved = e.imageNum;
-  if(imagesSaved==numImagesToSave){
-    /*Traemos los datos de la categorias*/
-    
+  if(imagesSaved===numImagesToSave){
+
+    saveInDataBaseCategoryAndPresentation();
+
+  }
+}
+
+function saveInDataBaseCategoryAndPresentation(){
+  /*Traemos los datos de la categorias*/
+  var aDataBreadCrum = Alloy.Globals.categoryBreadCrum;
+  var iTotalLevels = aDataBreadCrum.length;
+  // Ti.API.info("Levels: "+aDataBreadCrum);
+  for (var i = 0; i < iTotalLevels; i++) {
+      //Ti.API.info(aDataBreadCrum[i]);
+      var oForSaveCategory = {
+        id_category:aDataBreadCrum[i].id_category,
+        category_type:aDataBreadCrum[i].category_type,
+        category_name:aDataBreadCrum[i].name
+      }
+      new CreateDataBase().setCategory(oForSaveCategory);
+      if(i>0){
+        new CreateDataBase().setRelationCategoryToCategoryOrPresentation(aDataBreadCrum[i-1].id_category, aDataBreadCrum[i].id_category,0);
+      }
+
+  }
+  var oDataPresentationForSave = {
+    id_presentation: idPresentation,
+    name: args.aData.name,
+    version: args.aData.version,
+    url_image_big: args.aData.url_image_big,
+    url_image_thum: args.aData.url_image_thum,
+    url_package: args.aData.url_package,
+    description: args.aData.description
+  }
+  new CreateDataBase().setPresentation(oDataPresentationForSave);
+  if(new CreateDataBase().setRelationCategoryToCategoryOrPresentation(aDataBreadCrum[iTotalLevels-1].id_category, 0,idPresentation)){
+    /*Cerramos el Widget y abrimos la Window con la presentacion*/
+    $.root.fireEvent("presentationSaved",{});
   }
 }

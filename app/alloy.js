@@ -17,6 +17,7 @@ Alloy.Globals.countWindow = 0;
 Alloy.Globals.categoryBreadCrum = [];
 
 
+
 // Estas variables globales se setean en el archivo GetLogin y en el archivo Checklogin
 Alloy.Globals.id_user_type = 0;
 Alloy.Globals.id_company = 0;

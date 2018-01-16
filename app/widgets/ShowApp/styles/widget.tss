@@ -1,0 +1,54 @@
+/*Root window Android*/
+".root[platform=ios]": {
+	backgroundColor:"#FFF",
+	fullscreen: true,
+}
+
+/*Window ROOT Android*/
+".root[platform=android]": {
+	fullscreen: true,
+	backgroundColor: "#FFF",
+	theme: "Theme.AppCompat.NoTitleBar",
+}
+".canvas[platform=ios]":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+}
+".canvas[platform=android]":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+}
+".webCanvas[platform=ios]":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	top:0
+}
+".webCanvas[platform=android]":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	top:0
+}
+".headerControls[platform=ios]":{
+	width: Ti.UI.FILL,
+	height: 80,
+	backgroundColor: "transparent",
+	top: -50,
+}
+".headerControls[platform=android]":{
+	width: Ti.UI.FILL,
+	height: 80,
+	backgroundColor: "transparent",
+	top: -50,
+}
+".backHeader[platform=ios]":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	opacity: 0.2,
+	backgroundColor: "#000",
+}
+".backHeader[platform=android]":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	opacity: 0.2,
+	backgroundColor: "#000"
+}

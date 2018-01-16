@@ -48,7 +48,7 @@
                 <key>UIPrerenderedIcon</key>
                 <false/>
                 <key>UIStatusBarHidden</key>
-                <false/>
+                <string>YES</string>
                 <key>UIStatusBarStyle</key>
                 <string>UIStatusBarStyleDefault</string>
                 <!--  -->
@@ -111,6 +111,7 @@
     <modules>
         <module platform="commonjs">ti.cloud</module>
         <module platform="iphone">ti.compression</module>
+        <module platform="android">ti.compression</module>
     </modules>
     <deployment-targets>
         <target device="android">true</target>

@@ -17,7 +17,7 @@ if (Titanium.Network.networkType === Titanium.Network.NETWORK_NONE) {
 } else {
   /*Si hay conexion buscamos las categorias en la base de datos*/
    Titanium.API.info(' connection present ');
-  var oConnectionData = new GetSubCategoriesAndPresentatioonsByCAtId(args.idCategory);
+  var oConnectionData = new GetSubCategoriesAndPresentatioonsByCAtId(args.aDataCategory.id_category);
 }
 oConnectionData.addEventListener("loadSubCategories",onLoadSubCategoriesAndPresentations);
 function onLoadSubCategoriesAndPresentations(e){
@@ -74,10 +74,11 @@ function buildSubCategories(aDataSubs){
        borderColor:colorBorder,
        borderWidth:0.5,
        backgroundColor:"#FFF",
-       idCategory:aDataSubs[i].id_category
+       idCategory:aDataSubs[i].id_category,
+       aDataCategory:aDataSubs[i]
      });
      aViewForRows[i].addEventListener("click",function(e){
-        onClickBtnCategory(e.source.idCategory);
+        onClickBtnCategory(e.source.aDataCategory);
      });
      itemsForSubCategories[i].add(aViewForRows[i])
      aLabelForRows[i] = Ti.UI.createLabel({
@@ -153,7 +154,7 @@ function buildPresentations(aData){
 
 }
 
-function onClickBtnCategory(idCategory){
-  Alloy.Globals.openNewWindow("SubCategories",{idCategory:idCategory});
-    Alloy.Globals.categoryBreadCrum.push(idCategory);
+function onClickBtnCategory(aDataCategory){
+    Alloy.Globals.openNewWindow("SubCategories",{aDataCategory:aDataCategory});
+    Alloy.Globals.categoryBreadCrum.push(aDataCategory);
 }

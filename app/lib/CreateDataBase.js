@@ -124,4 +124,47 @@ CreateDataBase.prototype.getUserProperty = function(propiedad){
 		return value;
 	}
 }
+
+CreateDataBase.prototype.setCategory = function(oCategory){
+		try {
+			var db = Ti.Database.open(Alloy.Globals.databaseName);
+			var sqlToSaveCategory = "INSERT INTO categories (id_category_online, category_type, name) VALUES(?,?,?);";
+			db.execute(sqlToSaveCategory, oCategory.id_category, oCategory.category_type, oCategory.category_name);
+		} catch (e) {
+			alert("Error al grabar categoria local:" + oCategory.category_name);
+		} finally {
+			Ti.API.info('Se grabo la category '+ oCategory.category_name);
+			db.close();
+			return true;
+		}
+}
+CreateDataBase.prototype.setRelationCategoryToCategoryOrPresentation = function(id_parent,id_child,id_presentation){
+	try {
+		var db = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlToRelation = "INSERT INTO relations_cats_presentations (id_category_parent, id_category_child, id_presentation) VALUES(?,?,?);";
+		db.execute(sqlToRelation, id_parent, id_child, id_presentation);
+	} catch (e) {
+		alert("Error al grabar relacion categoria local: "+id_parent,', '+id_child+', '+id_presentation);
+	} finally {
+		Ti.API.info('Se grabo la relacion: '+id_parent,', '+id_child+', '+id_presentation);
+		db.close();
+		return true;
+	}
+
+}
+CreateDataBase.prototype.setPresentation = function(oPresentation){
+	try {
+		var db = Ti.Database.open(Alloy.Globals.databaseName);
+		//id_presentation_online INTEGER, version VARCHAR, name VARCHAR, url_image_big VARCHAR, url_image_thum VARCHAR, url_package VARCHAR, description TEXT
+		var sqlForPresetation = "INSERT INTO presentations (id_presentation_online, version, name, url_image_big, url_image_thum, url_package, description) VALUES(?,?,?,?,?,?,?);";
+		db.execute(sqlForPresetation, oPresentation.id_presentation, oPresentation.version ,oPresentation.name, oPresentation.url_image_big, oPresentation.url_image_thum, oPresentation.url_package, oPresentation.description);
+	} catch (e) {
+		alert("Error al grabar PRESENTACION local: "+oPresentation.name+ ' ---- '+e);
+	} finally {
+		Ti.API.info('Se grabo la presentacion: '+oPresentation.name);
+		db.close();
+		return true;
+	}
+}
+
 module.exports = CreateDataBase;
