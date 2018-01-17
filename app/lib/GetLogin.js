@@ -1,4 +1,4 @@
-var CreateDataBase = require("CreateDataBase");
+var DataBaseQuery = require("DataBaseQuery");
 function GetLogin(oDataLogin){
   var oGetLogin = Titanium.Network.createHTTPClient({timeuot:Alloy.Globals.timeOutWebServices});
   var url = Alloy.Globals.weburl+'api/v1/login';
@@ -45,8 +45,8 @@ function GetLogin(oDataLogin){
       Alloy.Globals.id_user_type = aData.id_user_type;
       Alloy.Globals.id_company = aData.id_company;
       /*El evento onLoadLogin se ejecuta en en controlador index.js*/
-      new CreateDataBase().setCompanyConf(oObjectSaveCompany);
-      new CreateDataBase().setUser(oObjectToSaveUser) ? Ti.App.fireEvent("onLoadLogin",{aDataUser:aData}) : alert("Error al grabar el usaurio+++");
+      new DataBaseQuery().setCompanyConf(oObjectSaveCompany);
+      new DataBaseQuery().setUser(oObjectToSaveUser) ? Ti.App.fireEvent("onLoadLogin",{aDataUser:aData}) : alert("Error al grabar el usaurio+++");
 
 
     }else{

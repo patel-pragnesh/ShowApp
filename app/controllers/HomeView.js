@@ -1,6 +1,6 @@
 var args = $.args || {};
 var CreateDataBase = require("CreateDataBase");
-var backColor = "#"+new CreateDataBase().getProperty('background_color');
+var backColor = "#"+Alloy.Globals.conf.background_color;
 Ti.API.info('Color BAck '+backColor);
 var canvasHome = Ti.UI.createView({
   width:Ti.UI.FILL,

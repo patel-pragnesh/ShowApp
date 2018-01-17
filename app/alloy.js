@@ -11,7 +11,7 @@
 // Alloy.Globals.someGlobalFunction = function(){};
 Alloy.Globals.weburl = "http://developer.showappviewer.com/";
 Alloy.Globals.databaseName = "showAppdb";
-Alloy.Globals.timeOutWebServices = 10000;
+Alloy.Globals.timeOutWebServices = 2000;
 Alloy.Globals.currentWindow;
 Alloy.Globals.countWindow = 0;
 Alloy.Globals.categoryBreadCrum = [];

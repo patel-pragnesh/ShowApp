@@ -1,10 +1,11 @@
 var args = $.args || {};
+Ti.API.info(args);
 var backColor = "#"+Alloy.Globals.conf.boton_principla_color;
 var titlesColor = "#"+Alloy.Globals.conf.boton_back_color;
 var idCategory = args.aData.pivot.id_category_parent;
 var idPresentation = args.aData.id_presentation;
 var zip = require('ti.compression');
-var CreateDataBase = require("CreateDataBase");
+var DataBaseQuery = require("DataBaseQuery");
 var saveImages = 0;
 var numImagesToSave = 2;
 
@@ -17,7 +18,9 @@ $.percentNumber.color = titlesColor;
 
 /*Cargamos el ZIP*/
 var oConnection = Titanium.Network.createHTTPClient({timeout:Alloy.Globals.timeOutWebServices});
-var url = Alloy.Globals.weburl+"/apps/"+idCategory+"/"+args.aData.url_package;
+var url = Alloy.Globals.weburl+"/apps/"+idPresentation+"/"+args.aData.url_package;
+Ti.API.info('URL CARGA');
+Ti.API.info(url);
 oConnection.open("GET",url);
 oConnection.send({});
 oConnection.onload = function(){
@@ -135,9 +138,12 @@ function saveInDataBaseCategoryAndPresentation(){
         category_type:aDataBreadCrum[i].category_type,
         category_name:aDataBreadCrum[i].name
       }
-      new CreateDataBase().setCategory(oForSaveCategory);
+      // Ti.API.info('Object For Save Catrgory');
+      // Ti.API.info(oForSaveCategory);
+      new DataBaseQuery().setCategory(oForSaveCategory);
       if(i>0){
-        new CreateDataBase().setRelationCategoryToCategoryOrPresentation(aDataBreadCrum[i-1].id_category, aDataBreadCrum[i].id_category,0);
+        /*Grabamos la relacion de las categorias*/
+        new DataBaseQuery().setRelationCategoryToCategory(aDataBreadCrum[i-1].id_category, aDataBreadCrum[i].id_category);
       }
 
   }
@@ -150,8 +156,9 @@ function saveInDataBaseCategoryAndPresentation(){
     url_package: args.aData.url_package,
     description: args.aData.description
   }
-  new CreateDataBase().setPresentation(oDataPresentationForSave);
-  if(new CreateDataBase().setRelationCategoryToCategoryOrPresentation(aDataBreadCrum[iTotalLevels-1].id_category, 0,idPresentation)){
+  new DataBaseQuery().setPresentation(oDataPresentationForSave);
+  /*Grabamos la relacion de la presentacion con su categoria*/
+  if(new DataBaseQuery().setRelationCategoryToPresentation(aDataBreadCrum[iTotalLevels-1].id_category, idPresentation)){
     /*Cerramos el Widget y abrimos la Window con la presentacion*/
     $.root.fireEvent("presentationSaved",{});
   }

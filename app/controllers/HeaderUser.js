@@ -1,7 +1,7 @@
 var args = $.args || {};
-var CreateDataBase = require("CreateDataBase");
-var nameUser = new CreateDataBase().getUserProperty("name");
-var appellidoUser = new CreateDataBase().getUserProperty("second_name");
+var DataBaseQuery = require("DataBaseQuery");
+var nameUser = new DataBaseQuery().getUserProperty("name");
+var appellidoUser = new DataBaseQuery().getUserProperty("second_name");
 var colorName = "#"+Alloy.Globals.conf.text_form_color;
 var backColor = "#"+Alloy.Globals.conf.boton_back_color;
 

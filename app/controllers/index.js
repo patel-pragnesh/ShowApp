@@ -1,5 +1,6 @@
 /*Lo primero que hacemos es crear la base de datos local*/
 var CreateDataBase = require("CreateDataBase");
+var DataBaseQuery = require("DataBaseQuery")
 var Checklogin = require("Checklogin");
 
 if(new CreateDataBase){
@@ -44,7 +45,7 @@ if(new CreateDataBase){
 		$.root.add(Alloy.createController("LoginView",{}).getView());
 	}else{
 		/*Traemos todas las variables de configuracion*/
-		Alloy.Globals.conf = new CreateDataBase().getAllProperties();
+		Alloy.Globals.conf = new DataBaseQuery().getAllProperties();
 		/*En este caso si esta logeado el usuario*/
 		$.root.add(Alloy.createController("HomeView",{widgetToLoad:"Categories",paramsToWidget:{}}).getView());
 
@@ -59,7 +60,7 @@ function onLogin(e){
 	$.root.removeAllChildren();
 	/*Agregamos el View de Home*/
 	//Ti.API.info('Llego aqui');
-	Alloy.Globals.conf = new CreateDataBase().getAllProperties();
+	Alloy.Globals.conf = new DataBaseQuery().getAllProperties();
 	$.root.add(Alloy.createController("HomeView",{widgetToLoad:"Categories",paramsToWidget:{}}).getView());
 }
 function onErrorLogin(e){

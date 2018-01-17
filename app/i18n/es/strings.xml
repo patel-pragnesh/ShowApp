@@ -15,6 +15,7 @@
 	<string name="processing">Procesando la presentación, espere un poco mas...</string>
 	<string name="loaderPressError">Error al descargar su presentación, intentelo más tarde</string>
 	<string name="unzipError">Error al instalar la presentación favor de avisar a su soporte técnico</string>
+	<string name="noDataNoInternet">No se encuntran datos descargados ni conexión a internet, cierre esta app e intente mas tarde</string>
 
 
 

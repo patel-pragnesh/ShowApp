@@ -1,9 +1,10 @@
-var CreateDataBase = require("CreateDataBase");
+var DataBaseQuery = require("DataBaseQuery");
 var GetParentCategories = require("GetParentCategories");
 var colorBorder = "#"+Alloy.Globals.conf.text_form_color;
 var colorTitle = "#"+Alloy.Globals.conf.boton_back_color;
 var backGroundColorConf = "#"+Alloy.Globals.conf.boton_back_color;
 var textLabelCategoriesColor = Alloy.Globals.colorLuminosity(colorTitle,-0.3);
+var oViewConnection;
 $.title.color = colorTitle;
 
 if (Titanium.Network.networkType === Titanium.Network.NETWORK_NONE) {
@@ -12,7 +13,10 @@ if (Titanium.Network.networkType === Titanium.Network.NETWORK_NONE) {
 } else {
   /*Si hay conexion buscamos las categorias en la base de datos*/
    Titanium.API.info(' connection present ');
-  var oViewConnection = new GetParentCategories();
+  oViewConnection = new GetParentCategories();
+  /*Llamado al Evento de carga de la data de categorias*/
+  oViewConnection.addEventListener('onLoadDataParentCategories',onLoadCategories);
+  oViewConnection.addEventListener('onLoadDataParentCategoriesError',checkIfLocalCategories);
 }
 
 /*Creamos el Loader*/
@@ -23,8 +27,8 @@ $.canvasCategories.add(oLoader);
 oLoader.show();
 
 
-/*Llamado al Evento de carga de la data de categorias*/
-oViewConnection.addEventListener('onLoadDataParentCategories',onLoadCategories);
+
+
 function onLoadCategories(e){
   Ti.API.info('Datos de categorias');
   Ti.API.info(e.aData);
@@ -110,6 +114,17 @@ function onLoadCategories(e){
 function onClickBtnCategory(aDataCategory){
   //Ti.API.info('IdCategory: '+idCategory);
   Alloy.Globals.openNewWindow("SubCategories",{aDataCategory:aDataCategory});
+}
 
+/*------------------------ LOCAL -----------------------------------*/
+function checkIfLocalCategories(e){
+  /*Leemos las categorias locales*/
+  var datos = new DataBaseQuery().getParentCategoriesOffline();
+  var iTotalCatsOffline = datos.length;
+  if(iTotalCatsOffline>0){
+    /*CArgamos el Contenido*/
 
+  }else{
+    alert(L('noDataNoInternet'));
+  }
 }
