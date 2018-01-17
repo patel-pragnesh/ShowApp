@@ -158,8 +158,8 @@ function saveInDataBaseCategoryAndPresentation(){
   }
   new DataBaseQuery().setPresentation(oDataPresentationForSave);
   /*Grabamos la relacion de la presentacion con su categoria*/
-  if(new DataBaseQuery().setRelationCategoryToPresentation(aDataBreadCrum[iTotalLevels-1].id_category, idPresentation)){
+  new DataBaseQuery().setRelationCategoryToPresentation(aDataBreadCrum[iTotalLevels-1].id_category, idPresentation);
     /*Cerramos el Widget y abrimos la Window con la presentacion*/
-    $.root.fireEvent("presentationSaved",{});
-  }
+  $.root.fireEvent("presentationSaved",{});
+
 }

@@ -1,14 +1,17 @@
-var CreateDataBase = require("CreateDataBase");
+var args = $.args || {};
+
+var DataBaseQuery = require("DataBaseQuery");
 var GetSubCategoriesAndPresentatioonsByCAtId = require("GetSubCategoriesAndPresentatioonsByCAtId");
 var PresentationItemInCategory = require("PresentationItemInCategory");
 var colorBorder = "#"+Alloy.Globals.conf.text_form_color;
 var colorTitle = "#"+Alloy.Globals.conf.boton_back_color;
 var backGroundColorConf = "#"+Alloy.Globals.conf.boton_back_color;
 var textLabelCategoriesColor = Alloy.Globals.colorLuminosity(colorTitle,-0.3);
-var args = $.args || {};
+
 var iItemsPerPage = 6;
 var heightCanvasCategories = Alloy.Globals.osUnits(280);
 var canvasCategories = Ti.UI.createScrollView();
+var oConnectionData;
 $.title.color = colorTitle;
 
 if (Titanium.Network.networkType === Titanium.Network.NETWORK_NONE) {
@@ -17,12 +20,22 @@ if (Titanium.Network.networkType === Titanium.Network.NETWORK_NONE) {
 } else {
   /*Si hay conexion buscamos las categorias en la base de datos*/
    Titanium.API.info(' connection present ');
-  var oConnectionData = new GetSubCategoriesAndPresentatioonsByCAtId(args.aDataCategory.id_category);
+  oConnectionData = new GetSubCategoriesAndPresentatioonsByCAtId(args.aDataCategory.id_category);
+  oConnectionData.addEventListener("loadSubCategories",onLoadSubCategoriesAndPresentations);
+  oConnectionData.addEventListener("loadSubCategoriesError",onErrorLoadSubCategories);
 }
-oConnectionData.addEventListener("loadSubCategories",onLoadSubCategoriesAndPresentations);
+
+/*Creamos el Loader*/
+var oLoader = Ti.UI.createActivityIndicator({
+  style:Titanium.UI.ActivityIndicatorStyle.BIG
+});
+$.rootCategories.add(oLoader);
+oLoader.show();
+
 function onLoadSubCategoriesAndPresentations(e){
   var aData = e.aData;
-  //Ti.API.info(aData);
+  Ti.API.info("SubCategoryData");
+   Ti.API.info(aData);
   var aDataPresntations = aData.get_category.presentations;
 
   var iTotalSubCategories = aData.get_category.sub_categories.length;
@@ -45,6 +58,10 @@ function onLoadSubCategoriesAndPresentations(e){
 
   $.title.text = aData.get_category.name;
 
+  /*Se remueve el loeader*/
+  oLoader.hide();
+  $.rootCategories.remove(oLoader);
+
 }
 function buildSubCategories(aDataSubs){
   Ti.API.info('ALTO Categorias '+ heightCanvasCategories);
@@ -53,6 +70,7 @@ function buildSubCategories(aDataSubs){
         apiName: 'View',
 
     });
+
 
   canvasCategories.applyProperties(style);
   $.rootCategories.add(canvasCategories);
@@ -107,6 +125,8 @@ function buildSubCategories(aDataSubs){
   }
   /*END buildSubCategories*/
   oConnectionData.removeEventListener("loadSubCategories",onLoadSubCategoriesAndPresentations);
+  //oConnectionData = null;
+
 
 }
 
@@ -151,10 +171,22 @@ function buildPresentations(aData){
   $.rootCategories.add(canvasPresentations);
 
   oConnectionData.removeEventListener("loadSubCategories",onLoadSubCategoriesAndPresentations);
-
+  oConnectionData = null;
 }
 
 function onClickBtnCategory(aDataCategory){
     Alloy.Globals.openNewWindow("SubCategories",{aDataCategory:aDataCategory});
     Alloy.Globals.categoryBreadCrum.push(aDataCategory);
+}
+
+
+/*--------------OFFLINE --------------------------------------*/
+function onErrorLoadSubCategories(){
+    oLoader.hide();
+  var datosSubs = new DataBaseQuery().getSubCategoriesAndPresentationsByParentID(args.aDataCategory.id_category);
+  /*Construimos el contenido*/
+  oConnectionData.fireEvent('loadSubCategories',{aData:datosSubs});
+
+  // Ti.API.info('Sub Cats Local');
+  // Ti.API.info(JSON.stringify(datosSubs));
 }

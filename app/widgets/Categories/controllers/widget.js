@@ -117,12 +117,14 @@ function onClickBtnCategory(aDataCategory){
 }
 
 /*------------------------ LOCAL -----------------------------------*/
-function checkIfLocalCategories(e){
+function checkIfLocalCategories(){
   /*Leemos las categorias locales*/
   var datos = new DataBaseQuery().getParentCategoriesOffline();
   var iTotalCatsOffline = datos.length;
   if(iTotalCatsOffline>0){
     /*CArgamos el Contenido*/
+    oLoader.hide();
+    oViewConnection.fireEvent('onLoadDataParentCategories',{aData:datos});
 
   }else{
     alert(L('noDataNoInternet'));

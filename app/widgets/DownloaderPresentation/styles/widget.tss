@@ -1,19 +1,19 @@
-".root[plartform=ios]":{
+".root[platform=ios]":{
 	width:Ti.UI.FILL,
 	height:Ti.UI.FILL,
 	backgroundColor: "transparent"
 }
-".root[plartform=android]":{
+".root[platform=android]":{
 	width:Ti.UI.FILL,
 	height:Ti.UI.FILL,
 	backgroundColor: "transparent"
 }
-".backTrans[plartform=ios]":{
+".backTrans[platform=ios]":{
 	width:Ti.UI.FILL,
 	height:Ti.UI.FILL,
 	opacity: 0.8
 }
-".backTrans[plartform=android]":{
+".backTrans[platform=android]":{
 	width:Ti.UI.FILL,
 	height:Ti.UI.FILL,
 	opacity: 0.8
@@ -30,7 +30,7 @@
 	backgroundColor: "#FFF",
 	layout:"vertical"
 }
-".titulo[plartform=ios]":{
+".titulo[platform=ios]":{
 		width:Ti.UI.SIZE,
 		height:Ti.UI.SIZE,
 		left:10,
@@ -40,7 +40,7 @@
 			fontSize: 25
 		}
 }
-".titulo[plartform=android]":{
+".titulo[platform=android]":{
 		width:Ti.UI.SIZE,
 		height:Ti.UI.SIZE,
 		left:20,
@@ -50,7 +50,7 @@
 			fontSize: 30
 		}
 }
-".subTitulo[plartform=ios]":{
+".subTitulo[platform=ios]":{
 		width:Ti.UI.SIZE,
 		height:Ti.UI.SIZE,
 		left:1,
@@ -60,7 +60,7 @@
 			fontSize: 12
 		}
 }
-".subTitulo[plartform=android]":{
+".subTitulo[platform=android]":{
 		width:Ti.UI.SIZE,
 		height:Ti.UI.SIZE,
 		left:10,
@@ -93,7 +93,7 @@
 	height: 15,
 	backgroundColor: "#e5ebff",
 }
-".percentNumber[plartform=ios]":{
+".percentNumber[platform=ios]":{
 	top:5,
 	width:Ti.UI.SIZE,
 	height:Ti.UI.SIZE,
@@ -103,7 +103,7 @@
 		fontSize: 12
 	}
 }
-".percentNumber[plartform=android]":{
+".percentNumber[platform=android]":{
 	top:5,
 	text:"0%",
 	font:{

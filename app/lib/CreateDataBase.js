@@ -21,7 +21,7 @@ function CreateDataBase(){
 		db.execute(sqlToRelationsCategoriesAndPresentatrions);
 		/*Indice para las relaciones de las categorias*/
 		var sqlIndexRelationCats = 'CREATE UNIQUE INDEX IF NOT EXISTS relation_unique_cats ON relations_cats (id_category_parent, id_category_child);';
-
+		db.execute(sqlIndexRelationCats);
 
 		/*creamos la tabla de presentaciones*/
 		var sqlToPresentations = 'CREATE TABLE IF NOT EXISTS presentations (id_presentation_local INTEGER PRIMARY KEY AUTOINCREMENT, id_presentation_online INTEGER, version VARCHAR, name VARCHAR, url_image_big VARCHAR, url_image_thum VARCHAR, url_package VARCHAR, description TEXT);';
@@ -32,6 +32,7 @@ function CreateDataBase(){
 		db.execute(sqlToRelationPresentationsCats);
 		/*Indice para categoria y presentacion unica*/
 		var sqlIndexRelationPresentationAndCat = 'CREATE UNIQUE INDEX IF NOT EXISTS relation_unique_pres_cat ON relations_cats_presentations (id_category, id_presentation);';
+		db.execute(sqlIndexRelationPresentationAndCat);
 
 	}catch(e){
 		alert("Error al crear la base de datos "+e);
