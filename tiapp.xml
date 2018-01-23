@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ti:app xmlns:ti="http://ti.appcelerator.org">
-    <id>com.torodigital.showAppv2</id>
+    <id>com.torodigital.showApp</id>
     <name>ShowApp</name>
     <version>1.0.0</version>
     <publisher>dalinet</publisher>
@@ -8,9 +8,9 @@
     <description>undefined</description>
     <copyright>2017 by dalinet</copyright>
     <icon>appicon.png</icon>
-    <fullscreen>false</fullscreen>
+    <fullscreen>true</fullscreen>
     <navbar-hidden>false</navbar-hidden>
-    <analytics>true</analytics>
+    <analytics>false</analytics>
     <guid>d62cd210-dec1-45f9-9ddd-36bdb529db1b</guid>
     <property name="ti.ui.defaultunit" type="string">system</property>
     <property name="run-on-main-thread" type="bool">true</property>
@@ -74,7 +74,7 @@
                         <action android:name="android.intent.action.MAIN"/>
                     </intent-filter>
                     <intent-filter>
-                        <data android:host="showappviewer.com.mx" android:scheme="http"/>
+                        <data android:host="showappviewer.com.mx" android:scheme="showapp"/>
                         <category android:name="android.intent.category.DEFAULT"/>
                         <category android:name="android.intent.category.BROWSABLE"/>
                         <action android:name="android.intent.action.VIEW"/>
@@ -100,14 +100,7 @@
                 android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true"/>
         </manifest>
     </android>
-    <mobileweb>
-        <precache/>
-        <splash>
-            <enabled>true</enabled>
-            <inline-css-images>true</inline-css-images>
-        </splash>
-        <theme>default</theme>
-    </mobileweb>
+    
     <modules>
         <module platform="commonjs">ti.cloud</module>
         <module platform="iphone">ti.compression</module>
@@ -117,7 +110,7 @@
         <target device="android">true</target>
         <target device="ipad">true</target>
         <target device="iphone">false</target>
-        <target device="mobileweb">false</target>
+        
     </deployment-targets>
     <sdk-version>7.0.1.GA</sdk-version>
     <plugins>

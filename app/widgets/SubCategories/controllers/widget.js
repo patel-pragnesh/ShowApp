@@ -11,19 +11,13 @@ var textLabelCategoriesColor = Alloy.Globals.colorLuminosity(colorTitle,-0.3);
 var iItemsPerPage = 6;
 var heightCanvasCategories = Alloy.Globals.osUnits(280);
 var canvasCategories = Ti.UI.createScrollView();
-var oConnectionData;
 $.title.color = colorTitle;
 
-if (Titanium.Network.networkType === Titanium.Network.NETWORK_NONE) {
-    /*No hay Conexxion de Nada LOCAL*/
-   Titanium.API.info(' no connection ');
-} else {
   /*Si hay conexion buscamos las categorias en la base de datos*/
-   Titanium.API.info(' connection present ');
-  oConnectionData = new GetSubCategoriesAndPresentatioonsByCAtId(args.aDataCategory.id_category);
+  var oConnectionData = new GetSubCategoriesAndPresentatioonsByCAtId(args.aDataCategory.id_category);
   oConnectionData.addEventListener("loadSubCategories",onLoadSubCategoriesAndPresentations);
   oConnectionData.addEventListener("loadSubCategoriesError",onErrorLoadSubCategories);
-}
+
 
 /*Creamos el Loader*/
 var oLoader = Ti.UI.createActivityIndicator({
@@ -36,6 +30,7 @@ function onLoadSubCategoriesAndPresentations(e){
   var aData = e.aData;
   Ti.API.info("SubCategoryData");
    Ti.API.info(aData);
+
   var aDataPresntations = aData.get_category.presentations;
 
   var iTotalSubCategories = aData.get_category.sub_categories.length;
@@ -131,6 +126,7 @@ function buildSubCategories(aDataSubs){
 }
 
 function buildPresentations(aData){
+
   var style = $.createStyle({
         classes: "canvasPresentations",
         apiName: 'View',
@@ -183,6 +179,7 @@ function onClickBtnCategory(aDataCategory){
 /*--------------OFFLINE --------------------------------------*/
 function onErrorLoadSubCategories(){
     oLoader.hide();
+    Alloy.Globals.isOff = true;
   var datosSubs = new DataBaseQuery().getSubCategoriesAndPresentationsByParentID(args.aDataCategory.id_category);
   /*Construimos el contenido*/
   oConnectionData.fireEvent('loadSubCategories',{aData:datosSubs});

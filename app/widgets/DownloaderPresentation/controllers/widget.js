@@ -8,6 +8,7 @@ var zip = require('ti.compression');
 var DataBaseQuery = require("DataBaseQuery");
 var saveImages = 0;
 var numImagesToSave = 2;
+var isUpdate = args.isUpdate;
 
 $.backTrans.backgroundColor = backColor;
 $.titulo.text = args.aData.name;
@@ -156,7 +157,11 @@ function saveInDataBaseCategoryAndPresentation(){
     url_package: args.aData.url_package,
     description: args.aData.description
   }
-  new DataBaseQuery().setPresentation(oDataPresentationForSave);
+  if(isUpdate){
+    new DataBaseQuery().updateVersionPresentation(oDataPresentationForSave);
+  }else{
+    new DataBaseQuery().setPresentation(oDataPresentationForSave);
+  }
   /*Grabamos la relacion de la presentacion con su categoria*/
   new DataBaseQuery().setRelationCategoryToPresentation(aDataBreadCrum[iTotalLevels-1].id_category, idPresentation);
     /*Cerramos el Widget y abrimos la Window con la presentacion*/

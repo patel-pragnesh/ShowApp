@@ -20,7 +20,7 @@
   width: "80%"
 }
 ".imageLogoCompany[platform=android]":{
-  top: 40,
+  top: 50,
   width: "80%"
 }
 

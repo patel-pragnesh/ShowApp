@@ -46,8 +46,24 @@ function GetLogin(oDataLogin){
       Alloy.Globals.id_company = aData.id_company;
       /*El evento onLoadLogin se ejecuta en en controlador index.js*/
       new DataBaseQuery().setCompanyConf(oObjectSaveCompany);
-      new DataBaseQuery().setUser(oObjectToSaveUser) ? Ti.App.fireEvent("onLoadLogin",{aDataUser:aData}) : alert("Error al grabar el usaurio+++");
+      new DataBaseQuery().setUser(oObjectToSaveUser);
+      /*Bajamos la imagen del Logo de la compañia y la guardamos en el dispositivo*/
+      var oConnectionGetLogo = Ti.Network.createHTTPClient({timeout:Alloy.Globals.timeOutWebServices});
+      oConnectionGetLogo.open("GET",oObjectSaveCompany.image_url);
+      oConnectionGetLogo.send({});
+      oConnectionGetLogo.onload = function(){
+        var blobImage = this.responseData;
+        /*Guardamos el Logo*/
+        var oFolderLogo = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'company');
+        if(!oFolderLogo.exists()){
+          oFolderLogo.createDirectory();
+        }
+        var imageData = Ti.Filesystem.getFile(oFolderLogo.resolve(),'logo.jpg');
+        imageData.write(blobImage);
 
+        Ti.App.fireEvent("onLoadLogin",{aDataUser:aData})
+
+      }
 
     }else{
       Ti.App.fireEvent("onLoadLoginError",{aDataUser:false});

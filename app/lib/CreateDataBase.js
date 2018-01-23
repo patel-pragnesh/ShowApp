@@ -26,6 +26,8 @@ function CreateDataBase(){
 		/*creamos la tabla de presentaciones*/
 		var sqlToPresentations = 'CREATE TABLE IF NOT EXISTS presentations (id_presentation_local INTEGER PRIMARY KEY AUTOINCREMENT, id_presentation_online INTEGER, version VARCHAR, name VARCHAR, url_image_big VARCHAR, url_image_thum VARCHAR, url_package VARCHAR, description TEXT);';
 		db.execute(sqlToPresentations);
+		/*INDICE para Presentacion unica*/
+		var sqlToRelationUniquePresentation = 'CREATE UNIQUE INDEX IF NOT EXISTS presetation_unique ON presentations (id_presentation_online);';
 
 		/*Creamos la tabla de relacion de presentaciones con su categoria padre*/
 		var sqlToRelationPresentationsCats = 'CREATE TABLE IF NOT EXISTS relations_cats_presentations (id_relacion_local_pres_cats INTEGER PRIMARY KEY AUTOINCREMENT, id_relacion_online INTEGER, id_category INTEGER, id_presentation INTEGER);';

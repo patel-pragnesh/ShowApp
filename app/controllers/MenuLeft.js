@@ -3,11 +3,17 @@ var backgroundColorBase =  "#"+Alloy.Globals.conf.background_color_left_bar;
 var text_title_color = "#"+Alloy.Globals.conf.text_title_color;
 var closeSessionColor = "#"+Alloy.Globals.conf.boton_back_color;
 
-var imageLogo = Alloy.Globals.conf.image_url;
-Ti.API.info('Image Logo'+imageLogo);
+//var imageLogo = Alloy.Globals.conf.image_url;
+//Ti.API.info('Image Logo'+imageLogo);
 
 $.leftBar.backgroundColor = backgroundColorBase;
-$.imageLogoCompany.image = imageLogo;
+
+/*Imagen del logo*/
+var oFolderLogo = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'company');
+var imageData = Ti.Filesystem.getFile(oFolderLogo.resolve(),'logo.jpg');
+if(imageData.exists()){
+  $.imageLogoCompany.image = imageData;
+}
 $.closeSession.backgroundColor = closeSessionColor;
 $.closeSession.title = L('closeSession');
 

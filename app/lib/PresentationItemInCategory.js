@@ -4,6 +4,7 @@ function PresentationItemInCategory(aDataPress){
     // Ti.API.info(this.aDataPress);
 }
 PresentationItemInCategory.prototype.getItemForCategory = function(){
+  var imageToShow;
   var thisClip = this;
   var colorName = Alloy.Globals.colorLuminosity("#"+Alloy.Globals.conf.text_title_color,0.5);
   var oItemCategory = Ti.UI.createView({
@@ -21,10 +22,27 @@ PresentationItemInCategory.prototype.getItemForCategory = function(){
     backgroundColor:"transparent",
   });
   oItemCategory.add(oContentImage);
+  /*Si estamos offline leemos la imagen del dispositivo*/
+
+  if(Alloy.Globals.isOff){
+    /* directorio de presentaciones en caso de que no exista*/
+    var dirForPresentations = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'presentations');
+
+    /*Directorio para la presentacion con su Id_online de prresentacion */
+    var dirForPresentation = Ti.Filesystem.getFile(dirForPresentations.resolve(), thisClip.aDataPress.id_presentation);
+
+    /* directorio para las imagenes de la presentacion*/
+    var dirForImagesPresentation = Ti.Filesystem.getFile(dirForPresentation.resolve(), 'images_presentation');
+
+    imageToShow = Ti.Filesystem.getFile(dirForImagesPresentation.resolve(), 'img_thum.jpg');
+  }else{
+    imageToShow = thisClip.aDataPress.url_image_thum;
+  }
+
   var imageItem = Ti.UI.createImageView({
     width:Ti.UI.FILL,
     height:Ti.UI.FILL,
-    image:thisClip.aDataPress.url_image_thum,
+    image:imageToShow,
   });
   oContentImage.add(imageItem);
   var oNameItem = Ti.UI.createLabel({

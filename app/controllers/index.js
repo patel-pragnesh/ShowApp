@@ -2,6 +2,11 @@
 var CreateDataBase = require("CreateDataBase");
 var DataBaseQuery = require("DataBaseQuery")
 var Checklogin = require("Checklogin");
+if(OS_IOS){
+	var PushNotificationsIOS = require("PushNotificationsIOS");
+	new PushNotificationsIOS();
+}
+
 
 if(new CreateDataBase){
 	OS_IOS ? $.windowNav.open() : $.root.open();

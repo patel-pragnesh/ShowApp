@@ -1,4 +1,5 @@
 var args = $.args || {};
+var DataBaseQuery = require("DataBaseQuery");
 var aData = args.aDataPresentation;
 var colorBorder = "#"+Alloy.Globals.conf.text_form_color;
 var colorBtn = "#"+Alloy.Globals.conf.boton_principla_color;
@@ -6,8 +7,27 @@ var colorTitle = "#"+Alloy.Globals.conf.boton_back_color;
 var backColor = "#"+Alloy.Globals.conf.background_color;
 var aBotonsForPresentation = [];
 var widgetLoaderPresentation;
+var forLocal = false;
+var needUpdate = false;
 
-//Ti.API.info(aData);
+
+/*Validamos si la presentacion existe en la base de datos local o no*/
+var aDataLocal = new DataBaseQuery().getPresentation(aData.id_presentation);
+
+if(aDataLocal.idPresentation>0){
+  forLocal = true;
+}else{
+  forLocal = false;
+}
+if(aData.version>aDataLocal.version){
+  needUpdate = true;
+}
+// Ti.API.info('Data Presentation');
+// Ti.API.info(aData);
+// Ti.API.info('Local or Online');
+// Ti.API.info(aDataLocal);
+
+
 
 /*LEFT*/
 var leftSlide = Ti.UI.createView({
@@ -70,14 +90,67 @@ aBotonsForPresentation[0] = {Btn:Ti.UI.createButton({
                                     width: Alloy.Globals.osUnits(120),
                                     height: Alloy.Globals.osUnits(40),
                                     backgroundColor: colorBtn,
-                                    title:"Descargar",
+                                    title:L('download'),
                                     color:"#FFF"
+
                             }),
-                            listener:onClickDownloadPresentation
+                            listener:onClickDownloadPresentation,
+                            showLocal:false
 };
+
+aBotonsForPresentation[1] = {Btn:Ti.UI.createButton({
+                                    left:Alloy.Globals.osUnits(10),
+                                    width: Alloy.Globals.osUnits(120),
+                                    height: Alloy.Globals.osUnits(40),
+                                    backgroundColor: colorBtn,
+                                    title:L('viewPress'),
+                                    color:"#FFF"
+
+                            }),
+                            listener:onClickViewLocalPresentation,
+                            showLocal:true
+};
+aBotonsForPresentation[2] = {Btn:Ti.UI.createButton({
+                                    left:Alloy.Globals.osUnits(10),
+                                    width: Alloy.Globals.osUnits(120),
+                                    height: Alloy.Globals.osUnits(40),
+                                    backgroundColor: colorBtn,
+                                    title:L('deletePress'),
+                                    color:"#FFF"
+
+                            }),
+                            listener:onClickDeletePress,
+                            showLocal:true
+};
+
 for(var i=0;i<aBotonsForPresentation.length;i++){
-  oMenuContent.add(aBotonsForPresentation[i].Btn);
-  aBotonsForPresentation[i].Btn.addEventListener("click",aBotonsForPresentation[i].listener);
+  /*Solo se muestran estos botones para las presentaciones online*/
+  if(forLocal){
+    if(aBotonsForPresentation[i].showLocal){
+      oMenuContent.add(aBotonsForPresentation[i].Btn);
+      aBotonsForPresentation[i].Btn.addEventListener("click",aBotonsForPresentation[i].listener);
+    }
+  }else{
+      if(!aBotonsForPresentation[i].showLocal){
+      /*Presentaciones Descargadas muestran esrtos Botones*/
+      oMenuContent.add(aBotonsForPresentation[i].Btn);
+      aBotonsForPresentation[i].Btn.addEventListener("click",aBotonsForPresentation[i].listener);
+    }
+  }
+}
+/*Aqui agregamos el boton de update*/
+if(needUpdate){
+  var oBtnUpdate = Ti.UI.createButton({
+                                      left:Alloy.Globals.osUnits(10),
+                                      width: Alloy.Globals.osUnits(120),
+                                      height: Alloy.Globals.osUnits(40),
+                                      backgroundColor: Alloy.Globals.conf.boton_delete_color,
+                                      title:L('updatePress'),
+                                      color:"#FFF"
+
+                              });
+  oBtnUpdate.addEventListener("click",onClickDownloadPresentation);
+  oMenuContent.add(oBtnUpdate);
 }
 leftSlide.add(oMenuContent);
 /*END LEFT SIDE CONTENT*/
@@ -100,9 +173,16 @@ rightSide.add(oLabelDescription);
 function onClickDownloadPresentation(e){
     //Ti.API.info(Alloy.Globals.categoryBreadCrum);
     /*Obtenemos la URL del Package para que se descargue, se descomprima y se guarde*/
-    widgetLoaderPresentation = Alloy.createWidget("DownloaderPresentation",{aData:aData}).getView("root");
+    widgetLoaderPresentation = Alloy.createWidget("DownloaderPresentation",{aData:aData,isUpdate:needUpdate}).getView("root");
     $.root.add(widgetLoaderPresentation);
     widgetLoaderPresentation.addEventListener("presentationSaved",onLoaderAppIsOk);
+}
+
+function onClickViewLocalPresentation(e){
+  Alloy.createWidget("ShowApp",{dataPresentation:aData}).getView().open({modal:true});
+}
+function onClickDeletePress(e){
+  alert("Borrar");
 }
 
 function onLoaderAppIsOk(e){

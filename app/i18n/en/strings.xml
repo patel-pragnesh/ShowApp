@@ -17,5 +17,10 @@
 	<string name="loaderPressError">Load error, come back later</string>
 	<string name="unzipError">Instalation error, please call to tech support</string>
 	<string name="noDataNoInternet">Not data and not internet connection, close this app and restart latter </string>
+	<string name="noConfigJson">Error, Config file not found...</string>
+	<string name="download">Download</string>
+	<string name="viewPress">View</string>
+	<string name="deletePress">Delete</string>
+	<string name="updatePress">Update</string>
 
 </resources>

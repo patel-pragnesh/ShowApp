@@ -109,12 +109,12 @@ DataBaseQuery.prototype.getParentCategoriesOffline = function(oCategory){
 			aToReturn.push({get_category:{
 													category_type: rows.fieldByName('category_type'),
 													id_category: rows.fieldByName('id_category_online'),
-													name: rows.fieldByName('name'),
+													name: rows.fieldByName('name')
 											},
-											id_category:rows.fieldByName('id_category_online'),
+											id_category:rows.fieldByName('id_category_online')
 			});
 			rows.next();
-		}
+		};
 		db.close();
 	} catch (e) {
 		Ti.API.info('No hay categorias' + e);
@@ -231,17 +231,39 @@ DataBaseQuery.prototype.setRelationCategoryToCategory = function(id_parent,id_ch
 	}
 
 }
+DataBaseQuery.prototype.getPresentation = function(idPresentationOnline){
+	var toReturn = {};
+	try {
+		var dbGetPresentation = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForGetPresentation = "SELECT * FROM presentations WHERE id_presentation_online = "+idPresentationOnline+";";
+		var rowsPresentation = dbGetPresentation.execute(sqlForGetPresentation);
+		while (rowsPresentation.isValidRow()) {
+			toReturn = {
+										idPresentation:rowsPresentation.fieldByName('id_presentation_online'),
+										name:rowsPresentation.fieldByName('name'),
+										version: rowsPresentation.fieldByName('version'),
+								}
+			rowsPresentation.next();
+		}
+
+		dbGetPresentation.close();
+	} catch (e) {
+		alert("Error al traer la presentación local");
+	} finally {
+		return toReturn;
+	}
+}
 DataBaseQuery.prototype.setPresentation = function(oPresentation){
 	try {
 		var dbPresentation = Ti.Database.open(Alloy.Globals.databaseName);
 		//id_presentation_online INTEGER, version VARCHAR, name VARCHAR, url_image_big VARCHAR, url_image_thum VARCHAR, url_package VARCHAR, description TEXT
 		var sqlForPresetation = "INSERT INTO presentations (id_presentation_online, version, name, url_image_big, url_image_thum, url_package, description) VALUES(?,?,?,?,?,?,?);";
-		Ti.API.info('Sql Save Presentation');
-		Ti.API.info(sqlForPresetation);
+		// Ti.API.info('Sql Save Presentation');
+		// Ti.API.info(sqlForPresetation);
 		dbPresentation.execute(sqlForPresetation, oPresentation.id_presentation, oPresentation.version ,oPresentation.name, oPresentation.url_image_big, oPresentation.url_image_thum, oPresentation.url_package, oPresentation.description);
-		Ti.API.info('Object Data Save Presentation');
-		Ti.API.info(JSON.stringify(oPresentation));
-		Ti.API.info('Object Data -----------------------------');
+		// Ti.API.info('Object Data Save Presentation');
+		// Ti.API.info(JSON.stringify(oPresentation));
+		// Ti.API.info('Object Data -----------------------------');
 		dbPresentation.close();
 	} catch (e) {
 		//alert("Error al grabar PRESENTACION local: "+oPresentation.name+ ' ---- '+e);
@@ -251,6 +273,19 @@ DataBaseQuery.prototype.setPresentation = function(oPresentation){
 		return true;
 	}
 }
+DataBaseQuery.prototype.updateVersionPresentation = function(oPresentation){
+		try {
+			var dbForUpdatePresentation = Ti.Database.open(Alloy.Globals.databaseName);
+			var sqlForUpdateVersion = "UPDATE presentations SET version = ? WHERE id_presentation_online = ?";
+			dbForUpdatePresentation.execute(sqlForUpdateVersion, oPresentation.version,oPresentation.id_presentation);
+			dbForUpdatePresentation.close();
+		} catch (e) {
+			Ti.API.info('Error al actualizar la presentacion: '+e);
+		} finally {
+			return true;
+		}
+}
+
 
 DataBaseQuery.prototype.setRelationCategoryToPresentation = function(id_category,id_presentation){
 	try {

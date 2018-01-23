@@ -15,6 +15,7 @@ Alloy.Globals.timeOutWebServices = 2000;
 Alloy.Globals.currentWindow;
 Alloy.Globals.countWindow = 0;
 Alloy.Globals.categoryBreadCrum = [];
+Alloy.Globals.isOff = false;
 
 
 

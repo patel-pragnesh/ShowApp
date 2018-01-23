@@ -4,20 +4,15 @@ var colorBorder = "#"+Alloy.Globals.conf.text_form_color;
 var colorTitle = "#"+Alloy.Globals.conf.boton_back_color;
 var backGroundColorConf = "#"+Alloy.Globals.conf.boton_back_color;
 var textLabelCategoriesColor = Alloy.Globals.colorLuminosity(colorTitle,-0.3);
-var oViewConnection;
-$.title.color = colorTitle;
 
-if (Titanium.Network.networkType === Titanium.Network.NETWORK_NONE) {
-    /*No hay Conexxion de Nada LOCAL*/
-   Titanium.API.info(' no connection ');
-} else {
-  /*Si hay conexion buscamos las categorias en la base de datos*/
-   Titanium.API.info(' connection present ');
-  oViewConnection = new GetParentCategories();
-  /*Llamado al Evento de carga de la data de categorias*/
-  oViewConnection.addEventListener('onLoadDataParentCategories',onLoadCategories);
-  oViewConnection.addEventListener('onLoadDataParentCategoriesError',checkIfLocalCategories);
-}
+
+var oViewConnection = new GetParentCategories();
+
+/*Llamado al Evento de carga de la data de categorias*/
+oViewConnection.addEventListener('onLoadDataParentCategories',onLoadCategories);
+oViewConnection.addEventListener('onLoadDataParentCategoriesError',checkIfLocalCategories);
+
+$.title.color = colorTitle;
 
 /*Creamos el Loader*/
 var oLoader = Ti.UI.createActivityIndicator({
@@ -117,13 +112,15 @@ function onClickBtnCategory(aDataCategory){
 }
 
 /*------------------------ LOCAL -----------------------------------*/
-function checkIfLocalCategories(){
+function checkIfLocalCategories(e){
+  Ti.API.info('Entra a la funcion OFFLine');
   /*Leemos las categorias locales*/
   var datos = new DataBaseQuery().getParentCategoriesOffline();
   var iTotalCatsOffline = datos.length;
+  Ti.API.info('Datos encontrados en la base local');
+  Ti.API.info(iTotalCatsOffline);
   if(iTotalCatsOffline>0){
     /*CArgamos el Contenido*/
-    oLoader.hide();
     oViewConnection.fireEvent('onLoadDataParentCategories',{aData:datos});
 
   }else{
