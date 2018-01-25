@@ -24,7 +24,7 @@ PresentationItemInCategory.prototype.getItemForCategory = function(){
   oItemCategory.add(oContentImage);
   /*Si estamos offline leemos la imagen del dispositivo*/
 
-  if(Alloy.Globals.isOff){
+
     /* directorio de presentaciones en caso de que no exista*/
     var dirForPresentations = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'presentations');
 
@@ -35,9 +35,12 @@ PresentationItemInCategory.prototype.getItemForCategory = function(){
     var dirForImagesPresentation = Ti.Filesystem.getFile(dirForPresentation.resolve(), 'images_presentation');
 
     imageToShow = Ti.Filesystem.getFile(dirForImagesPresentation.resolve(), 'img_thum.jpg');
-  }else{
-    imageToShow = thisClip.aDataPress.url_image_thum;
-  }
+    if(imageToShow.exists()){
+      imageToShow = imageToShow
+    }else{
+      imageToShow = thisClip.aDataPress.url_image_thum;
+    }
+
 
   var imageItem = Ti.UI.createImageView({
     width:Ti.UI.FILL,

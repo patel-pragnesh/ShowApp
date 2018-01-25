@@ -1,5 +1,6 @@
 var args = $.args || {};
 var idPresentation = args.dataPresentation.id_presentation;
+var documentsData = [];
 var isOpenControls = false;
 var animationOpen = Ti.UI.createAnimation();
 animationOpen.top = 0;
@@ -8,6 +9,16 @@ var animationClose =  Ti.UI.createAnimation();
 animationClose.top = Alloy.Globals.osUnits(-50);
 animationClose.duration = 500;
 var imageMenu = '/images/icon_dwon.png';
+
+var animationOpenIndice = Ti.UI.createAnimation();
+animationOpenIndice.left = 0;
+animationOpenIndice.duration = 500;
+
+var animationCloseIndice = Ti.UI.createAnimation();
+animationCloseIndice.left = Alloy.Globals.osUnits(-300);
+animationCloseIndice.duration = 500;
+
+var indiceIsOpen = false;
 // var oWebView = Ti.UI.createWebView({
 //   width:Ti.UI.FILL,
 //   height:Ti.UI.FILL,
@@ -28,6 +39,7 @@ var oMenuContent = Ti.UI.createView({
 });
 $.headerControls.add(oMenuContent);
 var oBtnsForMenu = [];
+var leftSeparator = 18;
 oBtnsForMenu[0] = {
                     view:Ti.UI.createView({
                       top:Alloy.Globals.osUnits(15),
@@ -46,7 +58,21 @@ oBtnsForMenu[1] = {
                       top:Alloy.Globals.osUnits(15),
                       width:Ti.UI.SIZE,
                       height:Ti.UI.SIZE,
-                      left:Alloy.Globals.osUnits(10),
+                      left:Alloy.Globals.osUnits(leftSeparator),
+                    }),
+                    icon:Ti.UI.createImageView({
+                      width:Alloy.Globals.osUnits(30),
+                      height:Alloy.Globals.osUnits(30),
+                      image:"/images/icon_indice.png"
+                    }),
+                    listener:openIndice
+                  };
+oBtnsForMenu[2] = {
+                    view:Ti.UI.createView({
+                      top:Alloy.Globals.osUnits(15),
+                      width:Ti.UI.SIZE,
+                      height:Ti.UI.SIZE,
+                      left:Alloy.Globals.osUnits(leftSeparator),
                     }),
                     icon:Ti.UI.createImageView({
                       width:Alloy.Globals.osUnits(30),
@@ -55,12 +81,12 @@ oBtnsForMenu[1] = {
                     }),
                     listener:sliderRightPresentation
                   };
-oBtnsForMenu[2] = {
+oBtnsForMenu[3] = {
                     view:Ti.UI.createView({
                       top:Alloy.Globals.osUnits(15),
                       width:Ti.UI.SIZE,
                       height:Ti.UI.SIZE,
-                      left:Alloy.Globals.osUnits(10),
+                      left:Alloy.Globals.osUnits(leftSeparator),
                     }),
                     icon:Ti.UI.createImageView({
 
@@ -70,12 +96,41 @@ oBtnsForMenu[2] = {
                     }),
                     listener:sliderLeftPresentation
                   };
-oBtnsForMenu[3] = {
+oBtnsForMenu[4] = {
                     view:Ti.UI.createView({
                       top:Alloy.Globals.osUnits(15),
                       width:Ti.UI.SIZE,
                       height:Ti.UI.SIZE,
-                      left:Alloy.Globals.osUnits(10),
+                      left:Alloy.Globals.osUnits(leftSeparator),
+                    }),
+                    icon:Ti.UI.createImageView({
+                      width:Alloy.Globals.osUnits(30),
+                      height:Alloy.Globals.osUnits(30),
+                      image:"/images/icon_share.png"
+                    }),
+                    listener:sharePresentation
+                  };
+oBtnsForMenu[5] = {
+                    view:Ti.UI.createView({
+                      top:Alloy.Globals.osUnits(15),
+                      width:Ti.UI.SIZE,
+                      height:Ti.UI.SIZE,
+                      left:Alloy.Globals.osUnits(leftSeparator),
+                    }),
+                    icon:Ti.UI.createImageView({
+                      width:Alloy.Globals.osUnits(30),
+                      height:Alloy.Globals.osUnits(30),
+                      image:"/images/icon_share.png"
+                    }),
+                    listener:openDocumentExplorer
+                  };
+
+oBtnsForMenu[6] = {
+                    view:Ti.UI.createView({
+                      top:Alloy.Globals.osUnits(15),
+                      width:Ti.UI.SIZE,
+                      height:Ti.UI.SIZE,
+                      left:Alloy.Globals.osUnits(leftSeparator),
                     }),
                     icon:Ti.UI.createImageView({
                       width:Alloy.Globals.osUnits(30),
@@ -123,6 +178,8 @@ var presentationIdFolder = Ti.Filesystem.getFile(presentationsFolder.resolve(), 
 var appFolder = Ti.Filesystem.getFile(presentationIdFolder.resolve(), 'app');
 var indexFile = Ti.Filesystem.getFile(appFolder.resolve(), 'config.json');
 if(indexFile.exists()){
+
+
   /*Parseamos el JSON y creamos los views por cada slide*/
   var sJsonFile = indexFile.read();
 
@@ -130,16 +187,23 @@ if(indexFile.exists()){
   Ti.API.info('ConfigFile');
   //Ti.API.info(aDataSliders);
 
+  documentsData = aDataSliders.documents;
+
   var iTotalSliders = aDataSliders.sliders.length;
   var aSlider = [];
   var rutaFolders = [];
   var htmlFiles = [];
+  var imagesThumForIndex = [];
+  var imageThumContainer = [];
+  var contentItemIndex = [];
+  var sTextItemNameIndex = [];
   for (var i = 0; i < iTotalSliders; i++) {
     rutaFolders[i] = Ti.Filesystem.getFile(appFolder.resolve(), "/sliders/"+aDataSliders.sliders[i].folder);
     htmlFiles[i] = Ti.Filesystem.getFile(rutaFolders[i].resolve(), aDataSliders.sliders[i].folder+".html");
     aSlider[i] = Ti.UI.createWebView({
       width:Ti.UI.FILL,
       height:Ti.UI.FILL,
+      enableZoomControls:false
     });
     if(OS_IOS){
       aSlider[i].url = htmlFiles[i];
@@ -149,19 +213,82 @@ if(indexFile.exists()){
     }
 
     oContentSliders.addView(aSlider[i]);
+    contentItemIndex[i] = Ti.UI.createView({
+      top:Alloy.Globals.osUnits(15),
+      width:Alloy.Globals.osUnits(150),
+      height:Alloy.Globals.osUnits(170),
+
+      layout:"vertical"
+    });
+    imagesThumForIndex[i] = Ti.Filesystem.getFile(rutaFolders[i].resolve(), "ico.jpg");
+    imageThumContainer[i] = Ti.UI.createImageView({
+
+      borderColor:"#"+Alloy.Globals.conf.boton_principla_color,
+      indice:i,
+      image:imagesThumForIndex[i],
+
+    });
+    imageThumContainer[i].addEventListener("click",function(e){
+      var indiceNumber = e.source.indice;
+      oContentSliders.scrollToView(indiceNumber);
+
+      $.indiceContainer.animate(animationCloseIndice);
+      indiceIsOpen = false;
+
+    });
+    /*Texto con el nombre del slide*/
+    sTextItemNameIndex[i] = Ti.UI.createLabel({
+      top:Alloy.Globals.osUnits(5),
+      text:aDataSliders.sliders[i].name,
+      color:"#000",
+      font:{
+        fontFamily:"AvenirNextLTPro-Demi",
+        fontSize:12
+      }
+    });
+
+    contentItemIndex[i].add(imageThumContainer[i]);
+    contentItemIndex[i].add(sTextItemNameIndex[i]);
+    $.indiceScroll.add(contentItemIndex[i]);
   }
   $.webCanvas.add(oContentSliders);
   // Ti.API.info('HTML 1');
   // Ti.API.info(htmlFiles[0].read());
-
-
 
 }else{
   alert(L('noConfigJson'));
 }
 
 
+/*Header Close Indice*/
+var contentIco = Ti.UI.createView({
+  width:Alloy.Globals.osUnits(40),
+  height:Alloy.Globals.osUnits(40),
+});
+var iconHeaderClose = Ti.UI.createImageView({
+  image:"/images/icon_close.png",
+});
+contentIco.add(iconHeaderClose);
+$.headerIndice.add(contentIco);
+$.headerIndice.addEventListener("click",openIndice);
+
+
 /*Eventos cde los botones del menu*/
+function openIndice(e){
+  if(!indiceIsOpen){
+    $.indiceContainer.animate(animationOpenIndice);
+    indiceIsOpen = true;
+  }else{
+    $.indiceContainer.animate(animationCloseIndice);
+    indiceIsOpen = false;
+  }
+}
+function openDocumentExplorer(e){
+  $.root.add(Alloy.createWidget("DocumentExplorer",{idPresentation:idPresentation, documentsData:documentsData}).getView());
+}
+function sharePresentation(e){
+
+}
 function sliderLeftPresentation(e){
   var currentIndex = oContentSliders.currentPage;
   var newIndex = currentIndex+1;

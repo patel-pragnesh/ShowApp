@@ -12,6 +12,7 @@
         "Categories": "1.0",
         "SubCategories": "1.0",
         "DownloaderPresentation": "1.0",
-        "ShowApp": "1.0"
+        "ShowApp": "1.0",
+        "DocumentExplorer": "1.0"
     }
 }

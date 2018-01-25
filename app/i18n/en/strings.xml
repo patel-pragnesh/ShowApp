@@ -22,5 +22,6 @@
 	<string name="viewPress">View</string>
 	<string name="deletePress">Delete</string>
 	<string name="updatePress">Update</string>
+	<string name="docs">Documents</string>
 
 </resources>

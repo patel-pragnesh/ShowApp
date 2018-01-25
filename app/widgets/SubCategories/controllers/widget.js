@@ -179,11 +179,11 @@ function onClickBtnCategory(aDataCategory){
 /*--------------OFFLINE --------------------------------------*/
 function onErrorLoadSubCategories(){
     oLoader.hide();
-    Alloy.Globals.isOff = true;
+    //Alloy.Globals.isOff = true;
   var datosSubs = new DataBaseQuery().getSubCategoriesAndPresentationsByParentID(args.aDataCategory.id_category);
   /*Construimos el contenido*/
   oConnectionData.fireEvent('loadSubCategories',{aData:datosSubs});
 
-  // Ti.API.info('Sub Cats Local');
+   Ti.API.info('Sub Cats Local entro onerror');
   // Ti.API.info(JSON.stringify(datosSubs));
 }

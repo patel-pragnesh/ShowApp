@@ -131,6 +131,10 @@ DataBaseQuery.prototype.getSubCategoriesAndPresentationsByParentID = function(id
 		var oJsonToReturn = {};
 		var aSubCategories = [];
 		var aPresentations = [];
+		var haveDataPresentations = false;
+
+		oJsonToReturn = {get_category:{sub_categories:[],presentations:[]}};
+
 		/*Ahora traemos las SubCategorias de la categoria padre*/
 		var dbSubCategories = Ti.Database.open(Alloy.Globals.databaseName);
 		var sqlToGetSubCategories =  "SELECT t2.* FROM relations_cats AS t1 ";
@@ -163,6 +167,7 @@ DataBaseQuery.prototype.getSubCategoriesAndPresentationsByParentID = function(id
 					url_image_thum: rowsPresentations.fieldByName('url_image_thum'),
 					url_package: rowsPresentations.fieldByName('url_package'),
 			});
+			haveDataPresentations = true;
 			rowsPresentations.next();
 		}
 		dbPresentations.close();
@@ -194,6 +199,8 @@ DataBaseQuery.prototype.getSubCategoriesAndPresentationsByParentID = function(id
 		//alert("Error al leer categorias principlaes: "+e);
 		return [];
 	} finally {
+
+
 
 		return oJsonToReturn;
 

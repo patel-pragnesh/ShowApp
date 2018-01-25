@@ -1,0 +1,15 @@
+<Alloy>
+	<View class="canvasRoot" id="canvasRoot">
+		<View class="backTransparent" id="backTransparent"></View>
+		<View class="rootList" id="rootList">
+			<View class="headerList" id="headerList">
+				<Label class="titleList" id="titleList">L('docs')</Label>
+				<Button class="closeBtn" id="closeBtn" title="X"></Button>
+			</View>
+
+			<ScrollView class="listDocuments" id="listDocuments"></ScrollView>
+
+		</View>
+
+	</View>
+</Alloy>

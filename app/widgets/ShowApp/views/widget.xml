@@ -7,6 +7,10 @@
 			<View class="headerControls" id="headerControls">
 				<View class="backHeader" id="backHeader"></View>
 			</View>
+			<View class="indiceContainer" id="indiceContainer">
+				<View class="headerIndice" id="headerIndice"></View>
+				<ScrollView class="indiceScroll" id="indiceScroll"></ScrollView>
+			</View>
 
 
 		</View>

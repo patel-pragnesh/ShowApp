@@ -164,7 +164,60 @@ function saveInDataBaseCategoryAndPresentation(){
   }
   /*Grabamos la relacion de la presentacion con su categoria*/
   new DataBaseQuery().setRelationCategoryToPresentation(aDataBreadCrum[iTotalLevels-1].id_category, idPresentation);
-    /*Cerramos el Widget y abrimos la Window con la presentacion*/
-  $.root.fireEvent("presentationSaved",{});
 
+    /*Cerramos el Widget y abrimos la Window con la presentacion*/
+    //$.root.fireEvent("presentationSaved",{});
+    createImagesThumForIndexPresentation();
+
+}
+
+/*Generamos las imagenes Thum para el indice */
+function createImagesThumForIndexPresentation (){
+  /*Primero leemos el JSON de la presentacion*/
+  /*Leemos el Archivo index.html local para esta presentacion */
+  var presentationsFolder = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator +'presentations');
+  var presentationIdFolder = Ti.Filesystem.getFile(presentationsFolder.resolve(), idPresentation);
+  var appFolder = Ti.Filesystem.getFile(presentationIdFolder.resolve(), 'app');
+  var indexFile = Ti.Filesystem.getFile(appFolder.resolve(), 'config.json');
+  if(indexFile.exists()){
+    /*Parseamos el JSON y creamos los views por cada slide*/
+    var sJsonFile = indexFile.read();
+
+    var aDataSliders = JSON.parse(sJsonFile.text);
+    //Ti.API.info('ConfigFile');
+    //Ti.API.info(aDataSliders);
+
+    var iTotalSliders = aDataSliders.sliders.length;
+    var aSlider = [];
+    var rutaFolders = [];
+    var htmlFiles = [];
+    var thumImages = [];
+    var imageNameThum = [];
+    for (var i = 0; i < iTotalSliders; i++) {
+      rutaFolders[i] = Ti.Filesystem.getFile(appFolder.resolve(), "/sliders/"+aDataSliders.sliders[i].folder);
+      htmlFiles[i] = Ti.Filesystem.getFile(rutaFolders[i].resolve(), aDataSliders.sliders[i].folder+".html");
+      aSlider[i] = Ti.UI.createWebView({
+        width:Ti.UI.FILL,
+        height:Ti.UI.FILL,
+      });
+      if(OS_IOS){
+        aSlider[i].url = htmlFiles[i];
+        thumImages[i] = aSlider[i].toImage(null,true);
+      }else{
+        aSlider[i].enableJavascriptInterface = true;
+        aSlider[i].data = htmlFiles[i].read();
+
+        thumImages[i] = aSlider[i].toImage().media;
+      }
+    
+
+    }
+
+    $.root.fireEvent("presentationSaved",{});
+    // Ti.API.info('HTML 1');
+    // Ti.API.info(htmlFiles[0].read());
+
+  }else{
+    alert(L('noConfigJson'));
+  }
 }

@@ -52,3 +52,33 @@
 	opacity: 0.2,
 	backgroundColor: "#000"
 }
+".indiceContainer[platform=ios]":{
+	left: -300,
+	width: 175,
+	height: Ti.UI.FILL,
+	backgroundColor: "#FFF",
+	layout: 'vertical'
+}
+".indiceContainer[platform=android]":{
+	left: -300,
+	width: 175,
+	height: Ti.UI.FILL,
+	backgroundColor: "#FFF",
+	layout: 'vertical'
+}
+".headerIndice[platform=ios]":{
+	width: Ti.UI.FILL,
+	height: 50,
+	backgroundColor: Alloy.Globals.conf.background_color,
+}
+".headerIndice[platform=android]":{
+	width: Ti.UI.FILL,
+	height: 50,
+	backgroundColor: 'gray',
+}
+".indiceScroll":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	backgroundColor: "transparent",
+	layout: 'vertical'
+}
