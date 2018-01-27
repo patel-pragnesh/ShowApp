@@ -103,7 +103,8 @@ function buildSubCategories(aDataSubs){
        font:{
          fontFamily:"AvenirNextLTPro-Bold",
          fontSize:Alloy.Globals.osUnits(20)
-       }
+       },
+       touchEnabled:false
      });
      aViewForRows[i].add(aLabelForRows[i]);
 

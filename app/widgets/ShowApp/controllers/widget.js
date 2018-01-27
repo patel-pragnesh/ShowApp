@@ -27,6 +27,7 @@ var indiceIsOpen = false;
 var oContentSliders = Ti.UI.createScrollableView({
   width:Ti.UI.FILL,
   height:Ti.UI.FILL,
+  scrollingEnabled:Alloy.Globals.isSliderPresentation
 });
 
 /*Menu contenedor*/
@@ -120,7 +121,7 @@ oBtnsForMenu[5] = {
                     icon:Ti.UI.createImageView({
                       width:Alloy.Globals.osUnits(30),
                       height:Alloy.Globals.osUnits(30),
-                      image:"/images/icon_share.png"
+                      image:"/images/icon_documents.png"
                     }),
                     listener:openDocumentExplorer
                   };
@@ -172,7 +173,7 @@ function onClickBtnControls(e){
     }
 }
 /*----------------------------------------------------------------*/
-/*Leemos el Archivo index.html local para esta presentacion */
+/*Leemos el Archivo config.json local para esta presentacion */
 var presentationsFolder = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator +'presentations');
 var presentationIdFolder = Ti.Filesystem.getFile(presentationsFolder.resolve(), idPresentation);
 var appFolder = Ti.Filesystem.getFile(presentationIdFolder.resolve(), 'app');
@@ -203,7 +204,9 @@ if(indexFile.exists()){
     aSlider[i] = Ti.UI.createWebView({
       width:Ti.UI.FILL,
       height:Ti.UI.FILL,
-      enableZoomControls:false
+      enableZoomControls:false,
+      //scalesPageToFit:false
+
     });
     if(OS_IOS){
       aSlider[i].url = htmlFiles[i];

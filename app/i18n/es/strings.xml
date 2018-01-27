@@ -23,8 +23,17 @@
 	<string name="updatePress">Actualizar</string>
 	<string name="docs">Documentos</string>
 
+	<string name="switchAsSlider">Abrir como slider</string>
+	<string name="closeSessionQuestion">¿Realmente desea cerrar su sesión? \nSe perderan todas las presentaciones descargadas</string>
 
+	<string name="yes">Si</string>
+	<string name="no">No</string>
 
+	<string name="myPresentations">Mis Presentaciones</string>
+	<string name="newPresentation">Crear Presentación</string>
+
+	<string name="writeTitleForNewLabel">Escriba el nombre de su nueva presentación</string>
+	<string name="titleHere">Titulo Aquí...</string>
 
 
 </resources>

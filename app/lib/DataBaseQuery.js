@@ -310,4 +310,51 @@ DataBaseQuery.prototype.setRelationCategoryToPresentation = function(id_category
 		return true;
 	}
 }
+DataBaseQuery.prototype.deleteAllDataBase = function(){
+		try {
+			var aTablesName = [];
+			aTablesName[0] = 'usuarios';
+			aTablesName[1] = 'configuration';
+			aTablesName[2] = 'categories';
+			aTablesName[3] = 'relations_cats';
+			aTablesName[4] = 'presentations';
+			aTablesName[5] = 'relations_cats_presentations';
+
+			var iTotalTables = aTablesName.length;
+
+			var dbForDeletre = Ti.Database.open(Alloy.Globals.databaseName);
+
+			dbForDeletre.execute("BEGIN");
+			for (var i = 0; i < iTotalTables; i++) {
+				var sqlForDelte = "DROP TABLE IF EXISTS "+aTablesName[i];
+				dbForDeletre.execute(sqlForDelte);
+			}
+			dbForDeletre.execute("COMMIT");
+
+			dbForDeletre.close();
+		} catch (e) {
+			alert("Error al borrar toda la base de datos");
+		} finally {
+			Ti.API.info('Base de datos borrada correctamente');
+				return true;
+		}
+}
+DataBaseQuery.prototype.getAllPresentations = function(){
+	var aToReturnData = [];
+	try {
+		var dbForAllPresentations = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForAllPresentations = "SELECT * FROM presentations WHERE 1 ORDER BY name;";
+		var rowsPresentations = dbForAllPresentations.execute(sqlForAllPresentations);
+		while(rowsPresentations.isValidRow()){
+			aToReturnData.push({idOnLine:rowsPresentations.fieldByName('id_presentation_online'),
+													name:rowsPresentations.fieldByName('name')
+													});
+			rowsPresentations.next();
+		}
+	} catch (e) {
+		alert("Error al leer las presentaciones locales");
+	} finally {
+		return aToReturnData;
+	}
+}
 module.exports = DataBaseQuery;

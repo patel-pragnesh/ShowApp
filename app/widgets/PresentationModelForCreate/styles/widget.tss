@@ -1,0 +1,6 @@
+".canvasPress":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	backgroundColor: 'transparent',
+	layout: 'vertical'
+}

@@ -61,7 +61,8 @@ for (var i = 0; i < iTotalFiles; i++) {
 }
 
 
-
+var tmpFile = undefined,
+    newPath = undefined;
 function openFile(fileName,mimeType){
   /*Leemos los Archivos para mostrarlos*/
   var presentationsFolder = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator +'presentations');
@@ -69,13 +70,28 @@ function openFile(fileName,mimeType){
   var appFolder = Ti.Filesystem.getFile(presentationIdFolder.resolve(), 'app');
   var sharedFolder = Ti.Filesystem.getFile(appFolder.resolve(), 'shared');
   var fileToOpen = Ti.Filesystem.getFile(sharedFolder.resolve(), fileName);
+
+  var splitStrinfFile = fileName.split(".");
+  var lenghtSplit = splitStrinfFile.length;
+  var extencion = splitStrinfFile[lenghtSplit-1];
   if(OS_ANDROID){
 
+    if (Ti.Filesystem.isExternalStoragePresent()) {
+    tmpFile = Ti.Filesystem.createTempFile();
+    newPath = tmpFile.nativePath +'.'+extencion;
+    tmpFile.move(newPath);
+    tmpFile = Ti.Filesystem.getFile(newPath);
+    tmpFile.write(fileToOpen.read());
+    } else {
+        alert('No external storage present');
+    }
+    Ti.API.info('MIME');
+    Ti.API.info(mimeType);
     try{
     Ti.Android.currentActivity.startActivity(Ti.Android.createIntent({
         action: Ti.Android.ACTION_VIEW,
         type: mimeType,
-        data: fileToOpen
+        data: tmpFile.nativePath
     }));
     } catch(e) {
         Ti.API.info('error trying to launch activity, e = '+e);
@@ -96,7 +112,9 @@ function openFile(fileName,mimeType){
 /*Cerrar este Widget*/
 $.closeBtn.addEventListener("click",onClickCloseBtn);
 function onClickCloseBtn(e){
+  //tmpFile.deleteFile();
   var parent = $.canvasRoot.parent;
   parent.remove($.canvasRoot);
   $.canvasRoot = null;
+
 }

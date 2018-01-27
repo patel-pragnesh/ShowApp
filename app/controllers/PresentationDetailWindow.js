@@ -22,10 +22,10 @@ if(aDataLocal.idPresentation>0){
 if(aData.version>aDataLocal.version){
   needUpdate = true;
 }
-// Ti.API.info('Data Presentation');
-// Ti.API.info(aData);
-// Ti.API.info('Local or Online');
-// Ti.API.info(aDataLocal);
+Ti.API.info('Data Presentation');
+Ti.API.info(JSON.stringify(aData));
+Ti.API.info('Local or Online');
+Ti.API.info(JSON.stringify(aDataLocal));
 
 
 
@@ -140,20 +140,49 @@ for(var i=0;i<aBotonsForPresentation.length;i++){
 }
 /*Aqui agregamos el boton de update*/
 if(needUpdate){
+  Ti.API.info('Entro a update APP');
   var oBtnUpdate = Ti.UI.createButton({
                                       left:Alloy.Globals.osUnits(10),
                                       width: Alloy.Globals.osUnits(120),
                                       height: Alloy.Globals.osUnits(40),
-                                      backgroundColor: Alloy.Globals.conf.boton_delete_color,
+                                      backgroundColor: "#"+Alloy.Globals.conf.boton_delete_color,
                                       title:L('updatePress'),
                                       color:"#FFF"
-
                               });
   oBtnUpdate.addEventListener("click",onClickDownloadPresentation);
   oMenuContent.add(oBtnUpdate);
 }
 leftSlide.add(oMenuContent);
 /*END LEFT SIDE CONTENT*/
+
+/*Switch para saber si queremos que sea slider o no*/
+var contentSwitch =Ti.UI.createView({
+  left:Alloy.Globals.osUnits(40),
+  top:Alloy.Globals.osUnits(20),
+  width:Ti.UI.FILL,
+  height:100,
+  layout:"horizontal"
+});
+var labelForSwitch = Ti.UI.createLabel({
+  color:colorTitle,
+  font:{
+    fontFamily:"AvenirNextLTPro-Regular",
+    fontSize:16
+  },
+  text:L('switchAsSlider')
+});
+contentSwitch.add(labelForSwitch);
+var oSwithsSlider = Ti.UI.createSwitch({
+  left:Alloy.Globals.osUnits(5),
+  value:Alloy.Globals.isSliderPresentation // mandatory property for iOS
+});
+oSwithsSlider.addEventListener("change",function(){
+    Alloy.Globals.isSliderPresentation = oSwithsSlider.value;
+});
+contentSwitch.add(oSwithsSlider);
+leftSlide.add(contentSwitch);
+/*END Switch*/
+
 
 /*RIGHT SIDE CONTENT*/
 var oLabelDescription = Ti.UI.createLabel({

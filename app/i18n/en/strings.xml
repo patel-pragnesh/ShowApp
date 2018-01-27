@@ -24,4 +24,17 @@
 	<string name="updatePress">Update</string>
 	<string name="docs">Documents</string>
 
+	<string name="switchAsSlider">Open as slider</string>
+	<string name="closeSessionQuestion">Do you want close session really? \nAllpresentations are delete</string>
+
+	<string name="yes">Yes</string>
+	<string name="no">No</string>
+
+	<string name="myPresentations">My Presentations</string>
+	<string name="newPresentation">Create Presentation</string>
+
+	<string name="writeTitleForNewLabel">Write title for new presentation</string>
+	<string name="titleHere">Title here...</string>
+
+
 </resources>

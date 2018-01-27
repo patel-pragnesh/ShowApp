@@ -2,6 +2,7 @@
 var CreateDataBase = require("CreateDataBase");
 var DataBaseQuery = require("DataBaseQuery")
 var Checklogin = require("Checklogin");
+var windowOpensInAndroid = [];
 if(OS_IOS){
 	var PushNotificationsIOS = require("PushNotificationsIOS");
 	new PushNotificationsIOS();
@@ -20,7 +21,10 @@ if(new CreateDataBase){
 			var newWindow = Alloy.createController("baseWindow",{widget:sWidgetToLoad,paramsToWidget:paramsToWidget}).getView();
 			$.windowNav.openWindow(newWindow);
 		}else{
-			Alloy.createController("baseWindow",{widget:sWidgetToLoad,paramsToWidget:paramsToWidget}).getView().open();
+			var newWindow =  Alloy.createController("baseWindow",{widget:sWidgetToLoad,paramsToWidget:paramsToWidget}).getView();
+			newWindow.open();
+			windowOpensInAndroid.push(newWindow);
+
 		}
 		newWindow = null;
 	}
@@ -33,6 +37,7 @@ if(new CreateDataBase){
 			$.windowNav.closeWindow(ToClose);
 			//$.windowNav.popToRootWindow();
 		}else{
+			windowOpensInAndroid.pop();
 			ToClose.close();
 		}
 		ToClose = null;
@@ -70,4 +75,21 @@ function onLogin(e){
 }
 function onErrorLogin(e){
 	alert("Error al ingresar con este usuario");
+}
+
+
+/*Evento para cerrar la sesion*/
+Ti.App.addEventListener("closeSession",onCloseSession);
+function onCloseSession(e){
+	if(OS_IOS){
+		$.windowNav.popToRootWindow();
+		$.root.removeAllChildren();
+		$.root.add(Alloy.createController("LoginView",{}).getView());
+	}else{
+		while(windowOpensInAndroid.length>0){
+			windowOpensInAndroid.pop().close();
+		}
+		$.root.removeAllChildren();
+		$.root.add(Alloy.createController("LoginView",{}).getView());
+	}
 }

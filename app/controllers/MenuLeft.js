@@ -1,4 +1,5 @@
 var CreateDataBase = require("CreateDataBase");
+var DataBaseQuery = require("DataBaseQuery");
 var backgroundColorBase =  "#"+Alloy.Globals.conf.background_color_left_bar;
 var text_title_color = "#"+Alloy.Globals.conf.text_title_color;
 var closeSessionColor = "#"+Alloy.Globals.conf.boton_back_color;
@@ -26,13 +27,14 @@ aBotonForMenu[0] = {Btn:Ti.UI.createView({
                   }),
                   Txt:Ti.UI.createLabel({
                     bottom:Alloy.Globals.osUnits(10),
-                    text:L('perfilBtn'),
+                    text:L('myPresentations'),
                     color:text_title_color,
                     font:{
                       fontFamily:"AvenirNextLTPro-Demi",
                       fontSize:Alloy.Globals.osUnits(12)
                     }
-                  })
+                  }),
+                  listener:onClickMyPresentations
                 };
 aBotonForMenu[1] = {Btn:Ti.UI.createView({
                       top:Alloy.Globals.osUnits(15),
@@ -44,16 +46,58 @@ aBotonForMenu[1] = {Btn:Ti.UI.createView({
                   }),
                   Txt:Ti.UI.createLabel({
                     bottom:Alloy.Globals.osUnits(10),
-                    text:"Presentaciones",
+                    text:L('newPresentation'),
                     color:text_title_color,
                     font:{
                       fontFamily:"AvenirNextLTPro-Demi",
                       fontSize:Alloy.Globals.osUnits(12)
                     }
-                  })
+                  }),
+                  listener:onClickNewPresentation
                 };
 var iTotalBotonesMenu = aBotonForMenu.length;
 for (var i = 0; i < iTotalBotonesMenu; i++) {
+  aBotonForMenu[i].Btn.addEventListener("click",aBotonForMenu[i].listener);
   aBotonForMenu[i].Btn.add(aBotonForMenu[i].Txt);
   $.menuContent.add(aBotonForMenu[i].Btn);
+}
+
+$.closeSession.addEventListener("click",onClickCloseSession);
+function onClickCloseSession(){
+  var dialog = Ti.UI.createAlertDialog({
+    message:L('closeSessionQuestion'),
+    buttonNames: [L('yes'), L('no')],
+   title: L('closeSession')
+  });
+  dialog.addEventListener("click",function(e){
+    ///Ti.API.info('Cerrar session: '+e.index);
+    var isClose =e.index;
+    if(isClose==0){
+      closeSessionOkUser();
+    }
+  });
+  dialog.show();
+}
+
+function closeSessionOkUser(){
+  /*Primero borramos todos los archivos*/
+  var presentationsFolder = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator +'presentations');
+  presentationsFolder.deleteDirectory(true);
+
+  /*Ahora borramos la base de datos*/
+  if(new DataBaseQuery().deleteAllDataBase()){
+    /*Ahora creamos la Base otra vez*/
+    new CreateDataBase();
+
+    /*Ejecutamos el evento se avisa sobre el cierre de sesion revisar index.js*/
+    Ti.App.fireEvent("closeSession",{});
+  }
+}
+
+function onClickMyPresentations(e){
+  alert("My presentations");
+}
+
+function onClickNewPresentation(e){
+  Alloy.createWidget("CreatePresentation",{}).getView().open({modal:true});
 }
