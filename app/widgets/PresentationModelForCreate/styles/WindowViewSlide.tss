@@ -1,0 +1,19 @@
+/*Root window Android*/
+".root[platform=ios]": {
+	backgroundColor:"#FFF",
+	fullscreen: true,
+	navBarHidden: true,
+	exitOnClose:true
+}
+
+/*Window ROOT Android*/
+".root[platform=android]": {
+	fullscreen: true,
+	backgroundColor: "#FFF",
+	theme: "Theme.AppCompat.NoTitleBar"
+}
+".canvasRoot":{
+  width: Ti.UI.FILL,
+  height: Ti.UI.FILL,
+  layout: 'vertical'
+}

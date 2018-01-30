@@ -35,5 +35,9 @@
 	<string name="writeTitleForNewLabel">Escriba el nombre de su nueva presentación</string>
 	<string name="titleHere">Titulo Aquí...</string>
 
+	<string name="saveNewPresentation">Crear Presentacion</string>
+
+	<string name="errorTitleNewPresentation">Debe de escribir un nombre para su presentacion</string>
+
 
 </resources>

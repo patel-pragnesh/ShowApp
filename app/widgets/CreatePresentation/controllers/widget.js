@@ -4,6 +4,8 @@ var backColor = "#"+Alloy.Globals.conf.background_color;
 var colorTitle = "#"+Alloy.Globals.conf.boton_back_color;
 var colorForm = "#"+Alloy.Globals.conf.text_form_color;
 
+Alloy.Globals.titleForNewPresentation = "";
+
 var canvasHome = Ti.UI.createView({
   width:Ti.UI.FILL,
   height:Ti.UI.FILL,
@@ -67,6 +69,9 @@ var textFielForTitle = Ti.UI.createTextField({
   color:colorForm,
   hintText:L('titleHere')
 });
+textFielForTitle.addEventListener("change",function(e){
+  Alloy.Globals.titleForNewPresentation = e.value;
+});
 contentForWriteTitle.add(textFielForTitle);
 
 /*Agregamos el Canvas para los grupos de presentaciones y view lateral para la visata de los slides*/
@@ -79,10 +84,13 @@ var oCanvasForPresentationsAndList = Ti.UI.createView({
 canvasHome.add(oCanvasForPresentationsAndList);
 /*Ahora las dos secciones la de la izquierda para la lsita de slides seleccionads*/
 var contentListSelectedSliders = Ti.UI.createView({
-  width:Alloy.Globals.osUnits(300),
+  width:Alloy.Globals.osUnits(350),
   height:Ti.UI.FILL,
-  backgroundColor:"red"
+  backgroundColor:"transparent"
 });
+
+/*Agregamos la tabla de los nuevos sliders*/
+contentListSelectedSliders.add(Widget.createController("TableWidthNewSliders",{}).getView());
 oCanvasForPresentationsAndList.add(contentListSelectedSliders);
 var contentPresentationsForSelected = Ti.UI.createView({
   width:Ti.UI.FILL,
@@ -101,11 +109,12 @@ var tableForPresentations = Ti.UI.createTableView({
   minRowHeight:sizeRowForPresentation,
   separatorColor:colorForm,
   backgroundColor:"transparent",
-  moveable:true,
-  moving:true
+  moveable:false,
+  moving:false
 });
 var rowsTableForPresentations = [];
 var widgetsForPresentations = [];
+var widgetModelPresentation = [];
 for (var i = 0; i < iTotalPresentations; i++) {
   rowsTableForPresentations[i] = Ti.UI.createTableViewRow({
     width:Ti.UI.FILL,

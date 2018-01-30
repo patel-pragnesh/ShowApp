@@ -19,13 +19,17 @@ if(aDataLocal.idPresentation>0){
 }else{
   forLocal = false;
 }
-if(aData.version>aDataLocal.version){
+var localVersion = Number(aDataLocal.version);
+var onlineVersion = Number(aData.version);
+if(onlineVersion>localVersion){
   needUpdate = true;
 }
-Ti.API.info('Data Presentation');
-Ti.API.info(JSON.stringify(aData));
-Ti.API.info('Local or Online');
-Ti.API.info(JSON.stringify(aDataLocal));
+// Ti.API.info('Versiones');
+// Ti.API.info('Local: '+aDataLocal.version+"------- OLnline"+aData.version);
+// Ti.API.info('Data Presentation');
+// Ti.API.info(JSON.stringify(aData));
+// Ti.API.info('Local or Online');
+// Ti.API.info(JSON.stringify(aDataLocal));
 
 
 

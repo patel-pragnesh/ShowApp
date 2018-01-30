@@ -1,0 +1,6 @@
+<Alloy>
+  <View class="contentTableAndBtnCreate" id="contentTableAndBtnCreate">
+    <TableView class="tableForNew" id="tableForNew"></TableView>
+    <View class="contentBtnCreate" id="contentBtnCreate"></View>
+  </View>
+</Alloy>

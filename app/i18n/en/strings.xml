@@ -36,5 +36,9 @@
 	<string name="writeTitleForNewLabel">Write title for new presentation</string>
 	<string name="titleHere">Title here...</string>
 
+		<string name="saveNewPresentation">Create presentation</string>
+
+		<string name="errorTitleNewPresentation">Write a name for you new presentation</string>
+
 
 </resources>

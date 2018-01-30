@@ -1,0 +1,21 @@
+".tableForNew[platform=ios]":{
+  width: Ti.UI.FILL,
+  height: "80%",
+  minRowHeight: 200,
+  moveable: true,
+  moving: true,
+  editable:true,
+  backgroundColor: 'transparent'
+}
+".tableForNew[platform=android]":{
+  width: Ti.UI.FILL,
+  height: Ti.UI.FILL,
+  minRowHeight: "80%",
+  backgroundColor: 'transparent'
+}
+
+".contentTableAndBtnCreate[platform=ios]":{
+  width: Ti.UI.FILL,
+  height: Ti.UI.SIZE,
+  layout: 'vertical'
+}

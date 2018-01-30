@@ -8,6 +8,11 @@ if(OS_IOS){
 	new PushNotificationsIOS();
 }
 
+/*Se crea el directorio para presentaciones unicas de este usuario*/
+var localUserPresentationsFolder = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator +'my_presentations');
+if(!localUserPresentationsFolder.exists()){
+	localUserPresentationsFolder.createDirectory();
+}
 
 if(new CreateDataBase){
 	OS_IOS ? $.windowNav.open() : $.root.open();
