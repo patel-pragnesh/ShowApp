@@ -1,6 +1,8 @@
 function CreateDataBase(){
 	try{
 		var db = Ti.Database.open(Alloy.Globals.databaseName);
+
+		db.execute("BEGIN");
 		//var sqlCreateTable = "CREATE TABLE IF NOT EXISTS usuarios (usuario_id INTEGER PRIMARY KEY AUTOINCREMENT, id_online INTEGER , name VARCHAR, email VARCHAR, image_company VARCHAR, company_name VARCHAR, url VARCHAR ,estatus INTEGER);";
 		var sqlCreateTable = "CREATE TABLE IF NOT EXISTS usuarios (usuario_id INTEGER PRIMARY KEY AUTOINCREMENT, id_online INTEGER, id_company INTEGER, id_user_type INTEGER,name INTEGER, user_type VARCHAR,second_name VARCHAR,email VARCHAR, estatus INTEGER);";
 		db.execute(sqlCreateTable);
@@ -35,6 +37,16 @@ function CreateDataBase(){
 		/*Indice para categoria y presentacion unica*/
 		var sqlIndexRelationPresentationAndCat = 'CREATE UNIQUE INDEX IF NOT EXISTS relation_unique_pres_cat ON relations_cats_presentations (id_category, id_presentation);';
 		db.execute(sqlIndexRelationPresentationAndCat);
+
+		/*Tabla para las presentaciones locales, nombre y fecha*/
+		var sqlForLocalPresentationsCreated = 'CREATE TABLE IF NOT EXISTS local_presentations (id_created_presentation INTEGER PRIMARY KEY AUTOINCREMENT, nombre VARCHAR, status INTEGER);';
+		db.execute(sqlForLocalPresentationsCreated);
+
+		/*Tabla para la relacion de presentaciones*/
+		var sqlForSlidersCreatedPresentation = 'CREATE TABLE IF NOT EXISTS local_sliders (id_slider INTEGER PRIMARY KEY AUTOINCREMENT, id_created_presentation INTEGER, id_presentation_online INTEGER, name VARCHAR,folder_slider VARCHAR);';
+		db.execute(sqlForSlidersCreatedPresentation);
+
+		db.execute("COMMIT");
 
 	}catch(e){
 		alert("Error al crear la base de datos "+e);

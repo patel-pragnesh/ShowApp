@@ -3,6 +3,7 @@ var aDataSliders = [];
 var colorText = "#"+Alloy.Globals.conf.text_form_color;
 var colorSaveBtn = "#"+Alloy.Globals.conf.boton_save_color;
 var folderMyPresentations = "my_presentations";
+var DataBaseQuery = require("DataBaseQuery");
 
 
 Ti.App.addEventListener("onSelctSliderToAddNew",onSelectedNewSlider);
@@ -102,37 +103,21 @@ function onClickCreatePresentation(e){
     alert(L('errorTitleNewPresentation'));
   }else{
 
-    /*creamos el nombre del folder que lo contendra*/
-    var nameFolderSection = titlePresentation.split(" ");
-    var nameFolder = nameFolderSection[0]+"_"+Date().getTime();
-
-    /*Creamos el Directorio basado en el nombre de la presentacion*/
-    var dirMyPresentations = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator +'folderMyPresentations');
-    var dirNewPresentation = Ti.Filesystem.getFile(dirMyPresentations.resolve(), nameFolder);
-    if(!dirNewPresentation.exists()){
-      dirNewPresentation.createDirectory();
-    }
-    /*Ahora creamos los directorios para la estructura de la presentacion*/
-    /*Frameworks*/
-    var dirFrameworks = Ti.Filesystem.getFile(dirNewPresentation.resolve(), "frameworks");
-    dirFrameworks.createDirectory();
-    /*shared*/
-    var dirShared = Ti.Filesystem.getFile(dirNewPresentation.resolve(), "shared");
-    dirShared.createDirectory();
-    /*sliders*/
-    var dirSliders = Ti.Filesystem.getFile(dirNewPresentation.resolve(), "sliders");
-    dirSliders.createDirectory();
+    var idNewPresentation = new DataBaseQuery().setNewCreatePresentation(titlePresentation);
+    Ti.API.info('ID new Press: '+idNewPresentation);
 
     /*Ahora movemos los sliders*/
-    var aFolderSlidersForMove = [];
+    var aObjectToSliders = [];
     for (var i = 0; i < iTotalSliders; i++) {
-      var presentationsFolder = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator +'presentations');
-      var presentationIdFolder = Ti.Filesystem.getFile(presentationsFolder.resolve(), aDataForCreate[i].aDataPresentationParent.idPresentationOfthisSlider);
-      var appFolder = Ti.Filesystem.getFile(presentationIdFolder.resolve(), 'app');
-      aFolderSlidersForMove[i] = Ti.Filesystem.getFile(Ti.appFolder + Ti.Filesystem.separator + aDataForCreate[i].aDataSlider.folder);
+        /*Creamos el Objeto para el la nueva presentacion*/
+        aObjectToSliders[i] = {id_created_presentation:idNewPresentation,
+                              id_presentation_online:aDataForCreate[i].idPresentationOfthisSlider,
+                              folder_slider:aDataForCreate[i].aDataSlider.folder,
+                             name:aDataForCreate[i].aDataSlider.name};
+        new DataBaseQuery().setNewSlidersByNewPresentationID(aObjectToSliders[i]);
     }
 
-
+    /*Aqui abrimos la nueva presentacion*/
   }
 
 }

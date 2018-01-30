@@ -357,4 +357,30 @@ DataBaseQuery.prototype.getAllPresentations = function(){
 		return aToReturnData;
 	}
 }
+DataBaseQuery.prototype.setNewCreatePresentation = function(namePresentation){
+	var idToReturn = 0;
+	try {
+		var dbForCreateNewPresentation = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForCreateNewPresentation = "INSERT INTO local_presentations (nombre, status) VALUES (?,?);";
+		dbForCreateNewPresentation.execute(sqlForCreateNewPresentation,namePresentation,1);
+		idToReturn = dbForCreateNewPresentation.getLastInsertRowId();
+		dbForCreateNewPresentation.close();
+	} catch (e) {
+		alert("Error al grabar nueva presentacion creada "+e);
+	} finally {
+		return idToReturn;
+	}
+}
+DataBaseQuery.prototype.setNewSlidersByNewPresentationID = function(oDataNewSlider){
+	try {
+		var dbForNewSlider = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForNewSlider = 'INSERT INTO local_sliders (id_created_presentation, id_presentation_online, name,folder_slider) VALUES (?,?,?,?);';
+		dbForNewSlider.execute(sqlForNewSlider, oDataNewSlider.id_created_presentation, oDataNewSlider.id_presentation_online, oDataNewSlider.name,oDataNewSlider.folder_slider);
+		dbForNewSlider.close();
+	} catch (e) {
+		alert("Error al crear nuevo slider "+e);
+	} finally {
+		return true;
+	}
+}
 module.exports = DataBaseQuery;
