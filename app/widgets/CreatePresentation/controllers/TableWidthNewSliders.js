@@ -94,8 +94,8 @@ function myTrim(x) {
 function onClickCreatePresentation(e){
   var aDataForCreate = $.tableForNew.data[0].rows;
   var iTotalSliders = $.tableForNew.data[0].rows.length;
-  Ti.API.info('TableData');
-  Ti.API.info(JSON.stringify(aDataForCreate));
+  // Ti.API.info('TableData');
+  // Ti.API.info(JSON.stringify(aDataForCreate));
 
   /*Lo primero que hacemos el crear la estructura para esta nueva presentacion*/
   var titlePresentation = myTrim(Alloy.Globals.titleForNewPresentation);
@@ -114,10 +114,17 @@ function onClickCreatePresentation(e){
                               id_presentation_online:aDataForCreate[i].idPresentationOfthisSlider,
                               folder_slider:aDataForCreate[i].aDataSlider.folder,
                              name:aDataForCreate[i].aDataSlider.name};
-        new DataBaseQuery().setNewSlidersByNewPresentationID(aObjectToSliders[i]);
+
+    }
+    if(new DataBaseQuery().setNewSlidersByNewPresentationID(aObjectToSliders)){
+      /*Aqui abrimos la nueva presentacion*/
+      this.visible = false;
+      /*Cerramos esta ventana*/
+      $.contentTableAndBtnCreate.fireEvent("onCreateNewPresentation",{idNewPresentation:idNewPresentation});
     }
 
-    /*Aqui abrimos la nueva presentacion*/
+
   }
+
 
 }

@@ -39,5 +39,8 @@
 
 	<string name="errorTitleNewPresentation">Debe de escribir un nombre para su presentacion</string>
 
+	<string name="noShare">No se puede compartir una presentacion creada por ti...</string>
+	<string name="MyPresentations">Mis Presentaciones</string>
+
 
 </resources>

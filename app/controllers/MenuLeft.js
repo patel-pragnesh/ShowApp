@@ -95,7 +95,7 @@ function closeSessionOkUser(){
 }
 
 function onClickMyPresentations(e){
-  alert("My presentations");
+  Alloy.createWidget("MyPresenattions",{}).getView().open({modal:true});
 }
 
 function onClickNewPresentation(e){

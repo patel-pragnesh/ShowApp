@@ -39,6 +39,8 @@
 		<string name="saveNewPresentation">Create presentation</string>
 
 		<string name="errorTitleNewPresentation">Write a name for you new presentation</string>
+			<string name="noShare">It's imposible share a presentation created for you</string>
+			<string name="MyPresentations">My Presentations</string>
 
 
 </resources>

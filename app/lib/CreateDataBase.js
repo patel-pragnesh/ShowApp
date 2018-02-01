@@ -43,7 +43,7 @@ function CreateDataBase(){
 		db.execute(sqlForLocalPresentationsCreated);
 
 		/*Tabla para la relacion de presentaciones*/
-		var sqlForSlidersCreatedPresentation = 'CREATE TABLE IF NOT EXISTS local_sliders (id_slider INTEGER PRIMARY KEY AUTOINCREMENT, id_created_presentation INTEGER, id_presentation_online INTEGER, name VARCHAR,folder_slider VARCHAR);';
+		var sqlForSlidersCreatedPresentation = 'CREATE TABLE IF NOT EXISTS local_sliders (id_slider INTEGER PRIMARY KEY AUTOINCREMENT, id_created_presentation INTEGER, id_presentation_online INTEGER, name VARCHAR, folder_slider VARCHAR);';
 		db.execute(sqlForSlidersCreatedPresentation);
 
 		db.execute("COMMIT");

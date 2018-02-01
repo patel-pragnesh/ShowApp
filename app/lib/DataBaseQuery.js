@@ -372,15 +372,90 @@ DataBaseQuery.prototype.setNewCreatePresentation = function(namePresentation){
 	}
 }
 DataBaseQuery.prototype.setNewSlidersByNewPresentationID = function(oDataNewSlider){
+	var iTotalSliders = oDataNewSlider.length;
+
+	var idsSliders = [];
+	// (id_slider INTEGER PRIMARY KEY AUTOINCREMENT, id_created_presentation INTEGER, id_presentation_online INTEGER, name VARCHAR,folder_slider VARCHAR)
 	try {
 		var dbForNewSlider = Ti.Database.open(Alloy.Globals.databaseName);
-		var sqlForNewSlider = 'INSERT INTO local_sliders (id_created_presentation, id_presentation_online, name,folder_slider) VALUES (?,?,?,?);';
-		dbForNewSlider.execute(sqlForNewSlider, oDataNewSlider.id_created_presentation, oDataNewSlider.id_presentation_online, oDataNewSlider.name,oDataNewSlider.folder_slider);
+		dbForNewSlider.execute("BEGIN");
+		for (var i = 0; i < iTotalSliders; i++) {
+			var item = oDataNewSlider[i];
+			dbForNewSlider.execute('INSERT INTO local_sliders (id_created_presentation, id_presentation_online, name, folder_slider) VALUES (?,?,?,?)', item.id_created_presentation, item.id_presentation_online, item.name, item.folder_slider);
+			idsSliders.push(dbForNewSlider.getLastInsertRowId());
+		}
+		dbForNewSlider.execute("COMMIT");
+
+
 		dbForNewSlider.close();
 	} catch (e) {
 		alert("Error al crear nuevo slider "+e);
 	} finally {
+		// Ti.API.info('IDS SLIDERS');
+		// Ti.API.info(idsSliders);
+
 		return true;
 	}
+}
+DataBaseQuery.prototype.getLocalPresentationCreateForUserById = function(idPresentation){
+
+	var aDataToReturn = {};
+	var dataPresentation = {};
+	var aDataSliders = [];
+	try {
+		var dbGetPresentation = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlGetPresentation = 'SELECT * FROM local_presentations WHERE id_created_presentation = ? LIMIT 1';
+		var rowPresentation = dbGetPresentation.execute(sqlGetPresentation,idPresentation);
+		while (rowPresentation.isValidRow()) {
+				dataPresentation = {
+														name:rowPresentation.fieldByName("nombre"),
+														id:rowPresentation.fieldByName("id_created_presentation")
+													};
+		rowPresentation.next();
+		}
+		aDataToReturn.Presentation = dataPresentation;
+
+		/*Obtenemos los sliders*/
+		//var dbGetSliders = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForSlider = 'SELECT * FROM local_sliders WHERE id_created_presentation = ?;';
+		var rowsSliders = dbGetPresentation.execute(sqlForSlider,idPresentation);
+		while (rowsSliders.isValidRow()) {
+			aDataSliders.push({
+					 								idPresentationOnline:rowsSliders.fieldByName("id_presentation_online"),
+													name:rowsSliders.fieldByName("name"),
+													folder_slider:rowsSliders.fieldByName("folder_slider")
+												});
+			rowsSliders.next();
+		}
+		aDataToReturn.Sliders = aDataSliders;
+		//dbGetSliders.close();
+		dbGetPresentation.close();
+
+	} catch (e) {
+			alert("Error al obtener presentation del usuario "+e);
+	} finally {
+		return aDataToReturn;
+	}
+}
+DataBaseQuery.prototype.getAllLocalPresentationsCreatedByUser = function(){
+	var aDataToReturn = [];
+	try {
+		var dbForAllLocalPresentations = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForAllLocalPresentationsByUser = 'SELECT * FROM local_presentations WHERE 1 ORDER BY id_created_presentation DESC;';
+		var rowsAllPress = dbForAllLocalPresentations.execute(sqlForAllLocalPresentationsByUser);
+		while (rowsAllPress.isValidRow()) {
+			aDataToReturn.push({
+														idPresentation:rowsAllPress.fieldByName("id_created_presentation"),
+														name:rowsAllPress.fieldByName("nombre")
+												});
+			rowsAllPress.next();
+		}
+		dbForAllLocalPresentations.close();
+	} catch (e) {
+		alert("Error al leer todas las presentaciones creadas");
+	} finally {
+		return aDataToReturn;
+	}
+
 }
 module.exports = DataBaseQuery;

@@ -90,7 +90,9 @@ var contentListSelectedSliders = Ti.UI.createView({
 });
 
 /*Agregamos la tabla de los nuevos sliders*/
-contentListSelectedSliders.add(Widget.createController("TableWidthNewSliders",{}).getView());
+var oTableNewSliders = Widget.createController("TableWidthNewSliders",{}).getView();
+oTableNewSliders.addEventListener("onCreateNewPresentation",onCreateNewPress);
+contentListSelectedSliders.add(oTableNewSliders);
 oCanvasForPresentationsAndList.add(contentListSelectedSliders);
 var contentPresentationsForSelected = Ti.UI.createView({
   width:Ti.UI.FILL,
@@ -126,3 +128,12 @@ for (var i = 0; i < iTotalPresentations; i++) {
 }
 tableForPresentations.data = rowsTableForPresentations;
 contentPresentationsForSelected.add(tableForPresentations);
+
+/*Evento on create new */
+function onCreateNewPress(e){
+  var idNewPress = e.idNewPresentation;
+  e = null;
+  $.root.close();
+  Widget.createWidget("ShowAppLocalCreated",{idPresentation:idNewPress}).getView().open({modal:true});
+
+}
