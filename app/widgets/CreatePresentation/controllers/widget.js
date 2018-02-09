@@ -24,7 +24,7 @@ var canvasTitlePresentation = Ti.UI.createView({
   width:Ti.UI.FILL,
   height:Alloy.Globals.osUnits(100),
   backgroundColor:"transparent",
-  layout:"vertical"
+  layout:"horizontal"
 });
 canvasHome.add(canvasTitlePresentation);
 var titleSection = Ti.UI.createLabel({
@@ -39,35 +39,26 @@ var titleSection = Ti.UI.createLabel({
 canvasTitlePresentation.add(titleSection);
 
 var contentForWriteTitle = Ti.UI.createView({
-  left:Alloy.Globals.osUnits(20),
-  width:Ti.UI.FILL,
+  left:Alloy.Globals.osUnits(60),
+  width:Alloy.Globals.osUnits(400),
   height:Alloy.Globals.osUnits(60),
-  layout:"horizontal"
+  backgroundColor:colorTitle,
+
 });
 canvasTitlePresentation.add(contentForWriteTitle);
 
-var labelForWritetitle = Ti.UI.createLabel({
-  width:Ti.UI.SIZE,
-  height:Ti.UI.SIZE,
-  text:L('writeTitleForNewLabel')+": ",
-  font:{
-    fontFamily:"ProximaNova-Regular",
-    fontSize:15
-  },
-  color:colorTitle
-});
-contentForWriteTitle.add(labelForWritetitle);
-
 var textFielForTitle = Ti.UI.createTextField({
-  left: Alloy.Globals.osUnits(5),
-  width:Alloy.Globals.osUnits(400),
+  left: Alloy.Globals.osUnits(10),
+
+  width:"90%",
   height:Alloy.Globals.osUnits(30),
   font:{
     fontFamily:"ProximaNova-Regular",
-    fontSize:15
+    fontSize:20
   },
-  color:colorForm,
-  hintText:L('titleHere')
+  color:"#FFF",
+  value:L('titleHere')
+  //hintText:L('titleHere'),
 });
 textFielForTitle.addEventListener("change",function(e){
   Alloy.Globals.titleForNewPresentation = e.value;
@@ -78,7 +69,7 @@ contentForWriteTitle.add(textFielForTitle);
 var oCanvasForPresentationsAndList = Ti.UI.createView({
   width:Ti.UI.FILL,
   height:Ti.UI.FILL,
-  backgroundColor:"transparent",
+  backgroundColor:"#FFF",
   layout:"horizontal"
 });
 canvasHome.add(oCanvasForPresentationsAndList);
@@ -102,12 +93,12 @@ var contentPresentationsForSelected = Ti.UI.createView({
 oCanvasForPresentationsAndList.add(contentPresentationsForSelected);
 
 /*Leemos las Presentaciones Locales*/
-var sizeRowForPresentation = Alloy.Globals.osUnits(250);
+var sizeRowForPresentation = Alloy.Globals.osUnits(285);
 var aDataPresentations = new DataBaseQuery().getAllPresentations();
 var iTotalPresentations = aDataPresentations.length;
 var tableForPresentations = Ti.UI.createTableView({
   width:Ti.UI.FILL,
-  height:Ti.UI.FILL,
+  height:Alloy.Globals.osUnits(500),
   minRowHeight:sizeRowForPresentation,
   separatorColor:colorForm,
   backgroundColor:"transparent",

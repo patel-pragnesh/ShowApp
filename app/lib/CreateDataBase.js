@@ -46,6 +46,10 @@ function CreateDataBase(){
 		var sqlForSlidersCreatedPresentation = 'CREATE TABLE IF NOT EXISTS local_sliders (id_slider INTEGER PRIMARY KEY AUTOINCREMENT, id_created_presentation INTEGER, id_presentation_online INTEGER, name VARCHAR, folder_slider VARCHAR);';
 		db.execute(sqlForSlidersCreatedPresentation);
 
+		/*Tabla para la relacion de documentos agregados a una nueva presentacion*/
+		var sqlForDocumentsInNewPressentation = 'CREATE TABLE IF NOT EXISTS local_documents (id_document INTEGER PRIMARY KEY AUTOINCREMENT, id_created_presentation INTEGER, id_presentation_online, INTEGER, name VARCHAR, mime_type VARCHAR, file VARCHAR);';
+		db.execute(sqlForDocumentsInNewPressentation);
+
 		db.execute("COMMIT");
 
 	}catch(e){
