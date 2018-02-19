@@ -38,6 +38,7 @@ var titleSection = Ti.UI.createLabel({
 });
 canvasTitlePresentation.add(titleSection);
 
+
 var contentForWriteTitle = Ti.UI.createView({
   left:Alloy.Globals.osUnits(60),
   width:Alloy.Globals.osUnits(400),
@@ -46,6 +47,40 @@ var contentForWriteTitle = Ti.UI.createView({
 
 });
 canvasTitlePresentation.add(contentForWriteTitle);
+
+/*Icono para los documentos*/
+var iconDocumentsContent = Ti.UI.createView({
+  left:Alloy.Globals.osUnits(30),
+  width:Alloy.Globals.osUnits(60),
+  height:Alloy.Globals.osUnits(60),
+  backgroundColor:"transparent"
+});
+iconDocumentsContent.addEventListener("click",onClickDocumentsIcon);
+canvasTitlePresentation.add(iconDocumentsContent);
+var iconDocuments = Ti.UI.createImageView({
+  image:"/images/icon_documents.png",
+  touchEnabled:false
+});
+iconDocumentsContent.add(iconDocuments);
+var badgeForDocuments = Ti.UI.createView({
+  top:0,
+  right:0,
+  width:Alloy.Globals.osUnits(20),
+  height:Alloy.Globals.osUnits(20),
+  borderRadius:Alloy.Globals.osUnits(10),
+  backgroundColor:"red",
+  touchEnabled:false,
+  visible:false
+});
+iconDocumentsContent.add(badgeForDocuments);
+var labelForBadge = Ti.UI.createLabel({
+  color:"#FFF",
+  font:{
+    fontFamily:"ProximaNova-Regular",
+    fontSize:13
+  }
+});
+badgeForDocuments.add(labelForBadge);
 
 var textFielForTitle = Ti.UI.createTextField({
   left: Alloy.Globals.osUnits(10),
@@ -120,11 +155,99 @@ for (var i = 0; i < iTotalPresentations; i++) {
 tableForPresentations.data = rowsTableForPresentations;
 contentPresentationsForSelected.add(tableForPresentations);
 
-/*Evento on create new */
+
+
+/*evento para agregar un nuevo documento a la nueva presentacion*/
+var oContentTable = Ti.UI.createView({
+  width:Alloy.Globals.osUnits(500),
+  height:Alloy.Globals.osUnits(600),
+  layout:"vertical"
+});
+var titleTable = Ti.UI.createLabel({
+  top:Alloy.Globals.osUnits(15),
+  text:"Documentos Agregados",
+  font:{
+    fontFamily:"ProximaNova-Bold",
+    fontSize:20
+  },
+  color:colorTitle
+});
+oContentTable.add(titleTable);
+var oTableForDocuments = Ti.UI.createTableView({
+  top:Alloy.Globals.osUnits(15),
+  width:Ti.UI.FILL,
+  height:Ti.UI.FILL,
+  backgroundColor:"#FFF",
+  minRowHeight:Alloy.Globals.osUnits(50),
+  editable:true,
+});
+oContentTable.add(oTableForDocuments);
+var pop = Ti.UI.iPad.createPopover({
+  backgroundColor:"#FFF",
+  contentView:oContentTable
+});
+Ti.App.addEventListener("addDocumentToNewPresentation",onNewDocumentIsAdded);
+function onNewDocumentIsAdded(e){
+  Ti.API.info(e.aData);
+
+  /*Creamos el RowPara este documento*/
+  var oRowForDocument = Ti.UI.createTableViewRow({
+    width:Ti.UI.FILL,
+    height:Alloy.Globals.osUnits(50),
+    editable:true,
+    title:e.aData.docData.name,
+    font:{
+      fontFamily:"ProximaNova-Regular",
+      fontSize:20
+    },
+    color:colorForm,
+    aDataDocument:e.aData
+  });
+  oTableForDocuments.appendRow(oRowForDocument);
+  //Alloy.Globals.aDataDocumentsForNewPresentation.push(e.aData);
+  // var iTotalDocuemnts = Alloy.Globals.aDataDocumentsForNewPresentation.length;
+  var iTotalDocuemnts = oTableForDocuments.data[0].rows.length;
+  labelForBadge.text = iTotalDocuemnts;
+  badgeForDocuments.visible = true;
+}
+
+/*evento para ver los documentos agregados*/
+
+function onClickDocumentsIcon(e){
+  if(OS_IOS){
+    pop.show({view:iconDocumentsContent});
+  }
+}
+
+/*Evento on create new Aqui grabamos los documentos de la presentacion*/
 function onCreateNewPress(e){
   var idNewPress = e.idNewPresentation;
-  e = null;
-  $.root.close();
-  Widget.createWidget("ShowAppLocalCreated",{idPresentation:idNewPress}).getView().open({modal:true});
+  var haveDocuments = oTableForDocuments.data.length;
 
+  if(haveDocuments>0){
+    /*Guardamos los documentos en la nueva presentacion*/
+    var aDocumentsData = oTableForDocuments.data[0].rows;
+
+    var iTotalDocumentsForSave = aDocumentsData.length;
+    var aDataToSave = [];
+    for (var i = 0; i < iTotalDocumentsForSave; i++) {
+      aDataToSave.push({id_created_presentation:idNewPress,
+                        id_presentation_online:aDocumentsData[i].aDataDocument.pressData.idOnLine,
+                        name:aDocumentsData[i].aDataDocument.docData.name,
+                        mime_type:aDocumentsData[i].aDataDocument.docData.mime,
+                        file:aDocumentsData[i].aDataDocument.docData.file,
+                        });
+
+    }
+    Ti.API.info(aDataToSave);
+    e = null;
+    if(new DataBaseQuery().setDocumentsForNewPresentation(aDataToSave)){
+      $.root.close();
+      Widget.createWidget("ShowAppLocalCreated",{idPresentation:idNewPress}).getView().open({modal:true});
+    }
+  }else{
+      e = null;
+      $.root.close();
+      Widget.createWidget("ShowAppLocalCreated",{idPresentation:idNewPress}).getView().open({modal:true});
+  }
 }

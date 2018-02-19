@@ -12,6 +12,7 @@ var iItemsPerPage = 6;
 var heightCanvasCategories = Alloy.Globals.osUnits(280);
 var canvasCategories = Ti.UI.createScrollView();
 $.title.color = colorTitle;
+$.title.text = Alloy.Globals.conf.title_sub_categories;
 
   /*Si hay conexion buscamos las categorias en la base de datos*/
   var oConnectionData = new GetSubCategoriesAndPresentatioonsByCAtId(args.aDataCategory.id_category);

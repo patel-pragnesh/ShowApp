@@ -41,6 +41,8 @@
 
 	<string name="noShare">No se puede compartir una presentacion creada por ti...</string>
 	<string name="MyPresentations">Mis Presentaciones</string>
+	<string name="deletePresentationTitle">Borrar Presentación</string>
+	<string name="questionDeletePresentation">¿Realmente desea borrar esta presentación?</string>
 
 
 </resources>

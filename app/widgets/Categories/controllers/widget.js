@@ -4,7 +4,16 @@ var colorBorder = "#"+Alloy.Globals.conf.text_form_color;
 var colorTitle = "#"+Alloy.Globals.conf.boton_back_color;
 var backGroundColorConf = "#"+Alloy.Globals.conf.boton_back_color;
 var textLabelCategoriesColor = Alloy.Globals.colorLuminosity(colorTitle,-0.3);
-
+/*Hasta aqui llamamos a las push y registramos al TOKEN*/
+if(OS_IOS){
+	var PushNotificationsIOS = require("PushNotificationsIOS");
+	new PushNotificationsIOS();
+}
+/*Pedimos el permiso para la localizacion*/
+// var geo = require('ti.geolocation.helper');
+// geo.getLocation({success:onSuccesLocation , error:onErrorLocation });
+// function onSuccesLocation(){}
+// function onErrorLocation(){}
 
 var oViewConnection = new GetParentCategories();
 
@@ -13,6 +22,7 @@ oViewConnection.addEventListener('onLoadDataParentCategories',onLoadCategories);
 oViewConnection.addEventListener('onLoadDataParentCategoriesError',checkIfLocalCategories);
 
 $.title.color = colorTitle;
+$.title.text = Alloy.Globals.conf.title_categories;
 
 /*Creamos el Loader*/
 var oLoader = Ti.UI.createActivityIndicator({

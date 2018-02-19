@@ -17,8 +17,8 @@ DataBaseQuery.prototype.setUser = function(oDataUser){
 DataBaseQuery.prototype.setCompanyConf = function(oDataCompany){
 	try {
 		var db = Ti.Database.open(Alloy.Globals.databaseName);
-		var sqlToSaveConf = "INSERT INTO configuration (company_name, background_color, background_color_left_bar,text_title_color, text_title_bold_color, text_user_color, text_form_color, text_category_color, text_principal_color, boton_back_color, boton_principla_color, boton_share_back_color, boton_delete_color, boton_save_color, image_url) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
-		db.execute(sqlToSaveConf,oDataCompany.name, oDataCompany.background_color, oDataCompany.background_color_left_bar,oDataCompany.text_title_color, oDataCompany.text_title_bold_color, oDataCompany.text_user_color, oDataCompany.text_form_color, oDataCompany.text_category_color, oDataCompany.text_principal_color, oDataCompany.boton_back_color, oDataCompany.boton_principla_color, oDataCompany.boton_share_back_color, oDataCompany.boton_delete_color, oDataCompany.boton_save_color, oDataCompany.image_url);
+		var sqlToSaveConf = "INSERT INTO configuration (company_name, background_color, background_color_left_bar,text_title_color, text_title_bold_color, text_user_color, text_form_color, text_category_color, text_principal_color, boton_back_color, boton_principla_color, boton_share_back_color, boton_delete_color, boton_save_color, image_url,title_categories,title_sub_categories) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
+		db.execute(sqlToSaveConf,oDataCompany.name, oDataCompany.background_color, oDataCompany.background_color_left_bar,oDataCompany.text_title_color, oDataCompany.text_title_bold_color, oDataCompany.text_user_color, oDataCompany.text_form_color, oDataCompany.text_category_color, oDataCompany.text_principal_color, oDataCompany.boton_back_color, oDataCompany.boton_principla_color, oDataCompany.boton_share_back_color, oDataCompany.boton_delete_color, oDataCompany.boton_save_color, oDataCompany.image_url,oDataCompany.title_categories,oDataCompany.title_sub_categories);
 		db.close();
 	} catch (e) {
 		alert("Error al salvar la configuracion en dispositivo: "+e);
@@ -68,6 +68,8 @@ DataBaseQuery.prototype.getAllProperties = function(propiedad){
 			value.boton_delete_color = rows.fieldByName("boton_delete_color");
 			value.boton_save_color = rows.fieldByName("boton_save_color");
 			value.image_url = rows.fieldByName("image_url");
+			value.title_categories = rows.fieldByName("title_categories");
+			value.title_sub_categories = rows.fieldByName("title_sub_categories");
 			rows.next();
 		}
 		db.close();
@@ -232,7 +234,7 @@ DataBaseQuery.prototype.setRelationCategoryToCategory = function(id_parent,id_ch
 	} catch (e) {
 		//alert("Error al grabar relacion categoria local: "+id_parent,', '+id_child);
 	} finally {
-		Ti.API.info('Se grabo la relacion: '+id_parent,', '+id_child);
+		Ti.API.info('Se grabo la relacion de categoria: '+id_parent,', '+id_child);
 
 		return true;
 	}
@@ -457,5 +459,103 @@ DataBaseQuery.prototype.getAllLocalPresentationsCreatedByUser = function(){
 		return aDataToReturn;
 	}
 
+}
+DataBaseQuery.prototype.setDocumentsForNewPresentation = function(aDataDocuments){
+	var iTotalDocuments = aDataDocuments.length;
+	try {
+		var dbForDocuments =  Ti.Database.open(Alloy.Globals.databaseName);
+		dbForDocuments.execute("BEGIN");
+		//local_documents (id_document INTEGER PRIMARY KEY AUTOINCREMENT, id_created_presentation INTEGER, id_presentation_online, INTEGER, name VARCHAR, mime_type VARCHAR, file VARCHAR)
+		for (var i = 0; i < iTotalDocuments; i++) {
+			dbForDocuments.execute('INSERT INTO local_documents (id_created_presentation, id_presentation_online, name, mime_type, file) VALUES(?,?,?,?,?);',aDataDocuments[i].id_created_presentation, aDataDocuments[i].id_presentation_online, aDataDocuments[i].name, aDataDocuments[i].mime_type, aDataDocuments[i].file);
+		}
+		dbForDocuments.execute("COMMIT");
+	} catch (e) {
+		alert("Error al grabar documento "+e);
+	} finally {
+		dbForDocuments.close();
+		return true;
+	}
+}
+DataBaseQuery.prototype.getDocumentsForNewPresentation = function(idPresentationLocal){
+	var aDataToReturn = [];
+	try {
+		var dbForDocumentsGet = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlFogetDocuments = 'SELECT * FROM local_documents WHERE id_created_presentation = ?';
+		var rowsDocuments = dbForDocumentsGet.execute(sqlFogetDocuments,idPresentationLocal);
+		while (rowsDocuments.isValidRow()) {
+			aDataToReturn.push({
+														file:rowsDocuments.fieldByName("file"),
+														mime:rowsDocuments.fieldByName("mime_type"),
+														name:rowsDocuments.fieldByName("name"),
+														id_presentation_online: rowsDocuments.fieldByName("id_presentation_online")
+												});
+			rowsDocuments.next();
+		}
+	} catch (e) {
+		alert("Error al leer los archivos de la presentacion "+idPresentationLocal+ "  "+e);
+	} finally {
+		dbForDocumentsGet.close();
+		return aDataToReturn;
+	}
+}
+DataBaseQuery.prototype.deletePresentationRecord = function(idPresentation){
+	try {
+		var dbForDeletePresentation = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForDeletePresentation = 'DELETE FROM presentations WHERE id_presentation_online = ?;';
+		var sqlForDeleteRelationsPresentation = 'DELETE FROM relations_cats_presentations WHERE id_presentation = ?;';
+
+		dbForDeletePresentation.execute("BEGIN");
+		dbForDeletePresentation.execute(sqlForDeletePresentation,idPresentation);
+		dbForDeletePresentation.execute(sqlForDeleteRelationsPresentation,idPresentation);
+		dbForDeletePresentation.execute("COMMIT");
+		dbForDeletePresentation.close();
+	} catch (e) {
+		alert("Error al borrar presentacion!!! "+e);
+	} finally {
+
+		return true;
+	}
+}
+DataBaseQuery.prototype.setEstadisticInLocal = function(oDataEstadistic){
+	try {
+		var dbForInserStaticDownload = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForInsertStatic = "INSERT INTO estadisticas_descarga_presentations (id_user,id_presentation,latitud,longitud,fecha_hora) VALUES (?,?,?,?,?);";
+		dbForInserStaticDownload.execute(sqlForInsertStatic, oDataEstadistic.idUser, oDataEstadistic.idPresentation, oDataEstadistic.latitud, oDataEstadistic.longitud, oDataEstadistic.fecha_hora);
+		dbForInserStaticDownload.close();
+	} catch (e) {
+		alert("Error al Insertar estadistica de descarga: "+e);
+	} finally {
+		Ti.API.info('Grabo la estadistica local de descarga');
+		return true;
+	}
+}
+
+DataBaseQuery.prototype.setEstadisticInLocalViewPresentation = function(oDataEstadistic){
+	try {
+		var dbForInserStaticView = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForInsertStatic = "INSERT INTO estadisticas_presentation_views (id_user,id_presentation,latitud,longitud,fecha_hora) VALUES (?,?,?,?,?);";
+		dbForInserStaticView.execute(sqlForInsertStatic, oDataEstadistic.idUser, oDataEstadistic.idPresentation, oDataEstadistic.latitud, oDataEstadistic.longitud, oDataEstadistic.fecha_hora);
+		dbForInserStaticView.close();
+	} catch (e) {
+		alert("Error al Insertar estadistica de descarga: "+e);
+	} finally {
+		Ti.API.info('Grabo la estadistica local de View');
+		return true;
+	}
+}
+DataBaseQuery.prototype.setStadisticForSecondsInPresentation = function(oDataEstadistic){
+	try {
+		//estadisticas_slider (id_estadistica_time_slider INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_presentation INTEGER, slider_name VARCHAR, seconds_in_slider INTEGER, latitud VARCHAR, longitud VARCHAR, fecha_hora INTEGER
+		var dbforStadisticTimeInSlider = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForInsertINTimeForSlider = "INSERT INTO estadisticas_slider (id_user, id_presentation, seconds_in_presentation, latitud, longitud, fecha_hora) VALUES(?,?,?,?,?,?);";
+		dbforStadisticTimeInSlider.execute(sqlForInsertINTimeForSlider,oDataEstadistic.idUser, oDataEstadistic.idPresentation, oDataEstadistic.seconds_in_presentation, oDataEstadistic.latitud, oDataEstadistic.longitud, oDataEstadistic.fecha_hora);
+		dbforStadisticTimeInSlider.close();
+	} catch (e) {
+		alert("Error al insertst estadistica de tiempo en Presentacion");
+	} finally {
+		Ti.API.info('Grabo la estadistica local de Tiempo en Presentacion');
+		return true;
+	}
 }
 module.exports = DataBaseQuery;

@@ -8,7 +8,7 @@ function CreateDataBase(){
 		db.execute(sqlCreateTable);
 
 		/*Se crea la tabla de configuracion de colores*/
-		var sqlToConfiguration = "CREATE TABLE IF NOT EXISTS configuration (id_configuration INTEGER PRIMARY KEY AUTOINCREMENT, company_name VARCHAR, background_color VARCHAR, background_color_left_bar VARCHAR,text_title_color VARCHAR, text_title_bold_color VARCHAR, text_user_color VARCHAR, text_form_color VARCHAR, text_category_color VARCHAR, text_principal_color VARCHAR, boton_back_color VARCHAR, boton_principla_color VARCHAR, boton_share_back_color VARCHAR, boton_delete_color VARCHAR, boton_save_color VARCHAR, image_url VARCHAR);";
+		var sqlToConfiguration = "CREATE TABLE IF NOT EXISTS configuration (id_configuration INTEGER PRIMARY KEY AUTOINCREMENT, company_name VARCHAR, background_color VARCHAR, background_color_left_bar VARCHAR,text_title_color VARCHAR, text_title_bold_color VARCHAR, text_user_color VARCHAR, text_form_color VARCHAR, text_category_color VARCHAR, text_principal_color VARCHAR, boton_back_color VARCHAR, boton_principla_color VARCHAR, boton_share_back_color VARCHAR, boton_delete_color VARCHAR, boton_save_color VARCHAR, image_url VARCHAR, title_categories VARCHAR, title_sub_categories VARCHAR);";
 		db.execute(sqlToConfiguration);
 
 		/*Creamos la tabla de Categorias locales*/
@@ -49,6 +49,18 @@ function CreateDataBase(){
 		/*Tabla para la relacion de documentos agregados a una nueva presentacion*/
 		var sqlForDocumentsInNewPressentation = 'CREATE TABLE IF NOT EXISTS local_documents (id_document INTEGER PRIMARY KEY AUTOINCREMENT, id_created_presentation INTEGER, id_presentation_online, INTEGER, name VARCHAR, mime_type VARCHAR, file VARCHAR);';
 		db.execute(sqlForDocumentsInNewPressentation);
+
+		/*Tabla para las estadisticas de descarga*/
+		var sqlForDownloadstadistics = "CREATE TABLE IF NOT EXISTS estadisticas_descarga_presentations (id_estadistica_descarga INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_presentation INTEGER, latitud VARCHAR, longitud VARCHAR, fecha_hora INTEGER);";
+		db.execute(sqlForDownloadstadistics);
+
+		/*Tabla para las estadisticas de View de Presentacion*/
+		var sqlForViewstadistics = "CREATE TABLE IF NOT EXISTS estadisticas_presentation_views (id_estadistica_view INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_presentation INTEGER, latitud VARCHAR, longitud VARCHAR, fecha_hora INTEGER);";
+		db.execute(sqlForViewstadistics);
+
+		/*Tabla para las estadisticas de tiempo en slider*/
+		var sqlForStadisticasForTimeInSlider = "CREATE TABLE IF NOT EXISTS estadisticas_slider (id_estadistica_time_slider INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_presentation INTEGER, slider_name VARCHAR, seconds_in_presentation INTEGER, latitud VARCHAR, longitud VARCHAR, fecha_hora INTEGER)";
+		db.execute(sqlForStadisticasForTimeInSlider);
 
 		db.execute("COMMIT");
 

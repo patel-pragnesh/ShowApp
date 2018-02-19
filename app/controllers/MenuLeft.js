@@ -20,12 +20,14 @@ $.closeSession.title = L('closeSession');
 
 var aBotonForMenu = [];
 aBotonForMenu[0] = {Btn:Ti.UI.createView({
+
                       width:Alloy.Globals.osUnits(123),
                       height:Alloy.Globals.osUnits(123),
-                      backgroundColor:"#FFF",
+                      backgroundColor:"transparent",
                       borderRadius:Alloy.Globals.osUnits(10),
                   }),
                   Txt:Ti.UI.createLabel({
+                    top:Alloy.Globals.osUnits(10),
                     bottom:Alloy.Globals.osUnits(10),
                     text:L('myPresentations'),
                     color:text_title_color,
@@ -34,17 +36,26 @@ aBotonForMenu[0] = {Btn:Ti.UI.createView({
                       fontSize:Alloy.Globals.osUnits(12)
                     }
                   }),
-                  listener:onClickMyPresentations
+                  listener:onClickMyPresentations,
+                  image:Ti.UI.createImageView({image:"/images/icon_menu_left_my_press.png"}),
+                  content:Ti.UI.createView({
+                    width:Alloy.Globals.osUnits(123),
+                    height:Alloy.Globals.osUnits(130),
+                    backgroundColor:"transparent",
+                    layout:"vertical",
+
+                  })
                 };
 aBotonForMenu[1] = {Btn:Ti.UI.createView({
                       top:Alloy.Globals.osUnits(15),
                       width:Alloy.Globals.osUnits(123),
                       height:Alloy.Globals.osUnits(123),
-                      backgroundColor:"#FFF",
+                      backgroundColor:"transparent",
                       borderRadius:Alloy.Globals.osUnits(10),
 
                   }),
                   Txt:Ti.UI.createLabel({
+                    top:Alloy.Globals.osUnits(10),
                     bottom:Alloy.Globals.osUnits(10),
                     text:L('newPresentation'),
                     color:text_title_color,
@@ -53,13 +64,23 @@ aBotonForMenu[1] = {Btn:Ti.UI.createView({
                       fontSize:Alloy.Globals.osUnits(12)
                     }
                   }),
-                  listener:onClickNewPresentation
+                  listener:onClickNewPresentation,
+                  image:Ti.UI.createImageView({image:"/images/icon_menu_left_add_press.png"}),
+                  content:Ti.UI.createView({
+                    width:Alloy.Globals.osUnits(123),
+                    height:Alloy.Globals.osUnits(130),
+                    backgroundColor:"transparent",
+                    layout:"vertical",
+
+                  })
                 };
 var iTotalBotonesMenu = aBotonForMenu.length;
 for (var i = 0; i < iTotalBotonesMenu; i++) {
-  aBotonForMenu[i].Btn.addEventListener("click",aBotonForMenu[i].listener);
-  aBotonForMenu[i].Btn.add(aBotonForMenu[i].Txt);
-  $.menuContent.add(aBotonForMenu[i].Btn);
+  aBotonForMenu[i].content.addEventListener("click",aBotonForMenu[i].listener);
+  aBotonForMenu[i].content.add(aBotonForMenu[i].image);
+  aBotonForMenu[i].content.add(aBotonForMenu[i].Txt);
+  //aBotonForMenu[i].content.add(aBotonForMenu[i].Btn);
+  $.menuContent.add(aBotonForMenu[i].content);
 }
 
 $.closeSession.addEventListener("click",onClickCloseSession);

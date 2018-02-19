@@ -18,7 +18,9 @@ Alloy.Globals.categoryBreadCrum = [];
 Alloy.Globals.isOff = false;
 Alloy.Globals.isSliderPresentation = true;
 Alloy.Globals.aDataSlidersForNewPresentation = [];
+Alloy.Globals.aDataDocumentsForNewPresentation = [];
 Alloy.Globals.titleForNewPresentation = "";
+Alloy.Globals.id_user = 0;
 
 
 

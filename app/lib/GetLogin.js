@@ -31,7 +31,9 @@ function GetLogin(oDataLogin){
         boton_share_back_color: aData.company.company_conf.boton_share_back_color,
         boton_delete_color: aData.company.company_conf.boton_delete_color,
         boton_save_color: aData.company.company_conf.boton_save_color,
-        image_url: aData.company.company_conf.logo_image_url
+        image_url: aData.company.company_conf.logo_image_url,
+        title_categories: aData.company.company_conf.title_categories_in_app,
+        title_sub_categories: aData.company.company_conf.title_sub_categories_in_app
       }
       var oObjectToSaveUser = {
         id_online:aData.id,
@@ -44,6 +46,7 @@ function GetLogin(oDataLogin){
       }
       Alloy.Globals.id_user_type = aData.id_user_type;
       Alloy.Globals.id_company = aData.id_company;
+      Alloy.Globals.id_user = aData.id;
       /*El evento onLoadLogin se ejecuta en en controlador index.js*/
       new DataBaseQuery().setCompanyConf(oObjectSaveCompany);
       new DataBaseQuery().setUser(oObjectToSaveUser);

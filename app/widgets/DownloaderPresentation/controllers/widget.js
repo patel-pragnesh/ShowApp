@@ -20,8 +20,8 @@ $.percentNumber.color = titlesColor;
 /*Cargamos el ZIP*/
 var oConnection = Titanium.Network.createHTTPClient({timeout:Alloy.Globals.timeOutWebServices});
 var url = Alloy.Globals.weburl+"/apps/"+idPresentation+"/"+args.aData.url_package;
-Ti.API.info('URL CARGA');
-Ti.API.info(url);
+//Ti.API.info('URL CARGA');
+//Ti.API.info(url);
 oConnection.open("GET",url);
 oConnection.send({});
 oConnection.onload = function(){
@@ -202,14 +202,14 @@ function createImagesThumForIndexPresentation (){
       });
       if(OS_IOS){
         aSlider[i].url = htmlFiles[i];
-        thumImages[i] = aSlider[i].toImage(null,true);
+      //  thumImages[i] = aSlider[i].toImage(null,true);
       }else{
         aSlider[i].enableJavascriptInterface = true;
         aSlider[i].data = htmlFiles[i].read();
 
-        thumImages[i] = aSlider[i].toImage().media;
+        //thumImages[i] = aSlider[i].toImage().media;
       }
-    
+
 
     }
 

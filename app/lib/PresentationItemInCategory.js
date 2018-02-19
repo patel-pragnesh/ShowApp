@@ -46,6 +46,7 @@ PresentationItemInCategory.prototype.getItemForCategory = function(){
     width:Ti.UI.FILL,
     height:Ti.UI.FILL,
     image:imageToShow,
+    defaultImage:"/images/defaul_image_presentation_item.jpg"
   });
   oContentImage.add(imageItem);
   var oNameItem = Ti.UI.createLabel({

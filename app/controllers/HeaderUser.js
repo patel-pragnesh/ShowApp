@@ -58,6 +58,7 @@ if(!args.isModal){
     }
   });
   btnClose.addEventListener("click",function(){
+    Alloy.Globals.aDataDocumentsForNewPresentation = [];
     args.toClose.close();
   });
   $.headerRoot.add(btnClose);

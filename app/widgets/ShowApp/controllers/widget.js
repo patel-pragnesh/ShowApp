@@ -1,7 +1,22 @@
 var args = $.args || {};
+ var Social = require('dk.napp.social');
+ var geoLoc = require('ti.geolocation.helper');
+ var Estadisticas = require("Estadisticas");
+ var DataBaseQuery = require("DataBaseQuery");
 var idPresentation = args.dataPresentation.id_presentation;
 var documentsData = [];
 var isOpenControls = false;
+var currentViewSliderNumber = 0;
+var secondsInPresentation = 0;
+var oSecondsObject = setInterval(function(){
+  countSecondsInPresentation();
+},1000);
+function countSecondsInPresentation(){
+  secondsInPresentation++;
+
+  return secondsInPresentation;
+}
+
 var animationOpen = Ti.UI.createAnimation();
 animationOpen.top = 0;
 animationOpen.duration = 500;
@@ -18,6 +33,7 @@ var animationCloseIndice = Ti.UI.createAnimation();
 animationCloseIndice.left = Alloy.Globals.osUnits(-300);
 animationCloseIndice.duration = 500;
 
+
 var indiceIsOpen = false;
 // var oWebView = Ti.UI.createWebView({
 //   width:Ti.UI.FILL,
@@ -29,6 +45,7 @@ var oContentSliders = Ti.UI.createScrollableView({
   height:Ti.UI.FILL,
   scrollingEnabled:Alloy.Globals.isSliderPresentation
 });
+oContentSliders.addEventListener("scrollend",onViewScroll);
 
 /*Menu contenedor*/
 var oMenuContent = Ti.UI.createView({
@@ -290,7 +307,14 @@ function openDocumentExplorer(e){
   $.root.add(Alloy.createWidget("DocumentExplorer",{idPresentation:idPresentation, documentsData:documentsData}).getView());
 }
 function sharePresentation(e){
-
+  if(Social.isActivityViewSupported()){
+    Social.activityPopover({
+       text:Alloy.Globals.weburl+"viewPresentationFromshare/"+idPresentation+"/",
+      // image:"pin.png",
+       removeIcons:"print,contact,camera",
+       view: e.source //source button
+   });
+  }
 }
 function sliderLeftPresentation(e){
   var currentIndex = oContentSliders.currentPage;
@@ -306,5 +330,111 @@ function gotoHomePresentation(e){
   oContentSliders.scrollToView(0);
 }
 function closeShowAppPresentation(e){
+  /*Detenemos el intervalo y grabamos el tiempo de la presentacion*/
+  clearInterval(oSecondsObject);
+
+  geoLoc.getLocation({success:onSuccesLocation , error:onErrorLocation });
+
+  function onSuccesLocation(e){
+
+      //alert("LocalizacionOK")
+      //Ti.API.info(e);
+      var ts = Math.round((new Date()).getTime() / 1000);
+      var aDataToStadistic = {
+                              idUser:Alloy.Globals.id_user,
+                              idPresentation:idPresentation,
+                              seconds_in_presentation:secondsInPresentation,
+                              latitud:e.latitude,
+                              longitud:e.longitude,
+                              fecha_hora:ts
+                              }
+      var oEstadistica = new Estadisticas().saveEstadisticsTimeInPresentation(aDataToStadistic);
+      oEstadistica.onerror = function(evt){
+        //Ti.API.debug(evt.error);
+        //alert("Error al grabar la estadistica de descarga");
+        new DataBaseQuery().setStadisticForSecondsInPresentation(aDataToStadistic);
+
+      }
+      Ti.API.info('Si hay gelolocalizacion');
+
+    //}
+    //oneRecInServer++;
+  }
+  function onErrorLocation(e){
+    var ts = Math.round((new Date()).getTime() / 1000);
+    var aDataToStadistic = {
+                            idUser:Alloy.Globals.id_user,
+                            idPresentation:idPresentation,
+                            seconds_in_presentation:secondsInPresentation,
+                            latitud:0,
+                            longitud:0,
+                            fecha_hora: ts
+                            }
+    var oEstadistica = new Estadisticas().saveEstadisticsTimeInPresentation(aDataToStadistic);
+    oEstadistica.onerror = function(evt){
+      //Ti.API.debug(evt.error);
+      //alert("Error al grabar la estadistica de descarga");
+      new DataBaseQuery().setStadisticForSecondsInPresentation(aDataToStadistic);
+    }
+    Ti.API.info('NO hay gelolocalizacion');
+  }
+
+
+
   $.root.close();
+}
+
+
+/*Grabamos la Estadistica de la vista*/
+
+
+geoLoc.getLocation({success:onSuccesLocation , error:onErrorLocation });
+
+function onSuccesLocation(e){
+
+    //alert("LocalizacionOK")
+    //Ti.API.info(e);
+    var ts = Math.round((new Date()).getTime() / 1000);
+    var aDataToStadistic = {
+                            idUser:Alloy.Globals.id_user,
+                            idPresentation:idPresentation,
+                            latitud:e.latitude,
+                            longitud:e.longitude,
+                            fecha_hora:ts
+                            }
+    var oEstadistica = new Estadisticas().saveEstadisticsView(aDataToStadistic);
+    oEstadistica.onerror = function(evt){
+      //Ti.API.debug(evt.error);
+      //alert("Error al grabar la estadistica de descarga");
+      new DataBaseQuery().setEstadisticInLocalViewPresentation(aDataToStadistic);
+
+    }
+    Ti.API.info('Si hay gelolocalizacion');
+
+  //}
+  //oneRecInServer++;
+}
+function onErrorLocation(e){
+  var ts = Math.round((new Date()).getTime() / 1000);
+  var aDataToStadistic = {
+                          idUser:Alloy.Globals.id_user,
+                          idPresentation:idPresentation,
+                          latitud:0,
+                          longitud:0,
+                          fecha_hora: ts
+                          }
+  var oEstadistica = new Estadisticas().saveEstadisticsView(aDataToStadistic);
+  oEstadistica.onerror = function(evt){
+    //Ti.API.debug(evt.error);
+    //alert("Error al grabar la estadistica de descarga");
+    new DataBaseQuery().setEstadisticInLocalViewPresentation(aDataToStadistic);
+  }
+  Ti.API.info('NO hay gelolocalizacion');
+}
+
+
+
+/*Estadistica de vista de cada View o Slider*/
+function onViewScroll(e){
+  Ti.API.info('Current View: '+e.currentPage);
 }

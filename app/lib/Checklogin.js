@@ -19,6 +19,7 @@ function Checklogin(){
 
       Alloy.Globals.id_user_type = sqlusuarios.fieldByName('id_user_type');
       Alloy.Globals.id_company = sqlusuarios.fieldByName('id_company');
+      Alloy.Globals.id_user = sqlusuarios.fieldByName('id_online');
 
 
 		  arruser.push({ usuario_id: userId , online_id:userIdOnline , nombre: userNombre});

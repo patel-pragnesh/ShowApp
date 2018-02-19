@@ -3,10 +3,7 @@ var CreateDataBase = require("CreateDataBase");
 var DataBaseQuery = require("DataBaseQuery")
 var Checklogin = require("Checklogin");
 var windowOpensInAndroid = [];
-if(OS_IOS){
-	var PushNotificationsIOS = require("PushNotificationsIOS");
-	new PushNotificationsIOS();
-}
+
 
 /*Se crea el directorio para presentaciones unicas de este usuario*/
 var localUserPresentationsFolder = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator +'my_presentations');
@@ -17,6 +14,7 @@ if(!localUserPresentationsFolder.exists()){
 if(new CreateDataBase){
 	OS_IOS ? $.windowNav.open() : $.root.open();
 	OS_IOS ? Alloy.Globals.currentWindow = $.windowNav : Alloy.Globals.currentWindow = $.root;
+	OS_IOS ? Alloy.Globals.navWindow = $.windowNav : Alloy.Globals.currentWindow = $.root;
 
 	Alloy.Globals.openNewWindow = function(sWidgetToLoad,paramsToWidget){
 		Alloy.Globals.countWindow++;

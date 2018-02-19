@@ -9,6 +9,8 @@ var aBotonsForPresentation = [];
 var widgetLoaderPresentation;
 var forLocal = false;
 var needUpdate = false;
+var geo = require('ti.geolocation.helper');
+var Estadisticas = require("Estadisticas");
 
 
 /*Validamos si la presentacion existe en la base de datos local o no*/
@@ -79,7 +81,8 @@ leftSlide.add(oImageContent);
 var oImage = Ti.UI.createImageView({
   width:Ti.UI.FILL,
   height:Ti.UI.FILL,
-  image:aData.url_image_big
+  image:aData.url_image_big,
+  defaultImage:"/images/defaul_image_presentation_window.jpg"
 });
 oImageContent.add(oImage);
 
@@ -209,13 +212,81 @@ function onClickDownloadPresentation(e){
     widgetLoaderPresentation = Alloy.createWidget("DownloaderPresentation",{aData:aData,isUpdate:needUpdate}).getView("root");
     $.root.add(widgetLoaderPresentation);
     widgetLoaderPresentation.addEventListener("presentationSaved",onLoaderAppIsOk);
+
+    /*Grbamos la estadistica de descarga de presentacion*/
+    geo.getLocation({success:onSuccesLocation , error:onErrorLocation });
+    var oneRecInServer = 1;
+    function onSuccesLocation(e){
+      //if(oneRecInServer==1){
+        //alert("LocalizacionOK")
+        //Ti.API.info(e);
+        var ts = Math.round((new Date()).getTime() / 1000);
+        var aDataToStadistic = {
+                                idUser:Alloy.Globals.id_user,
+                                idPresentation:aData.id_presentation,
+                                latitud:e.latitude,
+                                longitud:e.longitude,
+                                fecha_hora:ts
+                                }
+        var oEstadistica = new Estadisticas().saveEstadisticsDownload(aDataToStadistic);
+        oEstadistica.onerror = function(evt){
+          //Ti.API.debug(evt.error);
+          //alert("Error al grabar la estadistica de descarga");
+          new DataBaseQuery().setEstadisticInLocal(aDataToStadistic);
+
+        }
+        Ti.API.info('Si hay gelolocalizacion');
+
+      //}
+      oneRecInServer++;
+    }
+    function onErrorLocation(e){
+      var ts = Math.round((new Date()).getTime() / 1000);
+      var aDataToStadistic = {
+                              idUser:Alloy.Globals.id_user,
+                              idPresentation:aData.id_presentation,
+                              latitud:0,
+                              longitud:0,
+                              fecha_hora: ts
+                              }
+      var oEstadistica = new Estadisticas().saveEstadisticsDownload(aDataToStadistic);
+      oEstadistica.onerror = function(evt){
+        //Ti.API.debug(evt.error);
+        //alert("Error al grabar la estadistica de descarga");
+        new DataBaseQuery().setEstadisticInLocal(aDataToStadistic);
+      }
+      Ti.API.info('NO hay gelolocalizacion');
+    }
+    //oneRecInServer++;
+
 }
 
 function onClickViewLocalPresentation(e){
   Alloy.createWidget("ShowApp",{dataPresentation:aData}).getView().open({modal:true});
 }
 function onClickDeletePress(e){
-  alert("Borrar");
+  //alert("Borrar");
+  var dialog = Ti.UI.createAlertDialog({
+    message:L('questionDeletePresentation'),
+    buttonNames: [L('yes'), L('no')],
+   title: L('deletePresentationTitle')
+  });
+  dialog.addEventListener("click",function(e){
+    ///Ti.API.info('Cerrar session: '+e.index);
+    var isClose =e.index;
+    if(isClose==0){
+      deletePresentationOk();
+    }
+  });
+  dialog.show();
+}
+function deletePresentationOk(){
+
+  if(new DataBaseQuery().deletePresentationRecord(aData.id_presentation)){
+    Alloy.Globals.categoryBreadCrum = [];
+    $.root.close();
+    Alloy.Globals.navWindow.popToRootWindow();
+  }
 }
 
 function onLoaderAppIsOk(e){

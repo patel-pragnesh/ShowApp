@@ -24,13 +24,40 @@ function PushNotificationsIOS(){
 
     // Process incoming push notifications
     function receivePush(e) {
-        alert('Received push: ' + JSON.stringify(e));
+        //alert('Received push: ' + JSON.stringify(e));
+        //Ti.API.info(JSON.stringify(e));
+        /*Validamos si esta en background o no*/
+        var isRecibedinBackground = e.inBackground;
+        if(isRecibedinBackground){
+          /*Si se recibio en back*/
+          alert(e.data.aps.alert.body);
+        }else{
+          /*No se recibio en back*/
+          alert(e.data.aps.alert.body);
+        }
+        Ti.UI.iOS.appBadge = 0;
     }
     // Save the device token for subsequent API calls
     function deviceTokenSuccess(e) {
         deviceToken = e.deviceToken;
         Ti.API.info('PUSH TOKEN');
         Ti.API.info(deviceToken);
+        /*Registramos el Token en el sistema*/
+        var url = Alloy.Globals.weburl+'api/v1/setTokenIDUserForNotifications';
+        var oSetTokenInCloud = Ti.Network.createHTTPClient({timeout:Alloy.Globals.timeOutWebServices});
+        oSetTokenInCloud.setRequestHeader("enctype", "multipart/form-data");
+        oSetTokenInCloud.setRequestHeader("Content-Type:", "text/html; charset=utf-8");
+        oSetTokenInCloud.open("POST",url);
+        var varsToSend = {
+                          idUser: Alloy.Globals.id_user,
+                          token:deviceToken,
+                          platform:'ios'
+                          };
+
+        oSetTokenInCloud.send(varsToSend);
+        oSetTokenInCloud.onerror = function(){
+          //alert("Error al grabar TOKEN PUSH");
+        }
     }
 
     function deviceTokenError(e) {

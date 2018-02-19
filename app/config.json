@@ -17,6 +17,7 @@
         "CreatePresentation": "1.0",
         "PresentationModelForCreate": "1.0",
         "ShowAppLocalCreated": "1.0",
-        "MyPresenattions": "1.0"
+        "MyPresenattions": "1.0",
+        "DocumentExplorerLocal": "1.0"
     }
 }

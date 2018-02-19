@@ -7,6 +7,7 @@ var presentationsFolder = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDir
 var presentationIdFolder = Ti.Filesystem.getFile(presentationsFolder.resolve(), pressData.idOnLine);
 var appFolder = Ti.Filesystem.getFile(presentationIdFolder.resolve(), 'app');
 var indexFile = Ti.Filesystem.getFile(appFolder.resolve(), 'config.json');
+
 if(indexFile.exists()){
   /*Parseamos el JSON y creamos los views por cada slide*/
   var sJsonFile = indexFile.read();
@@ -139,9 +140,10 @@ function builtSliders(aPress){
   var iTotalDocuments = aDocuments.length;
   var oItemsDocument = [];
   var labelDocument = [];
+  var iconPlusForDocs = [];
   for (var i = 0; i < iTotalDocuments; i++) {
     labelDocument[i] = Ti.UI.createLabel({
-      width:Ti.UI.SIZE,
+      width:"85%",
       height:Ti.UI.FILL,
       left:Alloy.Globals.osUnits(10),
       color:colorTitle,
@@ -151,14 +153,35 @@ function builtSliders(aPress){
       },
       text:aDocuments[i].name
     });
+    iconPlusForDocs[i] = Ti.UI.createButton({
+      width:Ti.UI.FILL,
+      height:Ti.UI.FILL,
+      right:Alloy.Globals.osUnits(10),
+      title:"+ ",
+      color:colorTitle,
+      font:{
+        fontFamily:"ProximaNova-Regular",
+        fontSize:15,
+      },
+      dataDoc:aDocuments[i],
+    });
+    iconPlusForDocs[i].addEventListener("click",function(e){
+      //alert(e.source.dataDoc);
+      var aDataDocuments = {docData:e.source.dataDoc,
+                        pressData:pressData};
+      Ti.App.fireEvent("addDocumentToNewPresentation",{aData:aDataDocuments});
+    });
     oItemsDocument[i] = Ti.UI.createView({
       top:Alloy.Globals.osUnits(3),
       width:Ti.UI.FILL,
       height:Alloy.Globals.osUnits(40),
-      backgroundColor:Alloy.Globals.colorLuminosity(backColorApp,-0.01),
+      backgroundColor:Alloy.Globals.colorLuminosity(backColorApp,-0.02),
       layout:"horizontal"
     });
+
+
     oItemsDocument[i].add(labelDocument[i]);
+    oItemsDocument[i].add(iconPlusForDocs[i]);
     oDocumentsContent.add(oItemsDocument[i]);
   }
 }

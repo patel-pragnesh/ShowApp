@@ -41,6 +41,8 @@
 		<string name="errorTitleNewPresentation">Write a name for you new presentation</string>
 			<string name="noShare">It's imposible share a presentation created for you</string>
 			<string name="MyPresentations">My Presentations</string>
+			<string name="deletePresentationTitle">Delete Presentation</string>
+			<string name="questionDeletePresentation">Do you want delete this presentation really?</string>
 
 
 </resources>

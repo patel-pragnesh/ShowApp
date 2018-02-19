@@ -1,0 +1,81 @@
+".canvasRoot":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+}
+".backTransparent":{
+	width: Ti.UI.FILL,
+	height: Ti.UI.FILL,
+	opacity: 0.5
+}
+".rootList[platform=ios]":{
+	width: 630,
+	height: 365,
+	backgroundColor: "#FFF",
+	layout: 'vertical'
+}
+".rootList[platform=android]":{
+	width: 630,
+	height: 365,
+	backgroundColor: "#FFF",
+	layout: 'vertical'
+}
+".headerList[platform=ios]":{
+	width: Ti.UI.FILL,
+	height: 100,
+	backgroundColor: 'transparent',
+	layout: 'horizontal',
+	top:10
+
+}
+".headerList[platform=android]":{
+	width: Ti.UI.FILL,
+	height: 100,
+	backgroundColor: 'transparent',
+	layout: 'horizontal',
+	top:10
+}
+".titleList[platform=ios]":{
+	width: Ti.UI.SIZE,
+	left:30,
+	font: {
+		fontFamily: "ProximaNova-Black",
+		fontSize: 40
+	}
+}
+".titleList[platform=android]":{
+	width: Ti.UI.SIZE,
+	left:30,
+	font: {
+		fontFamily: "ProximaNova-Black",
+		fontSize: 40
+	}
+}
+".listDocuments[platform=ios]":{
+	width: 560,
+	height: 220,
+	layout: 'vertical'
+}
+".listDocuments[platform=android]":{
+	width: 560,
+	height: 220,
+	layout: 'vertical'
+}
+
+".closeBtn[platform=ios]":{
+	left:250,
+
+	width: 70,
+	height: 35,
+	backgroundColor: "#ed636c",
+	color:"#FFF",
+	borderRadius: 10
+}
+".closeBtn[platform=android]":{
+	left:250,
+
+	width: 70,
+	height: 50,
+	backgroundColor: "#ed636c",
+	color:"#FFF",
+	borderRadius: 10
+}

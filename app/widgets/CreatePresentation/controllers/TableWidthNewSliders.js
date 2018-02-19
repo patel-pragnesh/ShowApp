@@ -4,7 +4,7 @@ var colorText = "#"+Alloy.Globals.conf.text_form_color;
 var colorSaveBtn = "#"+Alloy.Globals.conf.boton_save_color;
 var folderMyPresentations = "my_presentations";
 var DataBaseQuery = require("DataBaseQuery");
-
+var itemsInTable = 0;
 
 Ti.App.addEventListener("onSelctSliderToAddNew",onSelectedNewSlider);
 
@@ -92,38 +92,45 @@ function myTrim(x) {
     return x.replace(/^\s+|\s+$/gm,'');
 }
 function onClickCreatePresentation(e){
-  var aDataForCreate = $.tableForNew.data[0].rows;
-  var iTotalSliders = $.tableForNew.data[0].rows.length;
-  // Ti.API.info('TableData');
-  // Ti.API.info(JSON.stringify(aDataForCreate));
 
-  /*Lo primero que hacemos el crear la estructura para esta nueva presentacion*/
-  var titlePresentation = myTrim(Alloy.Globals.titleForNewPresentation);
-  if(titlePresentation==""){
-    alert(L('errorTitleNewPresentation'));
+  var iTotalSliders = $.tableForNew.data.length;
+   //Ti.API.info('TOTAL Sliders '+iTotalSliders);
+  // Ti.API.info(JSON.stringify(aDataForCreate));
+  if(iTotalSliders>0){
+
+    var aDataForCreate = $.tableForNew.data[0].rows;
+    iTotalSliders = aDataForCreate.length;
+    /*Lo primero que hacemos el crear la estructura para esta nueva presentacion*/
+    var titlePresentation = myTrim(Alloy.Globals.titleForNewPresentation);
+    if(titlePresentation==""){
+      alert(L('errorTitleNewPresentation'));
+    }else{
+
+      var idNewPresentation = new DataBaseQuery().setNewCreatePresentation(titlePresentation);
+      Ti.API.info('ID new Press: '+idNewPresentation);
+
+      /*Ahora movemos los sliders*/
+      var aObjectToSliders = [];
+      for (var i = 0; i < iTotalSliders; i++) {
+          /*Creamos el Objeto para el la nueva presentacion*/
+          aObjectToSliders[i] = {id_created_presentation:idNewPresentation,
+                                id_presentation_online:aDataForCreate[i].idPresentationOfthisSlider,
+                                folder_slider:aDataForCreate[i].aDataSlider.folder,
+                                name:aDataForCreate[i].aDataSlider.name};
+
+      }
+      if(new DataBaseQuery().setNewSlidersByNewPresentationID(aObjectToSliders)){
+        /*Aqui abrimos la nueva presentacion*/
+        this.visible = false;
+        /*Cerramos esta ventana*/
+        $.contentTableAndBtnCreate.fireEvent("onCreateNewPresentation",{idNewPresentation:idNewPresentation});
+      }
+
+
+    }
   }else{
 
-    var idNewPresentation = new DataBaseQuery().setNewCreatePresentation(titlePresentation);
-    Ti.API.info('ID new Press: '+idNewPresentation);
-
-    /*Ahora movemos los sliders*/
-    var aObjectToSliders = [];
-    for (var i = 0; i < iTotalSliders; i++) {
-        /*Creamos el Objeto para el la nueva presentacion*/
-        aObjectToSliders[i] = {id_created_presentation:idNewPresentation,
-                              id_presentation_online:aDataForCreate[i].idPresentationOfthisSlider,
-                              folder_slider:aDataForCreate[i].aDataSlider.folder,
-                             name:aDataForCreate[i].aDataSlider.name};
-
-    }
-    if(new DataBaseQuery().setNewSlidersByNewPresentationID(aObjectToSliders)){
-      /*Aqui abrimos la nueva presentacion*/
-      this.visible = false;
-      /*Cerramos esta ventana*/
-      $.contentTableAndBtnCreate.fireEvent("onCreateNewPresentation",{idNewPresentation:idNewPresentation});
-    }
-
-
+    alert("Error\n Debe de agregar almenos una slide");
   }
 
 

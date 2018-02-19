@@ -287,7 +287,8 @@ function openIndice(e){
   }
 }
 function openDocumentExplorer(e){
-  $.root.add(Alloy.createWidget("DocumentExplorer",{idPresentation:idPresentation, documentsData:documentsData}).getView());
+  //$.root.add(Alloy.createWidget("DocumentExplorer",{idPresentation:idPresentation, documentsData:documentsData}).getView());
+  $.root.add(Alloy.createWidget("DocumentExplorerLocal",{idPresentacionLocal:idPresentationLocal}).getView());
 }
 function sharePresentation(e){
   alert(L('noShare'));
