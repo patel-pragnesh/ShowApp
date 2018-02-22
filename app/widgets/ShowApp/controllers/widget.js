@@ -3,11 +3,14 @@ var args = $.args || {};
  var geoLoc = require('ti.geolocation.helper');
  var Estadisticas = require("Estadisticas");
  var DataBaseQuery = require("DataBaseQuery");
+
 var idPresentation = args.dataPresentation.id_presentation;
 var documentsData = [];
 var isOpenControls = false;
 var currentViewSliderNumber = 0;
 var secondsInPresentation = 0;
+
+
 var oSecondsObject = setInterval(function(){
   countSecondsInPresentation();
 },1000);
@@ -272,6 +275,7 @@ if(indexFile.exists()){
     $.indiceScroll.add(contentItemIndex[i]);
   }
   $.webCanvas.add(oContentSliders);
+  aSlider = null;
   // Ti.API.info('HTML 1');
   // Ti.API.info(htmlFiles[0].read());
 
@@ -379,8 +383,9 @@ function closeShowAppPresentation(e){
     Ti.API.info('NO hay gelolocalizacion');
   }
 
-
-
+  //Alloy.Globals.browsersOpened = [];
+  //Ti.App.removeEventListener("app:openExternalLink",openExternalLinkAction);
+  $.root.removeAllChildren( );
   $.root.close();
 }
 
@@ -436,5 +441,7 @@ function onErrorLocation(e){
 
 /*Estadistica de vista de cada View o Slider*/
 function onViewScroll(e){
-  Ti.API.info('Current View: '+e.currentPage);
+  //Ti.API.info('Current View: '+e.currentPage);
 }
+
+/*Abrimos un link externo con un llamdo desde la presentacion*/

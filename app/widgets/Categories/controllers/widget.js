@@ -1,5 +1,6 @@
 var DataBaseQuery = require("DataBaseQuery");
 var GetParentCategories = require("GetParentCategories");
+var Estadisticas = require("Estadisticas");
 var colorBorder = "#"+Alloy.Globals.conf.text_form_color;
 var colorTitle = "#"+Alloy.Globals.conf.boton_back_color;
 var backGroundColorConf = "#"+Alloy.Globals.conf.boton_back_color;
@@ -9,11 +10,20 @@ if(OS_IOS){
 	var PushNotificationsIOS = require("PushNotificationsIOS");
 	new PushNotificationsIOS();
 }
-/*Pedimos el permiso para la localizacion*/
-// var geo = require('ti.geolocation.helper');
-// geo.getLocation({success:onSuccesLocation , error:onErrorLocation });
-// function onSuccesLocation(){}
-// function onErrorLocation(){}
+/*Aqui grabamos las estadisticas que existan en local*/
+var aDatEstadisticsViews = new DataBaseQuery().getEstadisticInLocalViewPresentation();
+var oEstadisticaView = new Estadisticas().saveViewsFromLocalDataBase(aDatEstadisticsViews);
+oEstadisticaView.onload = function (){
+		new DataBaseQuery().truncateTable("estadisticas_presentation_views");
+}
+/*Grabamos las estadisticas de los segundos en cada presentacion*/
+var aDataEstadisticasSeconds = new DataBaseQuery().getStadisticForSecondsInPresentation();
+var oEstadisticaSeconds = new Estadisticas().saveSecondsFromLocalDataBase(aDataEstadisticasSeconds);
+oEstadisticaSeconds.onload = function(){
+	new DataBaseQuery().truncateTable("estadisticas_slider");
+
+}
+
 
 var oViewConnection = new GetParentCategories();
 

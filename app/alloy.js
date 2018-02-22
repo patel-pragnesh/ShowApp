@@ -21,6 +21,20 @@ Alloy.Globals.aDataSlidersForNewPresentation = [];
 Alloy.Globals.aDataDocumentsForNewPresentation = [];
 Alloy.Globals.titleForNewPresentation = "";
 Alloy.Globals.id_user = 0;
+Alloy.Globals.browsersOpened = [];
+if(OS_IOS){
+  Alloy.Globals.Safari = require('ti.safaridialog');
+  Ti.App.addEventListener('app:openExternalLink',function openExternalLinkAction(e){
+    var linkToOpen = e.link;
+    if (Alloy.Globals.Safari.isSupported()) {
+         Alloy.Globals.Safari.open({
+             url: linkToOpen,
+             title: 'Link',
+             tintColor: Alloy.Globals.colorLuminosity(Alloy.Globals.conf.background_color_left_bar,0.02)
+         });
+     }
+  });
+}
 
 
 

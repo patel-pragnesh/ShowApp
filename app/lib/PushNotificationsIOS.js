@@ -58,6 +58,7 @@ function PushNotificationsIOS(){
         oSetTokenInCloud.onerror = function(){
           //alert("Error al grabar TOKEN PUSH");
         }
+        Ti.UI.iOS.appBadge = 0;
     }
 
     function deviceTokenError(e) {

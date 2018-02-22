@@ -119,6 +119,7 @@
         <module platform="iphone">ti.compression</module>
         <module platform="iphone">dk.napp.social</module>
         <module platform="android">ti.compression</module>
+        <module platform="iphone">ti.safaridialog</module>
     </modules>
     <deployment-targets>
         <target device="android">true</target>

@@ -3,7 +3,7 @@
 	// Put your device token here (without spaces):
   /*Comando para convertir el .cer en .pem*/
   // openssl pkcs12 -in pushcert.p12 -out pushcert.pem -nodes -clcerts
-	$deviceToken = "2e8cdd3a230c7f7b3a35890b5a31be9eba03cea9edd14bc058e9f37746b906cd";
+	$deviceToken = "f21779354dce52d07d9c7b56d9e18b745b6d9056baa1d99657cfa3f93eb6e789";
 
 	// Put your private key's passphrase here:
 	$passphrase = 'Toro123...';//<--- your password
@@ -14,7 +14,7 @@
 	////////////////////////////////////////////////////////////////////////////////
 
 	$ctx = stream_context_create();
-	stream_context_set_option($ctx, 'ssl', 'local_cert', 'pushcert.pem');
+	stream_context_set_option($ctx, 'ssl', 'local_cert', 'pushproductionshowapp.pem');
 	stream_context_set_option($ctx, 'ssl', 'passphrase', $passphrase);
 
 	// Open a connection to the APNS server
@@ -51,10 +51,10 @@
 	else
 	    echo 'Message successfully delivered' . PHP_EOL;
       echo "<br>";
-      echo $$Mensaje;
+      echo $Mensaje;
 
 	// Close the connection to the server
 	fclose($fp);
 }
-sendMessageToIOS("","Existe una actualizacion para la presentacion 'Presentación General' ",11);
+sendMessageToIOS("","Existe una actualizacion para la presentacion 'Presentación General' PRUEBA 3 EN DEVELOPER con certificado de produccion",11);
 ?>

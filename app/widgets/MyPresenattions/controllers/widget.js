@@ -72,11 +72,17 @@ for (var i = 0; i < iTotalPages; i++) {
   var oItemsViewsPresentations = [];
   var oImagesForPres = [];
   var titleLabel = [];
+  var DataForPresentations = []
+  var presentationsOnlineFolder = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory + Ti.Filesystem.separator +'presentations');
+  var aPresentationOnlineFolder = [];
+  var aAppOnlienFolder = [];
+  var rutaFolders = [];
+  var iconImage = [];
   for (var ii = 0; ii < iTotalItemsInPage; ii++) {
     oItemsViewsPresentations[ii] = Ti.UI.createView({
       left:Alloy.Globals.osUnits(10),
       top:Alloy.Globals.osUnits(10),
-      width:Alloy.Globals.osUnits(300),
+      width:Alloy.Globals.osUnits(200),
       height:Alloy.Globals.osUnits(250),
       backgroundColor:"transparent",
       layout:"vertical",
@@ -85,9 +91,17 @@ for (var i = 0; i < iTotalPages; i++) {
     oItemsViewsPresentations[ii].addEventListener("click",function(e){
       var idPresentation = e.source.idPressLocal;
       Widget.createWidget("ShowAppLocalCreated",{idPresentation:idPresentation}).getView().open({modal:true});
-    })
+    });
+    DataForPresentations[ii] = new DataBaseQuery().getLocalPresentationCreateForUserById(aItemsInpage[i][ii].idPresentation);
+    //Ti.API.info(JSON.stringify(DataForPresentations[ii]));
+    aPresentationOnlineFolder[ii] = Ti.Filesystem.getFile(presentationsOnlineFolder.resolve(), DataForPresentations[ii].Sliders[0].idPresentationOnline);
+    aAppOnlienFolder[ii] = Ti.Filesystem.getFile(aPresentationOnlineFolder[ii].resolve(), 'app');
+    rutaFolders[ii] = Ti.Filesystem.getFile(aAppOnlienFolder[ii].resolve(), "/sliders/"+DataForPresentations[ii].Sliders[0].folder_slider);
+    iconImage[ii] = Ti.Filesystem.getFile(rutaFolders[ii].resolve(), "ico.jpg");
+
     oImagesForPres[ii] = Ti.UI.createImageView({
-      image:"/images/pres_generic.jpg",
+      left:0,
+      image: iconImage[ii],
       touchEnabled:false
     });
     oItemsViewsPresentations[ii].add(oImagesForPres[ii]);

@@ -1,5 +1,18 @@
 function DataBaseQuery(){}
-
+DataBaseQuery.prototype.truncateTable = function(tableToTruncate){
+	try {
+		var dbforTruncate = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlTruncate = "DROP TABLE "+tableToTruncate;
+		Ti.API.info('TRUNCATE ='+sqlTruncate);
+		dbforTruncate.execute(sqlTruncate);
+		dbforTruncate.execute("VACUUM;");
+		dbforTruncate.close();
+	} catch (e) {
+		alert("No se pudo borrar la tabla "+tableToTruncate+"---"+e);
+	} finally {
+		return true;
+	}
+}
 DataBaseQuery.prototype.setUser = function(oDataUser){
 	try {
 		var db = Ti.Database.open(Alloy.Globals.databaseName);
@@ -544,6 +557,37 @@ DataBaseQuery.prototype.setEstadisticInLocalViewPresentation = function(oDataEst
 		return true;
 	}
 }
+DataBaseQuery.prototype.getEstadisticInLocalViewPresentation = function(){
+	try {
+		var aDataViews = [];
+		var sToJson = "{";
+		var oToSent = {};
+		var dbForGetViews = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForGetViews = "SELECT * FROM estadisticas_presentation_views WHERE 1;";
+		var rowViews = dbForGetViews.execute(sqlForGetViews);
+		var iterador = 0;
+		while (rowViews.isValidRow()) {
+			sToJson += '"userID['+iterador+']": '+rowViews.fieldByName("id_user")+",";
+			sToJson += '"idPresentation['+iterador+']": '+rowViews.fieldByName("id_presentation")+",";
+			sToJson += '"fecha_hora['+iterador+']": '+rowViews.fieldByName("fecha_hora")+",";
+			iterador++;
+			rowViews.next();
+		}
+		var stringFormatToJason = sToJson.substring( 0,sToJson.length-1);
+		stringFormatToJason += "}";
+		if(iterador>0){
+			oToSent = JSON.parse(stringFormatToJason);
+		}
+		Ti.API.info('JSON CREATED: ');
+		Ti.API.info(oToSent);
+
+		dbForGetViews.close();
+	} catch (e) {
+		alert("Error al leer las estadisticas de View "+e);
+	} finally {
+		return oToSent;
+	}
+}
 DataBaseQuery.prototype.setStadisticForSecondsInPresentation = function(oDataEstadistic){
 	try {
 		//estadisticas_slider (id_estadistica_time_slider INTEGER PRIMARY KEY AUTOINCREMENT, id_user INTEGER, id_presentation INTEGER, slider_name VARCHAR, seconds_in_slider INTEGER, latitud VARCHAR, longitud VARCHAR, fecha_hora INTEGER
@@ -558,4 +602,37 @@ DataBaseQuery.prototype.setStadisticForSecondsInPresentation = function(oDataEst
 		return true;
 	}
 }
+DataBaseQuery.prototype.getStadisticForSecondsInPresentation = function(oDataEstadistic){
+	try {
+		var dbForGetSecondsInPress = Ti.Database.open(Alloy.Globals.databaseName);
+		var sqlForGetSeconds = "SELECT * FROM estadisticas_slider WHERE 1;";
+		var rowsSeconds = dbForGetSecondsInPress.execute(sqlForGetSeconds);
+		var sToJson = "{";
+		var iterador = 0;
+		var oToSent = {};
+		while (rowsSeconds.isValidRow()) {
+			sToJson += '"userID['+iterador+']": '+rowsSeconds.fieldByName("id_user")+",";
+			sToJson += '"idPresentation['+iterador+']": '+rowsSeconds.fieldByName("id_presentation")+",";
+			sToJson += '"fecha_hora['+iterador+']": '+rowsSeconds.fieldByName("fecha_hora")+",";
+			sToJson += '"seconds_in_press['+iterador+']": '+rowsSeconds.fieldByName("seconds_in_presentation")+",";
+			iterador++;
+			rowsSeconds.next();
+		}
+		var stringFormatToJason = sToJson.substring( 0,sToJson.length-1);
+		stringFormatToJason += "}";
+		if(iterador>0){
+			oToSent = JSON.parse(stringFormatToJason);
+		}
+		Ti.API.info('JSON SECONDS');
+		Ti.API.info(oToSent);
+
+		dbForGetSecondsInPress.close();
+	} catch (e) {
+		alert("Error al traer los datos de segundos: "+e);
+	} finally {
+		return oToSent;
+	}
+}
+
+
 module.exports = DataBaseQuery;
